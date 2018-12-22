@@ -1,0 +1,80 @@
+<pre><code>ansible-playbook {{ meta.path }} {{ wapi.options }}</pre></code>
+
+<div class="ui form">
+{% for param in wapi.extra_vars %}
+  <div class="_inline field">
+
+  {# LABEL #}
+  {% if param.boolean is undefined %}
+
+    <label>
+    {% if 'required' in param.attributes or param.check is defined %}
+      <b style="color: #AB2B00">*</b>
+    {% endif %}
+      {{ param.description }} <i>({{ param.name }})</i>
+    </label>
+  {% endif %}
+
+{% if param.search is defined %}
+
+    {# SEARCH #}
+    <div  id="extra_vars-{{ param.name }}"
+          class="ui {{ param.attributes|get('multiple') }} search api selection dropdown">
+      <input  type="hidden" name="{{ param.name }}">
+      <i class="dropdown icon"></i>
+      <input type="text" class="search">
+      <div class="default text">Select ...</div>
+    </div>
+
+{% elif param.choices is defined %}
+
+    {# CHOICES #}
+    <div class="ui {{ param.attributes|get('multiple') }} multiple search selection dropdown">
+      <input  type="hidden"
+              value="{{ param.default }}"
+              name="{{ param.name }}">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select {{ param.name }}</div>
+      <div class="menu">
+{% for choice in param.choices %}
+        <div class="item" data-value="{{ choice }}">{{ choice }}</div>
+{% endfor %}
+      </div>
+    </div>
+
+{% elif param.boolean is defined %}
+
+    {# BOOLEAN #}
+    <div class="ui toggle checkbox">
+      <input  type="checkbox"
+{% if param.boolean %}
+              checked="checked"
+{% endif %}
+              name="{{ param.name }}">
+      <label><b>{{ param.description }} <i>({{ param.name }})</i></b></label>
+    </div>
+
+{% else %}
+
+    {# INPUT #}
+    <input  type="text"
+            name="{{ param.name }}"
+            value="{{ param.default|default('') }}"
+            placeholder="{{ param.description }}">
+
+{% endif %}
+
+  </div>
+{% endfor %}
+
+  <div class="ui primary submit button">Launch</div>
+  <div class="ui error message"></div>
+</div>
+
+{#
+#         - name: tags
+#           description: Tags to apply (/home/liftree/ansible-ws/test/data/playbooks/tags.yml)
+#           search: http://192.168.1.18:8081/playbook_tags
+#           search_params: "playbook=/home/liftree/ansible-ws/test/data/playbooks/tags.yml"
+#           attributes: ['required', 'multiple']
+#}

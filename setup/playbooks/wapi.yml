@@ -1,0 +1,17 @@
+---
+
+
+
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  
+    - name: Deploy wapi liftree config
+      copy:
+        dest: /etc/liftree/conf.d/50-wapi.conf
+        content: |
+          ---
+          name: /home/liftree/wapi/liftree
+          ...
+          
+...

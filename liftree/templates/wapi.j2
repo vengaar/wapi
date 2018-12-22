@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+  {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+    <style>
+      .main.container {
+        margin-top: 6em;
+      }
+      #menu {
+        background-color: #F5F5F5;
+      }
+    </style>
+  {% endblock %}
+  </head>
+  <body>
+    <div id="menu" class="ui main _top fixed _inverted teal secondary _tabular pointing menu">
+      <a class="item" href="https://github.com/vengaar/wapi"><i class="child blue icon"></i>WAPI</a>
+{% block menu %}
+{% endblock %}
+      <div class="right menu">
+        <div class="ui right aligned category search item">
+          <div class="ui _transparent icon input">
+            <input class="prompt" type="text" placeholder="Search ...">
+            <i class="search link icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ui main container">
+{% block body %}
+{% endblock %}
+    </div>
+    <!-- scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+      'use strict'
+      $('.ui.dropdown').dropdown();
+      $('.menu .item').tab();
+      $('.ui.search').search({
+        type: 'category',
+        apiSettings: {
+          url: '/search?query={query}&format=sui'
+        },
+      });
+    </script>
+    <script>
+      'use strict'
+{% block script %}
+{% endblock %}
+    </script>
+  </body>
+</html>

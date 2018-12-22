@@ -1,0 +1,106 @@
+{% set wapi = extra.wapi %}
+{% extends "wapi.j2" %}
+
+
+{% block menu %}
+
+<a class="item active" data-tab="doc"><i class="book icon"></i>Doc</a>
+<a class="item" data-tab="code"><i class="code icon"></i>Code</a>
+<a class="item" data-tab="play"><i class="play icon"></i>Launch</a>
+
+{#
+<div class="item">
+  <div class="ui breadcrumb">
+    <i class="right angle icon divider"></i>
+    <a class="section">playbooks</a>
+    <i class="right angle icon divider"></i>
+    <div class="active section">{{ meta.path|basename }}</div>
+  </div>
+</div>
+#}
+
+<div class="item"><code>{{ meta.path }}</code></div>
+
+{% endblock %}
+
+
+{% block body %}
+
+{#
+DEBUG 
+<pre><code>{{ wapi }}</code></pre>
+#}
+
+{# DOC #}
+<div class="ui tab _segment active" data-tab="doc">
+
+{% if wapi.keys()|count > 0 %}
+
+  <table class="ui definition table">
+    <tbody>
+{% for key in extra.wapi.keys() %}
+  {% if key in ('description') %}
+    <tr>
+      <td class="right aligned">{{ key|capitalize }}</td>
+      <td>{{ wapi[key]|to_markdown }}</td>
+    </tr>
+  {% elif key not in ('extra_vars') %}      
+      <tr>
+        <td class="right aligned">{{ key|capitalize }}</td>
+        <td>{{ wapi[key]|urlize }}</td>
+      </tr>
+  {% elif key == 'extra_vars' %}
+      <tr>
+        <td class="right aligned">{{ key|capitalize }}</td>
+        <td>
+    {% for param in wapi.extra_vars %}        
+        <div>{{ param.name }} : {{ param.description }}</div>
+    {% endfor %}        
+        </td>
+      </tr>        
+  {% endif %}
+
+{% endfor %}
+
+{% if extra.git.status == 'M' %}
+      <tr class="negative"><td class="right aligned">Git status</td><td>modified (untracked={{ extra.git.untracked }})</td></tr>
+      <tr><td class="right aligned">Git diff</td><td><pre><code>{{ extra.git.diff }}</code></pre></td></tr>
+{% else %}
+      <tr class="positive"><td class="right aligned">Git status</td><td>Ok</td></tr>
+{% endif %}
+
+    </tbody>
+  </table>
+
+{% else %}
+
+  <div class="ui warning message">
+    <div class="header">
+      No documentation found
+    </div>
+  </div>
+
+{% endif %}
+
+</div>
+
+
+{# CODE #}
+<div class="ui tab _segment" data-tab="code">
+  <h3 class="ui header">Playbook view</h3>
+  <pre><code>{{ data }}</code></pre>
+</div>
+
+
+{# PLAY #}
+<div class="ui tab _segment" data-tab="play">
+{% set parameters = wapi.extra_vars %} 
+{% include 'wapi/form.j2' %}
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+{% include 'wapi/form.js' %}
+{% endblock %}
