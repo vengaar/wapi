@@ -1,6 +1,6 @@
 ---
 
-- hosts: localhost
+- hosts: "{{ prod_servers|default('localhost') }}"
   gather_facts: false
   vars:
     wapi:
@@ -16,33 +16,36 @@
       options: -v --diff    
       extra_vars:
 
-        - name: email
-          description: A email to notify
-          check: 'email'
+        - name: prod_servers
+          description: One or several production servers
+          search: /ansible_hosts
+          search_params: 'groups=.*prod&sources=/home/liftree/wapi/test/inventories'
+          attributes: ['required', 'multiple']
 
         - name: app1_server
           description: One server for app1 without group selection
-          search: http://192.168.1.18:8081/ansible_hosts
-          search_params: "groups=.*app1&groups_selection=no"
+          search: /ansible_hosts
+          search_params: 'groups=.*app1&sources=/home/liftree/wapi/test/inventories&groups_selection=no'
           attributes: ['required']
 
-        - name: prod_servers
-          description: One or several production servers
-          search: http://192.168.1.18:8081/ansible_hosts
-          search_params: "groups=.*prod"
-          attributes: ['required', 'multiple']
+        - name: agree
+          boolean: true
+          description: A toggle true/false  
+
+        - name: email
+          description: A email to notify
+          check: 'email'
 
         - name: color
           description: A choice among a static list
           choices: ['blue', 'red', 'green']
           attributes: ['required', 'multiple']
           default: blue,green
-
-        - name: agree
-          boolean: true
-          description: A toggle true/false  
   
   tasks:
+
+    - name: Display inventory_hostname
+      debug: var=inventory_hostname
 
     - name: Display param email
       debug: var=email
