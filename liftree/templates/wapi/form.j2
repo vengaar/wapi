@@ -1,6 +1,16 @@
-<pre><code>ansible-playbook {{ meta.path }} {{ wapi.options }}</pre></code>
+{% set form_label_class = "ui teal top right attached label" %}
+{# FORM #}
+<div class="ui form">
+  <div class="field">
+    <label>Command line</label>
+    <textarea id="command_line" rows="2">ansible-playbook {{ meta.path }} {{ wapi.options }}</textarea>
+  </div>
+</div>
+<div class="ui divider"></div>
 
 <div class="ui form">
+<div class="ui segment">
+  <div class="{{ form_label_class }}">extra_vars</div>
 {% for param in wapi.extra_vars %}
   <div class="_inline field">
 
@@ -19,7 +29,7 @@
 
     {# SEARCH #}
     <div  id="extra_vars-{{ param.name }}"
-          class="ui {{ param.attributes|get('multiple') }} search api selection dropdown">
+          class="extra_vars ui {{ param.attributes|get('multiple') }} search selection dropdown">
       <input  type="hidden" name="{{ param.name }}">
       <i class="dropdown icon"></i>
       <input type="text" class="search">
@@ -29,9 +39,14 @@
 {% elif param.choices is defined %}
 
     {# CHOICES #}
-    <div class="ui {{ param.attributes|get('multiple') }} multiple search selection dropdown">
+    <div  id="extra_vars-{{ param.name }}"
+          class="extra_vars choices ui {{ param.attributes|get('multiple') }} search selection dropdown">
       <input  type="hidden"
+  {% if 'multiple' in  param.attributes %}      
+              value="{{ param.default|default([])|join(',') }}"
+  {% else %}
               value="{{ param.default }}"
+  {% endif%}
               name="{{ param.name }}">
       <i class="dropdown icon"></i>
       <div class="default text">Select {{ param.name }}</div>
@@ -47,9 +62,11 @@
     {# BOOLEAN #}
     <div class="ui toggle checkbox">
       <input  type="checkbox"
+              class="boolean"
 {% if param.boolean %}
               checked="checked"
 {% endif %}
+              id="extra_vars-{{ param.name }}"              
               name="{{ param.name }}">
       <label><b>{{ param.description }} <i>({{ param.name }})</i></b></label>
     </div>
@@ -58,6 +75,8 @@
 
     {# INPUT #}
     <input  type="text"
+            class="extra_vars input"
+            id="extra_vars-{{ param.name }}"            
             name="{{ param.name }}"
             value="{{ param.default|default('') }}"
             placeholder="{{ param.description }}">
@@ -66,15 +85,56 @@
 
   </div>
 {% endfor %}
+</div>
 
   <div class="ui primary submit button">Launch</div>
   <div class="ui error message"></div>
-</div>
 
-{#
-#         - name: tags
-#           description: Tags to apply (/home/liftree/ansible-ws/test/data/playbooks/tags.yml)
-#           search: http://192.168.1.18:8081/playbook_tags
-#           search_params: "playbook=/home/liftree/ansible-ws/test/data/playbooks/tags.yml"
-#           attributes: ['required', 'multiple']
-#}
+{# OPTIONS #}  
+<div class="ui segment">
+  <div class="{{ form_label_class }}">options</div>
+
+  <div class="field">
+    <label></label>
+    <div  id="tags_apply"
+          class="ui multiple search api selection dropdown">
+      <input type="hidden" name="tags_apply">
+      <i class="dropdown icon"></i>
+      <input type="text" class="search">
+      <div class="default text">Start a task...</div>
+    </div>
+  </div>
+  
+  <div class="two fields">
+
+    <div class="field">
+      <label></label>
+      <div  id="tags_apply"
+            class="playbook-tags ui multiple search selection dropdown">
+        <input type="hidden" name="tags_apply">
+        <i class="dropdown icon"></i>
+        <input type="text" class="search">
+        <div class="default text">Apply tags</div>
+      </div>
+    </div>
+    
+    <div class="field">
+      <label></label>
+      <div  id="tags_apply"
+            class="playbook-tags ui multiple search selection dropdown">
+        <input type="hidden" name="tags_apply">
+        <i class="dropdown icon"></i>
+        <input type="text" class="search">
+        <div class="default text">Skip tags</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="field">
+    <label>Options</label>
+    <textarea rows="3">{{ wapi.options }}</textarea>
+  </div>
+</div>
+  
+</div>
