@@ -40,7 +40,9 @@
           description: A choice among a static list
           choices: ['blue', 'red', 'green']
           attributes: ['required', 'multiple']
-          default: blue,green
+          default:
+            - blue
+            - green
   
   tasks:
 
