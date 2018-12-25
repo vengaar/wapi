@@ -2,6 +2,8 @@
 
 - hosts: localhost
   gather_facts: false
+  become: yes
+  become_user: root  
   tasks:
   
     - name: Deploy wapi liftree config
@@ -11,5 +13,19 @@
           ---
           name: /home/liftree/wapi/liftree
           ...
-          
+
+    - name: Create configuration directory
+      file:
+        path: /etc/wapi
+        state: directory
+
+    - name: Deploy wapi config
+      copy:
+        dest: /etc/wapi/wapi.yaml
+        content: |
+          ---
+          inventories:
+            - /home/liftree/wapi/test/inventories/hosts
+          ...
+
 ...

@@ -1,10 +1,34 @@
-{% set form_label_class = "ui teal top right attached label" %}
+{% set form_label_class = "ui grey top right attached label" %}
+<style>
+  .ui.form textarea.cmdline {
+    font-family: monospace;
+    background-color: darkslategrey;
+    color: white;
+    font-weight: bold;
+  }
+  .ui.form textarea.cmdline::-moz-selection {
+    background-color: white;
+    color: darkred;
+  }
+  .ui.form textarea.cmdline::selection {
+    background-color: white;
+    color: darkred;
+  }
+  
+</style>
 {# FORM #}
 <div class="ui form">
+<div class="ui segment">
+  <div class="ui grey top left attached label"><i class="terminal icon"></i>command line</div>
+  <a class="ui blue top right attached label"><i id="copy_cmdline" class="copy icon" data-taget="command_line"></i>copy</a>  
   <div class="field">
-    <label>Command line</label>
-    <textarea id="command_line" rows="2">ansible-playbook {{ meta.path }} {{ wapi.options }}</textarea>
+    <label><i class="terminal icon"></i>command line</label>
+    <textarea
+      class="cmdline"
+      id="command_line"
+      rows="2">ansible-playbook {{ meta.path }} {{ wapi.options }}</textarea>
   </div>
+</div>
 </div>
 <div class="ui divider"></div>
 
@@ -97,11 +121,11 @@
   <div class="field">
     <label></label>
     <div  id="tags_apply"
-          class="ui multiple search api selection dropdown">
+          class="ui multiple search api selection dropdown disabled">
       <input type="hidden" name="tags_apply">
       <i class="dropdown icon"></i>
       <input type="text" class="search">
-      <div class="default text">Start a task...</div>
+      <div class="default text">Start a task... (feature not yet available)</div>
     </div>
   </div>
   
@@ -120,9 +144,9 @@
     
     <div class="field">
       <label></label>
-      <div  id="tags_apply"
+      <div  id="tags_skip"
             class="playbook-tags ui multiple search selection dropdown">
-        <input type="hidden" name="tags_apply">
+        <input type="hidden" name="tags_skip">
         <i class="dropdown icon"></i>
         <input type="text" class="search">
         <div class="default text">Skip tags</div>

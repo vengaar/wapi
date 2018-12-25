@@ -1,6 +1,8 @@
 let cmdline_base = "ansible-playbook"
 let cmdline_options = "{{ wapi.options }}"
 let cmdline_playbook = "{{ meta.path }}"
+let cmdline_tags_apply = ""
+let cmdline_tags_skip = ""
 let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
 console.log(extra_vars)
 
@@ -10,6 +12,16 @@ $('.playbook-tags').dropdown({
   apiSettings: {
     url: '/playbook_tags?playbook={{ meta.path }}',
     cache: true
+  },
+  onChange: function(value, text, $selectedItem) {
+    console.log(this.id, value)
+    if (this.id === 'tags_apply') {
+      cmdline_tags_apply = value
+    }
+    else if (this.id === 'tags_skip') {
+      cmdline_tags_skip = value
+    }
+    display_cmdline()
   },
   clearable: true,
   filterRemoteData: true,
@@ -108,8 +120,14 @@ function display_cmdline() {
       cmdline_base,
       cmdline_playbook,
       cmdline_options,
-      "--extra_vars '" + JSON.stringify(extra_vars) + "'" 
+      "--extra-vars '" + JSON.stringify(extra_vars) + "'" 
   ]
+  if (cmdline_tags_apply !== '') {
+    cmdline.push('--tags="' + cmdline_tags_apply + '"')
+  }
+  if (cmdline_tags_skip!== '') {
+    cmdline.push('--skip-tags="' + cmdline_tags_skip + '"')
+  }
   $('#command_line').val(cmdline.join(' '))
 }
 display_cmdline()
