@@ -3,19 +3,36 @@ let cmdline_options = "{{ wapi.options }}"
 let cmdline_playbook = "{{ meta.path }}"
 let cmdline_tags_apply = ""
 let cmdline_tags_skip = ""
+let cmdline_tasks = ""
 let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
 console.log(extra_vars)
 
 
 
-$('.playbook-tags').dropdown({
+$('#tasks').dropdown({
   apiSettings: {
+    url: '/playbook_tasks?playbook={{ meta.path }}',
+    cache: true
+  },
+  onChange: function(value, text, $selectedItem) {
+    console.log(this.id, value)
+    cmdline_tasks = value
+    display_cmdline()
+  },
+  clearable: true,
+  filterRemoteData: true,
+});
+
+
+
+$('.playbook-tags').dropdown({
+    apiSettings: {
     url: '/playbook_tags?playbook={{ meta.path }}',
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
     console.log(this.id, value)
-    if (this.id === 'tags_apply') {
+    if (value === '') {
       cmdline_tags_apply = value
     }
     else if (this.id === 'tags_skip') {
@@ -70,6 +87,7 @@ function update_extra_var_dropdown(value, text, $selectedItem) {
   display_cmdline()
 }
 
+
 $('.extra_vars.ui.dropdown.choices').dropdown({
   onChange: update_extra_var_dropdown,
   clearable: true,
@@ -89,7 +107,7 @@ function sui_list_to_selected_options(values) {
 $('#extra_vars-{{ param.name }}').dropdown({
   apiSettings: {
     url: '{{ param.search }}?{{ param.search_params }}',
-    cache: false
+    cache: true
   },
   onChange: update_extra_var_dropdown,
   clearable: true,
@@ -127,6 +145,9 @@ function display_cmdline() {
   }
   if (cmdline_tags_skip!== '') {
     cmdline.push('--skip-tags="' + cmdline_tags_skip + '"')
+  }
+  if (cmdline_tasks !== '') {
+    cmdline.push('--start-at-task="' + cmdline_tasks + '"')
   }
   $('#command_line').val(cmdline.join(' '))
 }
