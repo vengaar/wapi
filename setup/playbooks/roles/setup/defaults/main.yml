@@ -1,0 +1,6 @@
+---
+repo_name: wapi
+git_repo: "https://github.com/vengaar/{{ repo_name }}.git"
+git_update: true
+wapi_user: liftree
+...

@@ -1,0 +1,34 @@
+---
+
+- name: Clone git wapi repo on user home
+  become: true
+  become_user: "{{ wapi_user }}"
+  git:
+    repo: "{{ git_repo }}"
+    dest: /home/{{ wapi_user }}/{{ repo_name }}
+  when: git_update
+  
+  
+- name: Deploy wapi liftree config
+  copy:
+    dest: /etc/liftree/conf.d/50-wapi.conf
+    content: |
+      ---
+      name: /home/{{ wapi_user }}/{{ repo_name }}/liftree
+      ...
+
+- name: Create configuration directory
+  file:
+    path: /etc/wapi
+    state: directory
+
+- name: Deploy wapi config
+  copy:
+    dest: /etc/wapi/wapi.yaml
+    content: |
+      ---
+      inventories:
+        - /home/{{ wapi_user }}/{{ repo_name }}/test/inventories/hosts
+      ...
+
+...
