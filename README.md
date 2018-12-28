@@ -12,6 +12,7 @@ Based on
 
 * fedora 29
 * ansible
+* python 3.7
 
 ## Procedure
 

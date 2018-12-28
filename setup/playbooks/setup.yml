@@ -1,24 +1,28 @@
 ---
-
 - hosts: localhost
   gather_facts: true
   become: yes
   become_user: root
   vars:
-    git_update: true
+    git_clone: true
     git_repos:
       - liftree
       - ansible-ws
       - wapi
   tasks:
-  
+
+    - name: Ensure pre-requiste
+      assert:
+        that:
+          - ansible_distribution == "Fedora"
+          - ansible_distribution_major_version|int >= 29  
+
     - name: Clone repo
       git:
         repo: https://github.com/vengaar/{{ item }}.git
         dest: /tmp/{{ item }}
       loop: "{{ git_repos }}"
-      when: git_update
-  
+
     - name: Setup
       include_role:
         name: /tmp/{{ item }}/setup/playbooks/roles/setup
