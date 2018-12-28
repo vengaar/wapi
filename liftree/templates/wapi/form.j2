@@ -8,28 +8,35 @@
   }
   .ui.form textarea.cmdline::-moz-selection {
     background-color: white;
-    color: darkred;
+    color: darkblue;
   }
   .ui.form textarea.cmdline::selection {
     background-color: white;
-    color: darkred;
+    color: darkblue;
   }
   
 </style>
 {# FORM #}
+
+<h3 class="ui dividing header">
+  <i class="play icon"></i>
+  <div class="content">
+    {{ meta.path }}
+    <div class="sub header">Playbook launch</div>
+  </div>
+</h3>
+  
 <div class="ui form">
-<div class="ui segment">
-  <div class="ui grey top left attached label"><i class="terminal icon"></i>command line</div>
-  <a class="ui blue top right attached label"><i id="copy_cmdline" class="copy icon" data-taget="command_line"></i>copy</a>  
-  <div class="field">
-    <label><i class="terminal icon"></i>command line</label>
-    <textarea
-      class="cmdline"
-      id="command_line"
-      rows="2">ansible-playbook {{ meta.path }} {{ wapi.options }}</textarea>
+  <div class="ui segment">
+    <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
+      <i class="copy icon"></i>copy
+    </a>
+    <textarea class="cmdline"
+              id="command_line"
+              rows="2"></textarea>
   </div>
 </div>
-</div>
+
 <div class="ui divider"></div>
 
 <div class="ui form">
@@ -90,7 +97,7 @@
 {% if param.boolean %}
               checked="checked"
 {% endif %}
-              id="extra_vars-{{ param.name }}"              
+              id="extra_vars-{{ param.name }}"
               name="{{ param.name }}">
       <label><b>{{ param.description }} <i>({{ param.name }})</i></b></label>
     </div>
@@ -100,7 +107,7 @@
     {# INPUT #}
     <input  type="text"
             class="extra_vars input"
-            id="extra_vars-{{ param.name }}"            
+            id="extra_vars-{{ param.name }}"
             name="{{ param.name }}"
             value="{{ param.default|default('') }}"
             placeholder="{{ param.description }}">
@@ -128,7 +135,7 @@
       <div class="default text">Start a task...</div>
     </div>
   </div>
-  
+
   <div class="two fields">
 
     <div class="field">
@@ -141,7 +148,7 @@
         <div class="default text">Apply tags</div>
       </div>
     </div>
-    
+
     <div class="field">
       <label></label>
       <div  id="tags_skip"
@@ -160,5 +167,5 @@
     <textarea rows="3">{{ wapi.options }}</textarea>
   </div>
 </div>
-  
+
 </div>

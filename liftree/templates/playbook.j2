@@ -8,19 +8,8 @@
 <a class="item" data-tab="code"><i class="code icon"></i>Code</a>
 <a class="item" data-tab="play"><i class="play icon"></i>Launch</a>
 
-{#
-<div class="item">
-  <div class="ui breadcrumb">
-    <i class="right angle icon divider"></i>
-    <a class="section">playbooks</a>
-    <i class="right angle icon divider"></i>
-    <div class="active section">{{ meta.path|basename }}</div>
-  </div>
-</div>
-#}
-
-
 {% endblock %}
+
 
 
 {% block body %}
@@ -32,6 +21,14 @@ DEBUG
 
 {# DOC #}
 <div class="ui tab _segment active" data-tab="doc">
+
+<h3 class="ui dividing header">
+  <i class="book icon"></i>
+  <div class="content">
+    {{ meta.path }}
+    <div class="sub header">Playbook documentation</div>
+  </div>
+</h3>
 
 {% if wapi.keys()|count > 0 %}
 
@@ -86,7 +83,13 @@ DEBUG
 
 {# CODE #}
 <div class="ui tab _segment" data-tab="code">
-  <h3 class="ui header">Playbook view</h3>
+  <h3 class="ui dividing header">
+    <i class="code icon"></i>
+    <div class="content">
+      {{ meta.path }}
+      <div class="sub header">Playbook code</div>
+    </div>
+  </h3>
   <pre><code>{{ data }}</code></pre>
 </div>
 

@@ -1,9 +1,9 @@
-let cmdline_base = "ansible-playbook"
-let cmdline_options = "{{ wapi.options }}"
-let cmdline_playbook = "{{ meta.path }}"
-let cmdline_tags_apply = ""
-let cmdline_tags_skip = ""
-let cmdline_tasks = ""
+let cmdline_base = 'ansible-playbook'
+let cmdline_options = '{{ wapi.options }}'
+let cmdline_playbook = '{{ meta.path }}'
+let cmdline_tags_apply = ''
+let cmdline_tags_skip = ''
+let cmdline_tasks = ''
 let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
 console.log(extra_vars)
 
@@ -94,7 +94,7 @@ $('.extra_vars.ui.dropdown.choices').dropdown({
 })
 
 // util function to extract
-function sui_list_to_selected_options(values) {
+const sui_list_to_selected_options = (values) => {
   let options = []
   if (values.length > 0) {
     options = values.split(',').map(x => new Object({'name': x, 'value': x, 'selected': true}));
@@ -133,7 +133,14 @@ $('.ui.form').form({
 
 
 
-function display_cmdline() {
+const copy_cmdline = document.getElementById('copy_cmdline');
+copy_cmdline.onclick = ()  => {
+  let textarea = document.getElementById('command_line');
+  textarea.select();
+  document.execCommand('copy');
+}
+
+const display_cmdline = () => {
   let cmdline = [
       cmdline_base,
       cmdline_playbook,
