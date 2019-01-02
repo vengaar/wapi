@@ -22,13 +22,13 @@
           description: One or several production servers
           search: /ansible_hosts
           search_params: 'groups=.*prod&sources=/home/liftree/wapi/test/inventories'
-          attributes: ['required', 'multiple']
+          _attributes: ['required', 'multiple']
 
         - name: app1_server
           description: One server for app1 without group selection
           search: /ansible_hosts
           search_params: 'groups=.*app1&sources=/home/liftree/wapi/test/inventories&groups_selection=no'
-          attributes: ['required']
+          _attributes: ['required']
 
         - name: agree
           boolean: true
@@ -36,7 +36,7 @@
 
         - name: email
           description: A email to notify
-          check: 'email'
+          _check: 'email'
 
         - name: color
           description: A choice among a static list

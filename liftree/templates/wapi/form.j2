@@ -26,20 +26,21 @@
   </div>
 </h3>
   
-<div class="ui form">
-  <div class="ui segment">
-    <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
-      <i class="copy icon"></i>copy
-    </a>
-    <textarea class="cmdline"
-              id="command_line"
-              rows="2"></textarea>
-  </div>
+<form id="playbook_form" class="ui form">
+
+<input  type="hidden" name="playbook" value="{{ meta.path }}">  
+<div class="ui segment">
+  <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
+    <i class="copy icon"></i>copy
+  </a>
+  <textarea class="cmdline"
+            name="cmdline"
+            id="command_line"
+            rows="2"></textarea>
 </div>
 
 <div class="ui divider"></div>
-
-<div class="ui form">
+{% if wapi.extra_vars|count > 0 %}
 <div class="ui segment">
   <div class="{{ form_label_class }}">extra_vars</div>
 {% for param in wapi.extra_vars %}
@@ -117,8 +118,9 @@
   </div>
 {% endfor %}
 </div>
+{% endif %}
 
-  <div class="ui primary submit button">Launch</div>
+  <div id="launch_playbook" class="ui primary submit button">Launch</div>
   <div class="ui error message"></div>
 
 {# OPTIONS #}  
@@ -164,8 +166,8 @@
 
   <div class="field">
     <label>Options</label>
-    <textarea rows="3">{{ wapi.options }}</textarea>
+    <textarea name="options" rows="3">{{ wapi.options }}</textarea>
   </div>
 </div>
 
-</div>
+</form>

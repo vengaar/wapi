@@ -1,0 +1,24 @@
+---
+
+- hosts: localhost
+  gather_facts: false
+  vars:
+    wapi:
+      extra_vars:
+        - name: pause_number
+          description: The number of pause to do.
+          default: 3
+        - name: pause_duration
+          description: The duration of each pause.
+          default: 5
+    queries:
+      pause_number: "extra_vars[?name=='pause_number'].default|[0]"
+      pause_duration: "extra_vars[?name=='pause_duration'].default|[0]"
+    pause_number: "{{ wapi|json_query(queries.pause_number) }}"
+    pause_duration: "{{ wapi|json_query(queries.pause_duration) }}"
+  tasks:
+    - debug: var=pause_number
+    - debug: var=pause_duration
+    - pause:
+        seconds: "{{ pause_duration|int }}"
+      loop: "{{ range(0, pause_number|int)|list }}"
