@@ -15,7 +15,22 @@
       #menu {
         _background-color: #F5F5F5;
       }
+      .ui.form textarea.cmdline {
+        font-family: monospace;
+        background-color: darkslategrey;
+        color: white;
+        font-weight: bold;
+      }
+      .ui.form textarea.cmdline::-moz-selection {
+        background-color: white;
+        color: darkblue;
+      }
+      .ui.form textarea.cmdline::selection {
+        background-color: white;
+        color: darkblue;
+      }
     </style>
+    
   {% endblock %}
   </head>
   <body>
@@ -59,6 +74,12 @@
           url: '/search?query={query}&format=sui'
         },
       });
+      const copy_cmdline = document.getElementById('copy_cmdline');
+      copy_cmdline.onclick = ()  => {
+        let textarea = document.getElementById('command_line');
+        textarea.select();
+        document.execCommand('copy');
+      }      
     </script>
     <script>
       'use strict'

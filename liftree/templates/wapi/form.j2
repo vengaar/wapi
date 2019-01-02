@@ -14,7 +14,6 @@
     background-color: white;
     color: darkblue;
   }
-  
 </style>
 {# FORM #}
 
@@ -106,10 +105,16 @@
 {% else %}
 
     {# INPUT #}
-    <input  type="text"
-            class="extra_vars input"
+    <input  class="extra_vars input"
             id="extra_vars-{{ param.name }}"
             name="{{ param.name }}"
+{% if param.properties is defined %}
+{% for name, value in param.properties.items() %}
+            {{ name }}="{{ value }}"
+{% endfor %}
+{% else %}
+            type="text"
+{% endif %}
             value="{{ param.default|default('') }}"
             placeholder="{{ param.description }}">
 

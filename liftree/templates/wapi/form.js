@@ -31,9 +31,9 @@ $('.playbook-tags').dropdown({
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
-    console.log(this.id, value)
-    if (value === '') {
-      cmdline_tags_apply = value
+    //console.log(this.id, value)
+    if (this.id === 'tags_apply') {
+      cmdline_tags_apply = value 
     }
     else if (this.id === 'tags_skip') {
       cmdline_tags_skip = value
@@ -116,14 +116,6 @@ $('#extra_vars-{{ param.name }}').dropdown({
 });
 
 {% endif %}{% endfor %}
-
-
-const copy_cmdline = document.getElementById('copy_cmdline');
-copy_cmdline.onclick = ()  => {
-  let textarea = document.getElementById('command_line');
-  textarea.select();
-  document.execCommand('copy');
-}
 
 const display_cmdline = () => {
   let cmdline = [

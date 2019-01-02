@@ -7,9 +7,17 @@
       extra_vars:
         - name: pause_number
           description: The number of pause to do.
+          properties:
+            type: number
+            min: 1
+            max: 10
           default: 3
         - name: pause_duration
           description: The duration of each pause.
+          properties:
+            type: number
+            min: 1
+            max: 10
           default: 5
     queries:
       pause_number: "extra_vars[?name=='pause_number'].default|[0]"
