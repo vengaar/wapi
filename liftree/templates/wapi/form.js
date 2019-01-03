@@ -1,11 +1,12 @@
 let cmdline_base = 'ansible-playbook'
-let cmdline_options = '{{ wapi.options }}'
+let cmdline_options = $('#options').val()
 let cmdline_playbook = '{{ meta.path }}'
 let cmdline_tags_apply = ''
 let cmdline_tags_skip = ''
 let cmdline_tasks = ''
 let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
 //console.log(extra_vars)
+console.log(cmdline_options)
 
 
 
@@ -42,6 +43,13 @@ $('.playbook-tags').dropdown({
   },
   clearable: true,
   filterRemoteData: true,
+});
+
+
+$('#options').change(function() {
+  console.log(this)
+  cmdline_options = this.value
+  display_cmdline()
 });
 
 

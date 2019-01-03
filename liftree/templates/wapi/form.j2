@@ -171,7 +171,10 @@
 
   <div class="field">
     <label>Options</label>
-    <textarea name="options" rows="3">{{ wapi.options }}</textarea>
+{% if wapi.inventories is defined %}
+  {% set inventories = ' -i ' + wapi.inventories|join(' -i ') %}
+{% endif %}    
+    <textarea id="options" name="options" rows="3">{{ wapi.options }}{{ inventories }}</textarea>
   </div>
 </div>
 

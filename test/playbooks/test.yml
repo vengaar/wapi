@@ -15,20 +15,20 @@
         See [https://github.com/vengaar/wapi]() for more information
       options: -v --diff
       inventories:
-        - /home/liftree/wapi/test/inventories/hosts
+        - ~/wapi/test/inventories/hosts
       extra_vars:
 
         - name: prod_servers
           description: One or several production servers
           search: /ansible_hosts
           search_params: 'groups=.*prod&sources=/home/liftree/wapi/test/inventories'
-          _attributes: ['required', 'multiple']
+          attributes: ['required', 'multiple']
 
         - name: app1_server
           description: One server for app1 without group selection
           search: /ansible_hosts
           search_params: 'groups=.*app1&sources=/home/liftree/wapi/test/inventories&groups_selection=no'
-          _attributes: ['required']
+          attributes: ['required']
 
         - name: agree
           boolean: true
@@ -36,7 +36,7 @@
 
         - name: email
           description: A email to notify
-          _check: 'email'
+          check: 'email'
 
         - name: color
           description: A choice among a static list
