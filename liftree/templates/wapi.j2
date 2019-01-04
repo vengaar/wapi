@@ -19,15 +19,28 @@
         font-family: monospace;
         background-color: darkslategrey;
         color: white;
-        font-weight: bold;
+        _font-weight: bold;
       }
+      .console::-moz-selection,
       .ui.form textarea.cmdline::-moz-selection {
         background-color: white;
         color: darkblue;
       }
+      .console::selection,
       .ui.form textarea.cmdline::selection {
         background-color: white;
         color: darkblue;
+      }
+      .console {
+        display: block;
+        padding: 12px;
+        white-space: pre-wrap; 
+        word-break: break-word;
+        font-family: monospace;
+        background-color: darkslategrey;
+        color: white;
+        _font-weight: bold;
+        
       }
     </style>
     

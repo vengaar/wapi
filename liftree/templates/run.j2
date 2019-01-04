@@ -1,5 +1,20 @@
 {% set wapi = extra.wapi %}
-{% extends "wapi.j2" %}
+{% if data.status == 'finished' %}
+  {% if data.return_code == 0 %}
+    {% set status_icon = 'check' %}
+    {% set status_color = 'green' %}
+  {% else %}
+    {% set status_icon = 'close' %}
+    {% set status_color = 'red' %}
+  {% endif %}
+{% elif data.status == 'started' %}
+  {% set status_icon = 'notched circle loading' %}
+  {% set status_color = 'blue' %}
+{% elif data.status == 'ready' %}
+  {% set status_icon = 'pause' %}
+  {% set status_color = 'greyred' %}
+{% endif %}
+{% extends 'wapi.j2' %}
 
 
 {% block menu %}

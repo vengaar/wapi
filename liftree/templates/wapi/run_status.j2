@@ -2,17 +2,7 @@
 <div class="ui tab _segment active" data-tab="status">
 
 <h3 class="ui dividing header">
-{% if data.status == 'finished' %}
-  {% if data.return_code == 0 %}
-  <i class="green check icon"></i>
-  {% else %}
-  <i class="red close icon"></i>
-  {% endif %}
-{% elif data.status == 'started' %}
-  <i class="blue notched circle loading icon"></i>
-{% elif data.status == 'ready' %}
-  <i class="grey pause icon"></i>
-{% endif %}
+  <i class="{{ status_color }} {{ status_icon }} icon"></i>
   <div class="content">
     Run status
     <div class="sub header">{{ data.runid }}</div>
