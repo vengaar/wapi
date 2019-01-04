@@ -16,7 +16,7 @@ $('#tasks').dropdown({
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
-    console.log(this.id, value)
+    // console.log(this.id, value)
     cmdline_tasks = value
     display_cmdline()
   },
@@ -47,15 +47,15 @@ $('.playbook-tags').dropdown({
 
 
 $('#options').change(function() {
-  console.log(this)
-  cmdline_options = this.value
-  display_cmdline()
+    // console.log(this)
+    cmdline_options = this.value
+    display_cmdline()
 });
 
 
 
 $('.extra_vars.input').change(function() {
-    console.log(this)
+    // console.log(this)
     let name = this.id.replace('extra_vars-', '')
     if (this.value === '') {
         delete extra_vars[name]
