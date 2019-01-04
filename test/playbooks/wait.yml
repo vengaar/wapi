@@ -1,9 +1,17 @@
 ---
-
 - hosts: localhost
   gather_facts: false
   vars:
     wapi:
+      author: https://github.com/vengaar
+      state: prod
+      description: |
+        #### Playbook using for test and demo
+        
+        * Do a puse of {pause_duration} seconds {pause_number} times
+        * See extra vars for more details
+        
+      options: -v
       extra_vars:
         - name: pause_number
           description: The number of pause to do.
@@ -30,3 +38,4 @@
     - pause:
         seconds: "{{ pause_duration|int }}"
       loop: "{{ range(0, pause_number|int)|list }}"
+...
