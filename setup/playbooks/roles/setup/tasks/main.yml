@@ -1,16 +1,20 @@
 ---
 - debug: var=wapi_user
 - debug: var=git_clone
+- debug: var=git_version
 
 - name: Deploy from git
   when: git_clone
   block:
+  
     - name: Clone git wapi repo on user home
       become: true
       become_user: "{{ wapi_user }}"
       git:
         repo: "{{ git_repo }}"
+        version: "{{ git_version }}"
         dest: /home/{{ wapi_user }}/{{ git_name }}
+        force: yes
 
 - name: Deploy wapi liftree.conf
   template:
@@ -43,5 +47,4 @@
           inventories:
             - /home/{{ wapi_user }}/{{ git_name }}/test/inventories/hosts
           ...
-
 ...
