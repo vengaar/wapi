@@ -1,4 +1,4 @@
-let cmdline_base = 'ansible-playbook'
+let cmdline_base = '{{ extra.wapi_config.ansible_cmdline.playbook }}'
 let cmdline_options = $('#options').val()
 let cmdline_playbook = '{{ meta.path }}'
 let cmdline_tags_apply = ''
