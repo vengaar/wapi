@@ -1,0 +1,34 @@
+{% set wapi = extra.wapi %}
+{% if data.status == 'finished' %}
+  {% if data.return_code == 0 %}
+    {% set status_icon = 'check' %}
+    {% set status_color = 'green' %}
+  {% else %}
+    {% set status_icon = 'close' %}
+    {% set status_color = 'red' %}
+  {% endif %}
+{% elif data.status == 'started' %}
+  {% set status_icon = 'notched circle loading' %}
+  {% set status_color = 'blue' %}
+{% elif data.status == 'ready' %}
+  {% set status_icon = 'pause' %}
+  {% set status_color = 'greyred' %}
+{% endif %}
+{% extends 'wapi.j2' %}
+
+
+{% block menu %}
+<a class="item active" data-tab="status"><i class="tasks icon"></i>Status</a>
+<a class="item" data-tab="output"><i class="terminal icon"></i>Output</a>
+{% endblock %}
+
+
+{% block body %}
+{% include 'wapi/run_status.j2' %}
+{% include 'wapi/run_output.j2' %}
+{% endblock %}
+
+
+{% block script %}
+{% include 'wapi/run.js' %}
+{% endblock %}

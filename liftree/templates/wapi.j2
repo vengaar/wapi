@@ -15,12 +15,42 @@
       #menu {
         _background-color: #F5F5F5;
       }
+      .ui.form textarea.cmdline {
+        font-family: monospace;
+        background-color: darkslategrey;
+        color: white;
+        _font-weight: bold;
+      }
+      .console::-moz-selection,
+      .ui.form textarea.cmdline::-moz-selection {
+        background-color: white;
+        color: darkblue;
+      }
+      .console::selection,
+      .ui.form textarea.cmdline::selection {
+        background-color: white;
+        color: darkblue;
+      }
+      .console {
+        display: block;
+        padding: 12px;
+        white-space: pre-wrap; 
+        word-break: break-word;
+        font-family: monospace;
+        background-color: darkslategrey;
+        color: white;
+        _font-weight: bold;
+        
+      }
     </style>
+    
   {% endblock %}
   </head>
   <body>
     <div id="menu" class="ui main _top fixed _inverted blue _secondary _tabular _pointing menu">
-      <a class="item" href="https://github.com/vengaar/wapi"><i class="grey github icon"></i>WAPI</a>
+      <a class="item" href="https://github.com/vengaar/wapi">
+        <i class="grey github icon"></i>wapi
+      </a>
 {% block menu %}
 {% endblock %}
       <div class="right menu">
@@ -43,6 +73,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
       'use strict'
@@ -56,6 +87,12 @@
           url: '/search?query={query}&format=sui'
         },
       });
+      const copy_cmdline = document.getElementById('copy_cmdline');
+      copy_cmdline.onclick = ()  => {
+        let textarea = document.getElementById('command_line');
+        textarea.select();
+        document.execCommand('copy');
+      }      
     </script>
     <script>
       'use strict'

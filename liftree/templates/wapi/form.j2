@@ -14,7 +14,6 @@
     background-color: white;
     color: darkblue;
   }
-  
 </style>
 {# FORM #}
 
@@ -26,20 +25,21 @@
   </div>
 </h3>
   
-<div class="ui form">
-  <div class="ui segment">
-    <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
-      <i class="copy icon"></i>copy
-    </a>
-    <textarea class="cmdline"
-              id="command_line"
-              rows="2"></textarea>
-  </div>
+<form id="playbook_form" class="ui form">
+
+<input  type="hidden" name="playbook" value="{{ meta.path }}">  
+<div class="ui segment">
+  <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
+    <i class="copy icon"></i>copy
+  </a>
+  <textarea class="cmdline"
+            name="cmdline"
+            id="command_line"
+            rows="2"></textarea>
 </div>
 
 <div class="ui divider"></div>
-
-<div class="ui form">
+{% if wapi.extra_vars|count > 0 %}
 <div class="ui segment">
   <div class="{{ form_label_class }}">extra_vars</div>
 {% for param in wapi.extra_vars %}
@@ -105,10 +105,16 @@
 {% else %}
 
     {# INPUT #}
-    <input  type="text"
-            class="extra_vars input"
+    <input  class="extra_vars input"
             id="extra_vars-{{ param.name }}"
             name="{{ param.name }}"
+{% if param.properties is defined %}
+{% for name, value in param.properties.items() %}
+            {{ name }}="{{ value }}"
+{% endfor %}
+{% else %}
+            type="text"
+{% endif %}
             value="{{ param.default|default('') }}"
             placeholder="{{ param.description }}">
 
@@ -117,8 +123,9 @@
   </div>
 {% endfor %}
 </div>
+{% endif %}
 
-  <div class="ui primary submit button">Launch</div>
+  <div id="launch_playbook" class="ui primary submit button">Launch</div>
   <div class="ui error message"></div>
 
 {# OPTIONS #}  
@@ -164,8 +171,11 @@
 
   <div class="field">
     <label>Options</label>
-    <textarea rows="3">{{ wapi.options }}</textarea>
+{% if wapi.inventories is defined %}
+  {% set inventories = ' -i ' + wapi.inventories|join(' -i ') %}
+{% endif %}    
+    <textarea id="options" name="options" rows="3">{{ wapi.options }}{{ inventories }}</textarea>
   </div>
 </div>
 
-</div>
+</form>

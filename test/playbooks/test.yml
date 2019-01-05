@@ -15,7 +15,7 @@
         See [https://github.com/vengaar/wapi]() for more information
       options: -v --diff
       inventories:
-        - /home/liftree/wapi/test/inventories/hosts
+        - ~/wapi/test/inventories/hosts
       extra_vars:
 
         - name: prod_servers

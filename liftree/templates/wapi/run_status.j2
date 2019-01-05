@@ -1,0 +1,69 @@
+{# DOC #}
+<div class="ui tab _segment active" data-tab="status">
+
+<h3 class="ui dividing header">
+  <i class="{{ status_color }} {{ status_icon }} icon"></i>
+  <div class="content">
+    Run status
+    <div class="sub header">{{ data.runid }}</div>
+  </div>
+</h3>
+
+<table class="ui compact definition table">
+  <tbody>
+    <tr>
+      <td>Playbook</td>
+      <td>{{ data.description.playbook|liftree_link }}</td>
+    </tr>
+    <tr>    
+      <td>Started</td>
+      <td>{{ data.begin|timestamp2date }}</td>
+    </tr>
+    <tr>    
+      <td>Ended</td>
+      <td>{{ data.end|timestamp2date }}</td>
+    </tr>
+    <tr>    
+      <td>Duration</td>
+      <td>{{ data.begin|timestamp_delta(data.end) }}</td>
+    </tr>
+    <tr>    
+      <td>Status</td>
+      <td>{{ data.status }}</td>
+    </tr>
+    <tr>    
+      <td>RC code</td>
+      <td>{{ data.return_code }}</td>
+    </tr>
+    <tr>    
+      <td>Runid</td>
+      <td>{{ data.runid }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 class="ui header">
+  <i class="terminal icon"></i>
+  <div class="content">
+    Command line
+    <div class="sub header"></div>
+  </div>
+</h4>
+<div class="ui form">
+  <div class="ui segment">
+    <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
+      <i class="copy icon"></i>copy
+    </a>
+    <textarea class="cmdline"
+              name="cmdline"
+              id="command_line"
+              rows="2">{{ data.description.cmdline }}</textarea>
+  </div>
+</div>
+
+{#
+<pre><code>{{ data|to_yaml }}</code></pre>
+#}
+
+</div>
+
