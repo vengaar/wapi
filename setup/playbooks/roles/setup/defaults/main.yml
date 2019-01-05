@@ -2,5 +2,6 @@
 git_name: wapi
 git_repo: "https://github.com/vengaar/{{ git_name }}.git"
 git_clone: false
+git_version: HEAD
 wapi_user: liftree
 ...

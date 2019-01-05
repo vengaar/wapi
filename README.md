@@ -10,13 +10,23 @@ Based on
 
 ## Prerequisite
 
-* fedora 29
-* ansible
-* python 3.7
+* fedora >= 28
+* python >= 3.6
+* ansible >= 2.7
 
 ## Procedure
 
 As root on your server
+
+* on fedora 28
+
+~~~~
+dnf install ansible-python3
+git clone https://github.com/vengaar/wapi.git
+ansible-playbook-3 wapi/setup/playbooks/setup.yml -v
+~~~~
+
+* on fedora 29
 
 ~~~~
 dnf install ansible

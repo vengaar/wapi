@@ -6,7 +6,7 @@
       assert:
         that:
           - ansible_distribution == "Fedora"
-          - ansible_distribution_major_version|int >= 29
+          - ansible_distribution_major_version|int >= 28
   roles:
     - role: setup
       git_clone: false
