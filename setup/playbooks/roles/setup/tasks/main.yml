@@ -4,6 +4,8 @@
 - debug: var=git_version
 
 - name: Deploy from git
+  become: true
+  become_user: "{{ wapi_user }}"
   when: git_clone
   block:
   
@@ -20,6 +22,8 @@
   template:
     src: liftree.conf
     dest: /home/{{ wapi_user }}/{{ git_name }}/liftree/liftree.conf
+    owner: "{{ wapi_user }}"
+    group: "{{ wapi_user }}"
 
 - name: Config
   become: yes
@@ -41,10 +45,6 @@
     
     - name: Deploy wapi config
       copy:
-        dest: /etc/wapi/wapi.yaml
-        content: |
-          ---
-          inventories:
-            - /home/{{ wapi_user }}/{{ git_name }}/test/inventories/hosts
-          ...
+        src: wapi.yml
+        dest: /etc/wapi/wapi.yml
 ...
