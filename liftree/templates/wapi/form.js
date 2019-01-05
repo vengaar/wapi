@@ -169,7 +169,7 @@ $('#playbook_form')
     onSuccess: function(response) {
         console.log('success');
         console.log(response);
-        let url = '/show?path=/home/{{ meta.config.defaults.wapi_user }}/wapi_runs/' + response.results.runid + '/run.status'
+        let url = '/show?path={{ extra.wapi_config.runs_dir }}/' + response.results.runid + '/run.status'
         window.location.replace(url)
         return false
     },
