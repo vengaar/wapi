@@ -1,0 +1,8 @@
+---
+user: {{ wapi_user }}
+inventories:
+  - /home/{{ wapi_user }}/{{ git_name }}/test/inventories/hosts
+runs_dir: /home/{{ wapi_user }}/wapi_runs
+ansible_cmdline:
+  playbook: ansible-playbook
+...
