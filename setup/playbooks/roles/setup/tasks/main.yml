@@ -44,7 +44,7 @@
         state: directory
     
     - name: Deploy wapi config
-      copy:
+      template:
         src: wapi.yml
         dest: /etc/wapi/wapi.yml
 ...
