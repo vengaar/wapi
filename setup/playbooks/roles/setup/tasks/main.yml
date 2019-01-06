@@ -42,9 +42,13 @@
       file:
         path: /etc/wapi
         state: directory
-    
+
     - name: Deploy wapi config
       template:
         src: wapi.yml
         dest: /etc/wapi/wapi.yml
+      with_first_found:
+        - "wapi_{{ ansible_distribution|lower }}_{{ ansible_distribution_major_version }}.yml"
+        - "wapi_{{ ansible_distribution|lower }}.yml"
+        - "wapi.yml"
 ...
