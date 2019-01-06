@@ -97,12 +97,12 @@ DEBUG
 {# PLAY #}
 <div class="ui tab _segment" data-tab="play">
 {% set parameters = wapi.extra_vars %} 
-{% include 'wapi/form.j2' %}
+{% include 'wapi/form/form.j2' %}
 </div>
 
 {% endblock %}
 
 
 {% block script %}
-{% include 'wapi/form.js' %}
+{% include 'wapi/form/form.js' %}
 {% endblock %}

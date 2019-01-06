@@ -6,7 +6,7 @@ let cmdline_tags_skip = ''
 let cmdline_tasks = ''
 let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
 //console.log(extra_vars)
-console.log(cmdline_options)
+//console.log(cmdline_options)
 
 
 
@@ -163,29 +163,34 @@ $('#playbook_form')
     method:'POST',
     serializeForm: true,
     beforeSend: function(settings) {
-      console.log("Data submitted:",settings);
+      //console.log("Data submitted:",settings);
       return $('#playbook_form').form('is valid');
     },
-    onSuccess: function(response) {
-        console.log('success');
-        console.log(response);
+    onSuccess: function(response, element, xhr) {
+        //console.log('success');
+        //console.log(response);
         let url = '/show?path={{ extra.wapi_config.runs_dir }}/' + response.results.runid + '/run.status'
         window.location.replace(url)
         return false
     },
-    onFailure: function(response) {
-        console.log('failure');
-        console.log(response);
+    onError: function(errorMessage, element, xhr) {
+        $('#error_msg').text(errorMessage)
+        $('#error').modal('show');
         return false
-    }    
+    },
+    onFailure: function(response, element) {
+        $('#error_msg').text(response)
+        $('#error').modal('show');
+        return false
+    }
 })
 .form({
     onSuccess: function (event) {
       event.preventDefault();
-      console.log('valid');
+      //console.log('valid');
     },
     onFailure: function (event) {
-      console.log('NOT valid');
+      //console.log('NOT valid');
       return false;
     },    
 
