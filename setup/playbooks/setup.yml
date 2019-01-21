@@ -21,6 +21,7 @@
       git:
         repo: https://github.com/vengaar/{{ item }}.git
         dest: /tmp/{{ item }}
+        version: "{{ git_version }}"
       loop: "{{ git_repos }}"
 
     - name: Setup
@@ -28,6 +29,7 @@
         name: /tmp/{{ item }}/setup/playbooks/roles/setup
       vars:
         wsgi_user: "wapi"
+        version: "{{ git_version }}"
       loop: "{{ git_repos }}"
 
 ...
