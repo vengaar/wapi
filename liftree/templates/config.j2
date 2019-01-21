@@ -1,0 +1,13 @@
+{% set wapi = extra.wapi %}
+{% extends "wapi.j2" %}
+
+{% block menu %}
+{% endblock %}
+
+{% block body %}
+{% include 'wapi/config/ssh_key.j2' %}
+{% endblock %}
+
+{% block script %}
+{% include 'wapi/config/config.js' %}
+{% endblock %}

@@ -5,4 +5,8 @@ inventories:
 runs_dir: /home/{{ wapi_user }}/wapi_runs
 ansible_cmdline:
   playbook: ansible-playbook-3
+ansible_private_key:
+  - "/home/{{ wapi_user }}/.ssh/wapi_rsa"
+  - "/home/{{ wapi_user }}/ansible-ws/tests/data/agent/wapi_rsa"
+  - "fake_key"
 ...

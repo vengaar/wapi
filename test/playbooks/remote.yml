@@ -1,0 +1,21 @@
+---
+
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    - add_host:
+        name: "{{ ansible_default_ipv4.address }}"
+        groups:
+          - remote_localhost
+
+- hosts: remote_localhost
+  gather_facts: false
+  vars:
+    wapi:
+      options: -v
+      inventories:
+        - ~/wapi/test/inventories/hosts
+  tasks:
+    - shell: env
+    - shell: uptime
+...

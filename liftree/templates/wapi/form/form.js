@@ -170,22 +170,23 @@ $('#playbook_form')
         //console.log('success');
         //console.log(response);
         let url = '/show?path={{ extra.wapi_config.runs_dir }}/' + response.results.runid + '/run.status'
-        window.location.replace(url)
+        // window.location.replace(url)
+        window.open(url)
+        $(this).removeClass('loading')
         return false
     },
     onError: function(errorMessage, element, xhr) {
-        $('#error_msg').text(errorMessage)
-        $('#error').modal('show');
+        show_error(errorMessage)
         return false
     },
     onFailure: function(response, element) {
-        $('#error_msg').text(response)
-        $('#error').modal('show');
+        show_error(response)
         return false
     }
 })
 .form({
     onSuccess: function (event) {
+      $(this).addClass('loading')
       event.preventDefault();
       //console.log('valid');
     },
