@@ -14,7 +14,7 @@
 
 - hosts: remote_localhost
   gather_facts: false
-  user: "{{ lookup(pipe, whoami) }}"
+  user: "{{ lookup('pipe', 'whoami') }}"
   tasks:
     - shell: env
     - shell: uptime
