@@ -1,7 +1,11 @@
 ---
-
 - hosts: localhost
   gather_facts: true
+  vars:
+    wapi:
+      options: -v
+      inventories:
+        - ~/wapi/test/inventories/hosts
   tasks:
     - add_host:
         name: "{{ ansible_default_ipv4.address }}"
@@ -10,11 +14,7 @@
 
 - hosts: remote_localhost
   gather_facts: false
-  vars:
-    wapi:
-      options: -v
-      inventories:
-        - ~/wapi/test/inventories/hosts
+  user: "{{ lookup(pipe, whoami) }}"
   tasks:
     - shell: env
     - shell: uptime
