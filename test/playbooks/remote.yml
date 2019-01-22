@@ -3,9 +3,13 @@
   gather_facts: true
   vars:
     wapi:
-      options: -v
-      inventories:
-        - ~/wapi/test/inventories/hosts
+      author: https://github.com/vengaar
+      state: dev
+      description: |
+        #### Playbook to test ssh agent use
+        * This playbook to a ssh connection on itself
+        * Require to have private key ansible-ws loaded in the wapi configuration
+      options: -vv
   tasks:
     - add_host:
         name: "{{ ansible_default_ipv4.address }}"
