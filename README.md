@@ -6,6 +6,8 @@ Based on
 * https://github.com/vengaar/liftree to display/browse playbooks
 * https://github.com/vengaar/ansible-ws to handle Ansible
 
+**Currently in DEV**
+
 # Setup
 
 ## Prerequisite
@@ -17,6 +19,7 @@ Based on
 ## Procedure
 
 As root on your server
+**CAUTION** require currently to disable selinux 
 
 * on fedora 28
 
