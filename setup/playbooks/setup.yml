@@ -19,17 +19,20 @@
 
     - name: Clone repo
       git:
-        repo: https://github.com/vengaar/{{ item }}.git
-        dest: /tmp/{{ item }}
+        repo: https://github.com/vengaar/{{ git_repo }}.git
+        dest: /tmp/{{ git_repo }}
         version: "{{ git_version }}"
       loop: "{{ git_repos }}"
+      loop_control:
+        loop_var: git_repo
 
     - name: Setup
       include_role:
-        name: /tmp/{{ item }}/setup/playbooks/roles/setup
+        name: /tmp/{{ git_repo }}/setup/playbooks/roles/setup
       vars:
         wsgi_user: "wapi"
         version: "{{ git_version }}"
       loop: "{{ git_repos }}"
-
+      loop_control:
+        loop_var: git_repo
 ...
