@@ -4,6 +4,7 @@
   become: yes
   become_user: root
   vars:
+    git_version: master
     git_clone: true
     git_repos:
       - liftree
