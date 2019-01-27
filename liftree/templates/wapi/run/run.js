@@ -18,7 +18,7 @@ const update_page = (response) => {
 const get_run_output = () => {
     $.ajax({
     dataType: "json",
-    url: '/playbook_run?runid={{ data.runid }}',
+    url: '/ansible-ws/run?runid={{ data.runid }}',
     success: update_page
     });
 }

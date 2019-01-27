@@ -1,3 +1,7 @@
+$.fn.api.settings.api = {
+  'playbook_tasks': '/ansible-ws/tasks?playbook={playbook}',
+};
+
 let cmdline_base = '{{ extra.wapi_config.ansible_cmdline.playbook }}'
 let cmdline_options = $('#options').val()
 let cmdline_playbook = '{{ meta.path }}'
@@ -12,7 +16,7 @@ let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json
 
 $('#tasks').dropdown({
   apiSettings: {
-    url: '/playbook_tasks?playbook={{ meta.path }}',
+    url: '/ansible-ws/tasks?playbook={{ meta.path }}',
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
@@ -28,7 +32,7 @@ $('#tasks').dropdown({
 
 $('.playbook-tags').dropdown({
     apiSettings: {
-    url: '/playbook_tags?playbook={{ meta.path }}',
+    url: '/ansible-ws/tags?playbook={{ meta.path }}',
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
@@ -159,7 +163,7 @@ $('#playbook_form')
 .api({
     contentType: 'application/json',
     dataType: 'json',
-    url: '/playbook_launch',
+    url: '/ansible-ws/launch',
     method:'POST',
     serializeForm: true,
     beforeSend: function(settings) {

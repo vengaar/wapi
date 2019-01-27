@@ -1,7 +1,8 @@
 
 const $ssh_key_status = $('#ssh_key_status')
 const $ssh_key_form = $('#ssh_key_load')
-const $public_keys  = $('#public_keys')
+const $public_keys = $('#public_keys')
+const $ssh_agent_kill= $('#ssh_agent_kill')
 
 $('#private_key').dropdown({
     clearable: true
@@ -10,12 +11,12 @@ $('#private_key').dropdown({
 $ssh_key_form.api({
   contentType: 'application/json',
   dataType: 'json',
-  url: '/ssh_agent?action=add',
+  url: '/ssh-agent/add',
   method:'GET',
   serializeForm: true,
   beforeSend: function(settings) {
     console.log("Data submitted =",settings);
-    return $ssh_key_form.form('is valid');
+    return true
   },
   onSuccess: function(response, element, xhr) {
     console.log('key-add success');
@@ -54,8 +55,10 @@ $ssh_key_form.api({
 })
 
 
+
+
 $.ajax({
-   url: '/ssh_agent?action=info',
+   url: '/ssh-agent/info',
    type: 'GET',
    error: function(xhr, status, error) {
 	   show_error(error)
@@ -71,6 +74,32 @@ $.ajax({
 		   $public_keys.val("NO keys loaded")
 	   }
    },
+});
+
+
+$.fn.api.settings.api = {
+  'ssh_agent_kill' : '/ssh-agent/kill',
+};
+
+$ssh_agent_kill.api({
+  action: 'ssh_agent_kill',
+  onSuccess: function(response, element, xhr) {
+    console.log('ssh_agent_kill success');
+    console.log(response);
+    $ssh_key_status.removeClass('green')
+    $ssh_key_status.addClass('red')
+    $public_keys.val("NO keys loaded")
+  },
+  onError: function(errorMessage, element, xhr) {
+    console.error('ssh_agent_kill error');
+    show_error(errorMessage)
+    return false
+  },
+  onFailure: function(response, element) {
+    console.error('ssh_agent_kill failure');
+    show_error(response)
+    return false
+  }
 });
 
 console.log('ok config')

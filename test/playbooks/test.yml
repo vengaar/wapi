@@ -20,13 +20,13 @@
 
         - name: prod_servers
           description: One or several production servers
-          search: /ansible_hosts
+          search: /ansible-ws/groups
           search_params: 'groups=.*prod&sources=/home/liftree/wapi/test/inventories'
           attributes: ['required', 'multiple']
 
         - name: app1_server
           description: One server for app1 without group selection
-          search: /ansible_hosts
+          search: /ansible-ws/groups
           search_params: 'groups=.*app1&sources=/home/liftree/wapi/test/inventories&groups_selection=no'
           attributes: ['required']
 

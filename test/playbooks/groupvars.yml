@@ -14,12 +14,12 @@
         - name: country_selected
           description: One country belong values of countries.all defined as group_vars database
           attributes: ['required']
-          search: /groupvars
+          search: /ansible-ws/groupvars
           search_params: 'group=database&key=countries.list&inventory=~/wapi/test/inventories'
         - name: countries_selected
           description: Several countries
           attributes: ['required', 'multiple']
-          search: /groupvars
+          search: /ansible-ws/groupvars
           search_params: 'group=database&key=countries.dict&inventory=~/wapi/test/inventories'
 
   tasks:
