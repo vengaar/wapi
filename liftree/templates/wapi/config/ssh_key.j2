@@ -1,0 +1,48 @@
+<h1 class="ui center aligned icon header">
+  <i class="settings icon"></i>
+  <div class="content">
+    Wapi configuration
+    <div class="sub header"></div>
+  </div>
+</h1>
+
+<h2 class="ui header">
+  <i id="ssh_key_status" class="key icon"></i>
+  <div class="content">
+    Ssh key management
+    <div class="sub header"></div>
+  </div>
+</h2>
+
+<form id="ssh_key_load" class="ui form">
+  <div class="field">
+    <label>SSH private key file</label>
+    
+    <div id="private_key" class="ui selection dropdown">
+      <input type="hidden" name="private_key">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select private key to add in your agent</div>
+      <div class="menu">
+{% for key in data.ansible_private_key %}
+        <div class="item" data-value="{{ key }}">{{ key }}</div>
+{% endfor %}
+      </div>
+    </div>
+
+  </div>
+  <div class="field">
+    <label>Passphrase</label>
+    <input type="password" name="passphrase" placeholder="The passphrase for the key">
+  </div>
+
+  <div class="ui basic positive inverted submit button">
+    <i class="check icon"></i> Load private key
+  </div>
+  <div id= "ssh_agent_kill" class="ui _disabled basic negative inverted button">
+    <i class="trash icon"></i> Kill agent
+  </div>
+  
+  <h3 class="ui header">Public key loaded</h3>
+  <textarea class="console" id="public_keys"></textarea>
+
+</form>

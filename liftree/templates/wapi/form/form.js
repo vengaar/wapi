@@ -1,3 +1,7 @@
+$.fn.api.settings.api = {
+  'playbook_tasks': '/ansible-ws/tasks?playbook={playbook}',
+};
+
 let cmdline_base = '{{ extra.wapi_config.ansible_cmdline.playbook }}'
 let cmdline_options = $('#options').val()
 let cmdline_playbook = '{{ meta.path }}'
@@ -6,13 +10,13 @@ let cmdline_tags_skip = ''
 let cmdline_tasks = ''
 let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
 //console.log(extra_vars)
-console.log(cmdline_options)
+//console.log(cmdline_options)
 
 
 
 $('#tasks').dropdown({
   apiSettings: {
-    url: '/playbook_tasks?playbook={{ meta.path }}',
+    url: '/ansible-ws/tasks?playbook={{ meta.path }}',
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
@@ -28,7 +32,7 @@ $('#tasks').dropdown({
 
 $('.playbook-tags').dropdown({
     apiSettings: {
-    url: '/playbook_tags?playbook={{ meta.path }}',
+    url: '/ansible-ws/tags?playbook={{ meta.path }}',
     cache: true
   },
   onChange: function(value, text, $selectedItem) {
@@ -159,33 +163,39 @@ $('#playbook_form')
 .api({
     contentType: 'application/json',
     dataType: 'json',
-    url: '/playbook_launch',
+    url: '/ansible-ws/launch',
     method:'POST',
     serializeForm: true,
     beforeSend: function(settings) {
-      console.log("Data submitted:",settings);
+      //console.log("Data submitted:",settings);
       return $('#playbook_form').form('is valid');
     },
-    onSuccess: function(response) {
-        console.log('success');
-        console.log(response);
+    onSuccess: function(response, element, xhr) {
+        //console.log('success');
+        //console.log(response);
         let url = '/show?path={{ extra.wapi_config.runs_dir }}/' + response.results.runid + '/run.status'
-        window.location.replace(url)
+        // window.location.replace(url)
+        window.open(url)
+        $(this).removeClass('loading')
         return false
     },
-    onFailure: function(response) {
-        console.log('failure');
-        console.log(response);
+    onError: function(errorMessage, element, xhr) {
+        show_error(errorMessage)
         return false
-    }    
+    },
+    onFailure: function(response, element) {
+        show_error(response)
+        return false
+    }
 })
 .form({
     onSuccess: function (event) {
+      $(this).addClass('loading')
       event.preventDefault();
-      console.log('valid');
+      //console.log('valid');
     },
     onFailure: function (event) {
-      console.log('NOT valid');
+      //console.log('NOT valid');
       return false;
     },    
 
