@@ -11,7 +11,7 @@ $('#private_key').dropdown({
 $ssh_key_form.api({
   contentType: 'application/json',
   dataType: 'json',
-  url: '/ssh-agent/add',
+  url: '/ssh-agent/add?id=wapi',
   method:'GET',
   serializeForm: true,
   beforeSend: function(settings) {
@@ -58,7 +58,7 @@ $ssh_key_form.api({
 
 
 $.ajax({
-   url: '/ssh-agent/info',
+   url: '/ssh-agent/info?id=wapi',
    type: 'GET',
    error: function(xhr, status, error) {
 	   show_error(error)
@@ -66,7 +66,7 @@ $.ajax({
    },
    success: function(result, status, xhr) {
 	   console.log(result);
-	   if(result.results.keys != '') {
+	   if(result.results.keys.length > 0) {
 		   $ssh_key_status.addClass('green')
 		   $public_keys.val(result.results.keys)
 	   } else {
@@ -78,7 +78,7 @@ $.ajax({
 
 
 $.fn.api.settings.api = {
-  'ssh_agent_kill' : '/ssh-agent/kill',
+  'ssh_agent_kill' : '/ssh-agent/kill?id=wapi',
 };
 
 $ssh_agent_kill.api({
