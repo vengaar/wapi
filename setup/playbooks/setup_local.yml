@@ -12,3 +12,25 @@
       git_clone: false
       wapi_user: "{{ ansible_user_id }}"
 ...
+
+# ---
+# - hosts: localhost
+#   gather_facts: true
+#   tasks:
+#     - name: Ensure pre-requiste
+#       assert:
+#         that:
+#           - ansible_distribution == "Fedora"
+#           - ansible_distribution_major_version|int >= 28
+#     - include_role:
+#         name: ~/{{ repo_name }}/setup/playbooks/roles/setup
+#       vars:
+#         git_clone: false
+#         wsgi_user: "{{ ansible_user_id }}"
+#       loop:
+#         - liftree
+#         - ansible-ws
+#         - wapi
+#       loop_control:
+#         loop_var: repo_name
+# ...

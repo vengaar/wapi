@@ -1,12 +1,12 @@
 <div class="ui tab _segment" data-tab="output">
-
-<h3 class="ui dividing header">
-  <i class="{{ status_color }} terminal icon"></i>
-  <div class="content">
-    Run output
-    <div class="sub header">{{ data.runid }}</div>
+  <h3 class="ui dividing header">
+    <i class="{{ status_color }} terminal icon"></i>
+    <div class="content">
+      Run output
+      <div class="sub header">{{ data.runid }}</div>
+    </div>
+  </h3>
+  <div class="ui raised segment">
+    <div class="console" id="output"></div>
   </div>
-</h3>
-<pre class="console" id="output">{{ data|to_yaml }}</pre>
-
 </div>

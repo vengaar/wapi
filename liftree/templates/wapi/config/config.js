@@ -1,3 +1,8 @@
+$.fn.api.settings.api = {
+  'ssh_agent_kill': '/ssh-agent/kill?id=wapi',
+  'ssh_agent_info': '/ssh-agent/info?id=wapi',
+  'ssh_agent_add': '/ssh-agent/add?id=wapi',
+};
 
 const $ssh_key_status = $('#ssh_key_status')
 const $ssh_key_form = $('#ssh_key_load')
@@ -76,10 +81,6 @@ $.ajax({
    },
 });
 
-
-$.fn.api.settings.api = {
-  'ssh_agent_kill' : '/ssh-agent/kill?id=wapi',
-};
 
 $ssh_agent_kill.api({
   action: 'ssh_agent_kill',
