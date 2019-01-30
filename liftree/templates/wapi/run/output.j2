@@ -6,7 +6,14 @@
       <div class="sub header">{{ data.runid }}</div>
     </div>
   </h3>
+  <div id="run_control" class="ui _compact menu">
+    <a id="run_control_start" class="item"><i class="step backward icon"></i> Go start</a>
+    <a id="run_control_watch" class="item"><i class="eye icon"></i> Watch</a>
+    <a id="run_control_kill" class="item"><i class="trash icon"></i> Kill playbook </i>
+    <a id="run_control_end" class="item"><i class="step forward icon"></i> Go end</a>
+    <div class="right menu"></div>
+  </div>
   <div class="ui raised segment">
     <div class="console" id="output"></div>
   </div>
-</div>
+</div>  
