@@ -20,4 +20,10 @@ const show_error = (error) => {
   $error_modal.modal('show');
 }
 
+/* copy */
+$('.copy_to_clipboard').click( function() {
+  document.getElementById(this.dataset.copy).select();
+  document.execCommand("copy");
+});
+
 console.log('ok wapi layout')

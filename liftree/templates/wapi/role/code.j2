@@ -1,0 +1,18 @@
+<h3 class="ui dividing header">
+  <i class="code icon"></i>
+  <div class="content">
+    View role files
+    <div class="sub header">...</div>
+  </div>
+</h3>
+<div id="view_file" class="ui fluid selection dropdown">
+  <input type="hidden" name="file">
+  <i class="dropdown icon"></i>
+  <div class="default text">Select file to see</div>
+  <div class="menu">
+{% for file in extra.wapi_role %}
+    <div class="item" data-value="{{ file.value }}">{{ file.name }}</div>
+{% endfor %} 
+  </div>
+</div>
+<pre><code id="code"></code></pre>
