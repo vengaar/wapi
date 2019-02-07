@@ -40,6 +40,22 @@
 </div>
 
 <div class="ui divider"></div>
+
+
+{% if wapi.configurations is defined %}
+<div class="ui segment">
+  <div class="{{ form_label_class }}">Configurations</div>
+  <div class="field">
+    <label>Select the launch configuration to load</label>
+    <div id="wapi-configuration" class="ui fluid selection dropdown">
+      <input type="hidden" name="configuration">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select your configuration</div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
 {% if wapi.extra_vars|count > 0 %}
 <div class="ui segment">
   <div class="{{ form_label_class }}">extra_vars</div>
@@ -92,13 +108,12 @@
 {% elif param.boolean is defined %}
 
     {# BOOLEAN #}
-    <div class="ui toggle checkbox">
+    <div id="extra_vars-{{ param.name }}" class="ui toggle checkbox">
       <input  type="checkbox"
               class="boolean"
 {% if param.boolean %}
               checked="checked"
 {% endif %}
-              id="extra_vars-{{ param.name }}"
               name="{{ param.name }}">
       <label><b>{{ param.description }} <i>({{ param.name }})</i></b></label>
     </div>

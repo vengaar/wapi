@@ -45,7 +45,27 @@
           default:
             - blue
             - green
-  
+      configurations:
+        config1:
+          prod_servers:
+            - database_app1_prod
+          app1_server: server_prod_12
+          agree: false
+          email: foo@bar.io
+          color:
+            - red
+        config2:
+          prod_servers:
+            - database_app1_prod
+            - database_app2_prod
+          app1_server: server_prod_22
+          agree: true
+          email: hello@world.com
+          color:
+            - red
+            - green
+
+
   tasks:
 
     - name: Display inventory_hostname
