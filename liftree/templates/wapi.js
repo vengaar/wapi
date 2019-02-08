@@ -26,4 +26,4 @@ $('.copy_to_clipboard').click( function() {
   document.execCommand("copy");
 });
 
-console.log('ok wapi layout')
+console.log('wapi.js OK')

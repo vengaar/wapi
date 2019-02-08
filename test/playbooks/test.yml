@@ -23,12 +23,16 @@
           search: /ansible-ws/groups
           search_params: 'groups=.*prod&sources=/home/liftree/wapi/test/inventories'
           attributes: ['required', 'multiple']
+          default:
+            - foo
+            - bar 
 
         - name: app1_server
           description: One server for app1 without group selection
           search: /ansible-ws/groups
           search_params: 'groups=.*app1&sources=/home/liftree/wapi/test/inventories&groups_selection=no'
-          attributes: ['required']
+#           attributes: ['required']
+          default: foo
 
         - name: agree
           boolean: true
@@ -45,7 +49,9 @@
           default:
             - blue
             - green
+
       configurations:
+
         config1:
           prod_servers:
             - database_app1_prod
@@ -54,6 +60,7 @@
           email: foo@bar.io
           color:
             - red
+
         config2:
           prod_servers:
             - database_app1_prod
@@ -65,6 +72,10 @@
             - red
             - green
 
+        config3:
+          email: vengaar@wapi.io
+          prod_servers: __clear__
+          color: __default__
 
   tasks:
 
