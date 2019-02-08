@@ -1,8 +1,8 @@
 /*
- * @todo string format
  * @todo configuration __clear__ __default__
  */
 
+const runs_dir = '{{ extra.wapi_config.runs_dir }}'
 let cmdline_base = '{{ extra.wapi_config.ansible_cmdline.playbook }}'
 let cmdline_options = $('#options').val()
 let cmdline_playbook = '{{ meta.path }}'
@@ -22,17 +22,17 @@ const display_cmdline = () => {
         cmdline_options,
     ]
     if (Object.getOwnPropertyNames(extra_vars).length > 0) {
-        let cmdline_extra_vars = "--extra-vars '" + JSON.stringify(extra_vars) + "'"
+        let cmdline_extra_vars = `--extra-vars '${JSON.stringify(extra_vars)}'`
         cmdline.push(cmdline_extra_vars)
     }
     if (cmdline_tags_apply !== '') {
-        cmdline.push('--tags="' + cmdline_tags_apply + '"')
+        cmdline.push(`--tags="${cmdline_tags_apply}"`)
     }
     if (cmdline_tags_skip!== '') {
-        cmdline.push('--skip-tags="' + cmdline_tags_skip + '"')
+        cmdline.push(`--skip-tags="${cmdline_tags_skip}"`)
     }
     if (cmdline_tasks !== '') {
-        cmdline.push('--start-at-task="' + cmdline_tasks + '"')
+        cmdline.push(`--start-at-task="${cmdline_tasks}"`)
     }
     $('#command_line').val(cmdline.join(' '))
 }
@@ -79,12 +79,12 @@ const init_extra_var = extra_var => {
     } else if ('attributes' in extra_var && extra_var.attributes.indexOf('required') > -1) {
         form_fields_check[name] = 'empty'
     }
-    const id = '#extra_vars-' + extra_var.name
+    const id = `#extra_vars-${extra_var.name}`
     if ('search' in extra_var) {
         const $extra_var = $(id)
         $extra_var.dropdown({
             apiSettings: {
-                url: extra_var.search + '?' + extra_var.search_params,
+                url: `${extra_var.search}?${extra_var.search_params}`,
                 cache: true
             },
             onChange: extra_var_dropdown_onchange,
@@ -185,7 +185,7 @@ $playbook_form.form({
     method:'POST',
     serializeForm: true,
     onSuccess: function(response, element, xhr) {
-        let url = '/show?path={{ extra.wapi_config.runs_dir }}/' + response.results.runid + '/run.status'
+        let url = `/show?path=${runs_dir}/${response.results.runid}/run.status`
         window.open(url)
     },
     onError: function(errorMessage, element, xhr) {
@@ -208,7 +208,7 @@ const load_configuration = (configuration) => {
     if (configuration in configurations) {
         for (let key in configurations[configuration]) {
           const value = configurations[configuration][key]
-          let $extra_var = $('#extra_vars-' + key)
+          let $extra_var = $(`#extra_vars-${key}`)
           if ($extra_var.hasClass('choices')) {
             $extra_var.dropdown('set exactly', value)
           } else if ($extra_var.hasClass('dropdown')) {
@@ -230,7 +230,7 @@ const load_configuration = (configuration) => {
         // check form validation
         $playbook_form.form('validate form')
   } else {
-      error = 'Invalid configuration: ' + configuration + ', this configuration is not defined'
+      error = `Invalid configuration: ${configuration}, this configuration is not defined`
       show_error(error)
   }
 }
