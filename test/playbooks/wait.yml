@@ -3,28 +3,30 @@
   gather_facts: false
   vars:
     wapi:
-      author: https://github.com/vengaar
-      state: prod
-      description: |
-        #### Playbook using for test and demo
-        * Do a puse of {pause_duration} seconds {pause_number} times
-        * See extra vars for more details
-      options: -v
-      extra_vars:
-        - name: pause_number
-          description: The number of pause to do.
-          properties:
-            type: number
-            min: 1
-            max: 10
-          default: 3
-        - name: pause_duration
-          description: The duration of each pause.
-          properties:
-            type: number
-            min: 1
-            max: 10
-          default: 5
+      metadata:
+        author: https://github.com/vengaar
+        state: prod
+        description: |
+          #### Playbook using for test and demo
+          * Do a puse of {pause_duration} seconds {pause_number} times
+          * See extra vars for more details
+      launch:
+        options: -v
+        extra_vars:
+          - name: pause_number
+            description: The number of pause to do.
+            properties:
+              type: number
+              min: 1
+              max: 10
+            default: 3
+          - name: pause_duration
+            description: The duration of each pause.
+            properties:
+              type: number
+              min: 1
+              max: 10
+            default: 5
     queries:
       pause_number: "extra_vars[?name=='pause_number'].default|[0]"
       pause_duration: "extra_vars[?name=='pause_duration'].default|[0]"
