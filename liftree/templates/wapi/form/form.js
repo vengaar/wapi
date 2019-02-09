@@ -160,7 +160,10 @@ let cmdline_playbook = '{{ meta.path }}'
 let cmdline_tags_apply = ''
 let cmdline_tags_skip = ''
 let cmdline_tasks = ''
-let cmdline_extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
+let cmdline_extra_vars = {}
+{#
+JSON.parse('{{ wapi.launch.extra_vars|wapi_defaults_extra_vars|to_json }}')
+#}
 // console.log('cmdline_extra_vars', cmdline_extra_vars)
 //console.log(cmdline_options)
 const wapi = {{ wapi|to_json }}
@@ -220,10 +223,12 @@ const extra_var_input_onchange = input => {
 }
 
 const extra_vars = new ExtraVars()
-wapi.extra_vars.forEach( data => {
-    let extra_var = new ExtraVar(data)
-    extra_vars.add(extra_var)
-})
+if ('launch' in wapi) {
+    wapi.launch.extra_vars.forEach( data => {
+        let extra_var = new ExtraVar(data)
+        extra_vars.add(extra_var)
+    })
+}
 
 
 
