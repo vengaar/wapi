@@ -46,6 +46,9 @@
 /*        color: white; */
 /*        font-weight: bold; */
       }
+      .selectall {
+        margin-left: 1rem;
+      }
     </style>
     
   {% endblock %}
@@ -87,12 +90,13 @@
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
       'use strict'
-      {% include 'wapi.js' %}      
+      {% include 'wapi.js' %}
     </script>
     <script>
       'use strict'
 {% block script %}
 {% endblock %}
+      {% include 'common.js' %}
     </script>
   </body>
 </html>

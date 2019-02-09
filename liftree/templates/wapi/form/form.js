@@ -1,6 +1,157 @@
 /*
- * @todo configuration __clear__ __default__
+ * 
  */
+
+class ExtraVar {
+    constructor(data) {
+        this.src = data
+        this.name = data.name
+        this.description = data.description
+        this.attributes = ('attributes' in data) ? data.attributes : []
+        this.id = `extra_vars-${this.name}`
+        this.$id = `#${this.id}`
+        this.$ = $(this.$id)
+        if ('choices' in data) {
+            this.is_choices = true
+            this.is_dropdown = true
+            // init default
+            if ('default' in data) {
+                this.default = (this.is_multiple()) ? data.default : [data.default]
+            } else {
+                this.default = null
+            }
+            this.$.dropdown({
+                onChange: extra_var_dropdown_onchange,
+                clearable: true,
+            })
+        } else if ('boolean' in data) {
+            this.is_boolean = true
+            this.default = data.boolean
+            this.$.checkbox({
+                onChecked: function() {
+                    cmdline_update_extravar(this.name, true)
+                },
+                onUnchecked: function() {
+                    cmdline_update_extravar(this.name, false)
+                },
+            });
+        } else if ('search' in data) {
+            this.is_search = true
+            this.is_dropdown = true
+            // init default
+            if ('default' in data) {
+                this.default = (this.is_multiple()) ? data.default : [data.default]
+            } else {
+                this.default = null
+            }
+            let url = `${data.search}?${data.search_params}`
+            this.$.dropdown({
+                apiSettings: {
+                    url: url,
+                    cache: true
+                },
+                onChange: extra_var_dropdown_onchange,
+                clearable: true,
+                filterRemoteData: true,
+            });
+            if (this.default !== null) {
+                let values = this.default.map(x => new Object({'name': x, 'value': x}))
+                this.$.dropdown('change values', values)
+                this.$.dropdown('set exactly', this.default)
+            }
+        } else {
+            // init default
+            this.is_input = true
+            this.default = ('default' in data) ? data.default : null
+            this.$.change(function() {
+                extra_var_input_onchange(this)
+            });
+            this.update(this.default)
+        }
+    }
+
+    update(value) {
+        if (this.is_input) {
+            this.$.val(value)
+            extra_var_input_onchange(this.$[0])
+        } else if (this.is_choices) {
+            this.$.dropdown('set exactly', value)
+        } else if (this.is_boolean) {
+            value ? this.$.checkbox('check') : this.$.checkbox('uncheck')
+        } else if (this.is_search) {
+            const options = (typeof value === 'string') ? [value] : value;
+            const values = options.map(x => new Object({'name': x, 'value': x}))
+            this.$.dropdown('change values', values)
+            this.$.dropdown('set exactly', options)
+        }
+    }
+
+    clear() {
+        if (this.is_input) {
+            this.update('')
+        } else if (this.is_dropdown) {
+            this.$.dropdown('clear')
+        } else if (this.is_boolean) {
+            this.restore_default()
+        }
+    }
+
+    restore_default() {
+        if (this.is_input) {
+            this.update(this.default)
+        } else if (this.is_dropdown) {
+            let values = this.default.map(x => new Object({'name': x, 'value': x}))
+            this.$.dropdown('change values', values)
+            this.$.dropdown('set exactly', this.default)
+        } else if (this.is_boolean) {
+            let action = (this.default) ? 'check' : 'uncheck'
+            this.$.checkbox(action)
+        }
+    }
+
+    is_required() {
+        return this.attributes.includes('required')
+    }
+    
+    is_multiple() {
+        return this.attributes.includes('multiple')
+    }
+
+    get_check_method() {
+      let check_method
+      if ('check' in this.src) {
+          check_method = this.src.check
+      } else if (this.is_required()) {
+          check_method = 'empty'
+      }
+//       console.log(this.name, check_method)
+      return check_method
+    }
+};
+
+class ExtraVars {
+    constructor(data) {
+      this.index = {}
+    }
+
+    get(name) {
+      return this.index[name]
+    }
+
+    add(extra_var) {
+//       console.log('Add extra var : ', extra_var.name)
+      this.index[extra_var.name] = extra_var
+    }
+    
+    get_form_fields_check() {
+        let form_fields_check = {}
+        for (let name in this.index) {
+            let extra_var = this.get(name)
+            form_fields_check[name] = extra_var.get_check_method()
+        }
+        return form_fields_check
+    }
+}
 
 const runs_dir = '{{ extra.wapi_config.runs_dir }}'
 let cmdline_base = '{{ extra.wapi_config.ansible_cmdline.playbook }}'
@@ -9,11 +160,10 @@ let cmdline_playbook = '{{ meta.path }}'
 let cmdline_tags_apply = ''
 let cmdline_tags_skip = ''
 let cmdline_tasks = ''
-let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
-// console.log('extra_vars', extra_vars)
+let cmdline_extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
+// console.log('cmdline_extra_vars', cmdline_extra_vars)
 //console.log(cmdline_options)
 const wapi = {{ wapi|to_json }}
-const form_fields_check = {}
 
 const display_cmdline = () => {
     let cmdline = [
@@ -21,9 +171,8 @@ const display_cmdline = () => {
         cmdline_playbook,
         cmdline_options,
     ]
-    if (Object.getOwnPropertyNames(extra_vars).length > 0) {
-        let cmdline_extra_vars = `--extra-vars '${JSON.stringify(extra_vars)}'`
-        cmdline.push(cmdline_extra_vars)
+    if (Object.getOwnPropertyNames(cmdline_extra_vars).length > 0) {
+        cmdline.push(`--extra-vars '${JSON.stringify(cmdline_extra_vars)}'`)
     }
     if (cmdline_tags_apply !== '') {
         cmdline.push(`--tags="${cmdline_tags_apply}"`)
@@ -37,96 +186,44 @@ const display_cmdline = () => {
     $('#command_line').val(cmdline.join(' '))
 }
 
-
+const cmdline_update_extravar = (name, value) => {
+//     console.log('cmdline_update_extravar', name, value)
+    if (value === null) {
+        delete cmdline_extra_vars[name]
+    } else {
+        cmdline_extra_vars[name] = value
+    }
+    display_cmdline()
+}
 
 /*
  * EXTRA VARS
  */
 
-const is_multiple_dropdown = extra_var => {
-    const is_muliple = 'attributes' in extra_var && extra_var.attributes.includes('multiple')
-    return is_muliple
-}
-
-const extra_var_dropdown_set_default = ($extra_var, extra_var) => {
-    if ('default' in extra_var) {
-      const options = (is_multiple_dropdown(extra_var)) ? extra_var.default : [extra_var.default]
-      const values = options.map(x => new Object({'name': x, 'value': x}))
-      $extra_var.dropdown('change values', values)
-      $extra_var.dropdown('set exactly', options)
-    }
-}  
-
 // SUI onChange callback
 function extra_var_dropdown_onchange(value, text, $selectedItem) {
+//     console.log('extra_var_dropdown_onchange', value)
     let name = this.id.replace('extra_vars-', '')
-    //delete extra_vars[name]
+    let values
     if (value === '') {
-        delete extra_vars[name]
-    } else if (this.classList.contains('multiple')) {
-        extra_vars[name] = value.split(',')
+        values = null
     } else {
-        extra_vars[name] = value
-    } 
-    display_cmdline()
+        values = (this.classList.contains('multiple')) ? value.split(',') : value
+    }
+    cmdline_update_extravar(name, values)
 }
 
-const init_extra_var = extra_var => {
-//  console.log(extra_var.name, extra_var)
-    let name = extra_var.name
-    if ('check' in extra_var) {
-        form_fields_check[name] = extra_var.check
-    } else if ('attributes' in extra_var && extra_var.attributes.indexOf('required') > -1) {
-        form_fields_check[name] = 'empty'
-    }
-    const id = `#extra_vars-${extra_var.name}`
-    if ('search' in extra_var) {
-        const $extra_var = $(id)
-        $extra_var.dropdown({
-            apiSettings: {
-                url: `${extra_var.search}?${extra_var.search_params}`,
-                cache: true
-            },
-            onChange: extra_var_dropdown_onchange,
-            clearable: true,
-            filterRemoteData: true,
-        });
-        extra_var_dropdown_set_default($extra_var, extra_var)
-    }
+// Input test onChange callback
+const extra_var_input_onchange = input => {
+    let value = (input.value === '') ? null : input.value
+    cmdline_update_extravar(input.name, value)
 }
 
-$('.extra_vars.ui.dropdown.choices').dropdown({
-  onChange: extra_var_dropdown_onchange,
-  clearable: true,
+const extra_vars = new ExtraVars()
+wapi.extra_vars.forEach( data => {
+    let extra_var = new ExtraVar(data)
+    extra_vars.add(extra_var)
 })
-
-const extra_var_update_input = input => {
-    if (input.value === '') {
-        delete extra_vars[input.name]
-    } else {
-        extra_vars[input.name] = input.value
-    }
-    display_cmdline()
-}
-$('.extra_vars.input').change(function() {
-      extra_var_update_input(this)
-});
-
-$('.ui.toggle.checkbox').checkbox({
-    onChecked: function() {
-        extra_vars[this.name] = true
-        display_cmdline()
-    },
-    onUnchecked: function() {
-        extra_vars[this.name] = false
-        display_cmdline()
-    },
-});
-
-wapi.extra_vars.forEach( (elem) => {
-    init_extra_var(elem)
-})
-// console.log('form_fields_check', form_fields_check)
 
 
 
@@ -177,7 +274,7 @@ $('#options').change(function() {
  */
 const $playbook_form = $('#playbook_form') 
 $playbook_form.form({
-    fields: form_fields_check
+    fields: extra_vars.get_form_fields_check()
 }).api({
     contentType: 'application/json',
     dataType: 'json',
@@ -204,28 +301,18 @@ $playbook_form.form({
 
 const configurations = ('configurations' in wapi) ? wapi.configurations : {}
 const load_configuration = (configuration) => {
-    console.log('load_configuration', configuration)
+//     console.log('load_configuration', configuration)
     if (configuration in configurations) {
         for (let key in configurations[configuration]) {
-          const value = configurations[configuration][key]
-          let $extra_var = $(`#extra_vars-${key}`)
-          if ($extra_var.hasClass('choices')) {
-            $extra_var.dropdown('set exactly', value)
-          } else if ($extra_var.hasClass('dropdown')) {
-            const options = (typeof value === 'string') ? [value] : value;
-            const values = options.map(x => new Object({'name': x, 'value': x}))
-            $extra_var.dropdown('change values', values)
-            $extra_var.dropdown('set exactly', value)
-          } else if ($extra_var.hasClass('checkbox')) {
-            if (value) {
-              $extra_var.checkbox('check')
+            const value = configurations[configuration][key]
+            let extra_var = extra_vars.get(key)
+            if (value === '__clear__') {
+                extra_var.clear()
+            } else if (value === '__default__') {
+                extra_var.restore_default()
             } else {
-              $extra_var.checkbox('uncheck')
+                extra_var.update(value)
             }
-          } else if ($extra_var.hasClass('input')) {
-            $extra_var.val(value)
-            extra_var_update_input($extra_var[0])
-          }
         }
         // check form validation
         $playbook_form.form('validate form')
@@ -235,7 +322,8 @@ const load_configuration = (configuration) => {
   }
 }
 
-$('#wapi-configuration').dropdown({
+const $configuration = $('#wapi-configuration') 
+$configuration.dropdown({
   clearable: true,
   onChange: load_configuration,
   values: Object.keys(configurations).map(x => new Object({'name': x, 'value': x}))
@@ -247,9 +335,8 @@ $('#wapi-configuration').dropdown({
  * MAIN
  */
 display_cmdline()
-
 const urlParams = new URLSearchParams(window.location.search);
 const configuration = urlParams.get("configuration")
-if (configuration !== null) load_configuration(configuration)
+if (configuration !== null) $configuration.dropdown('set exactly', configuration)
 
 console.log('form.js OK')

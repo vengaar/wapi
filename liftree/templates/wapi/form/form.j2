@@ -82,6 +82,8 @@
       <i class="dropdown icon"></i>
       <input type="text" class="search">
       <div class="default text">Select ...</div>
+      <div class="menu">
+      </div>
     </div>
 
 {% elif param.choices is defined %}
@@ -99,6 +101,12 @@
       <i class="dropdown icon"></i>
       <div class="default text">Select {{ param.name }}</div>
       <div class="menu">
+        <div class="divider"></div>
+        <div id="select_all_users" class="ui toggle checkbox selectall">
+          <input type="checkbox">
+          <label>select all</label>
+        </div>
+        <div class="divider"></div>
 {% for choice in param.choices %}
         <div class="item" data-value="{{ choice }}">{{ choice }}</div>
 {% endfor %}
@@ -166,6 +174,7 @@
       <div  id="tags_apply"
             class="playbook-tags ui multiple search selection dropdown">
         <input type="hidden" name="tags_apply">
+        <div class="ui grey label"><i class="tags icon"></i>applied</div>
         <i class="dropdown icon"></i>
         <input type="text" class="search">
         <div class="default text">Apply tags</div>
@@ -177,6 +186,7 @@
       <div  id="tags_skip"
             class="playbook-tags ui multiple search selection dropdown">
         <input type="hidden" name="tags_skip">
+        <div class="ui grey label"><i class="tags icon"></i>skipped</div>
         <i class="dropdown icon"></i>
         <input type="text" class="search">
         <div class="default text">Skip tags</div>

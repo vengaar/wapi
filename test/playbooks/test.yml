@@ -65,16 +65,25 @@
           prod_servers:
             - database_app1_prod
             - database_app2_prod
-          app1_server: server_prod_22
+          app1_server: server_dev_11
           agree: true
           email: hello@world.com
           color:
             - red
             - green
 
-        config3:
-          email: vengaar@wapi.io
+        clear:
           prod_servers: __clear__
+          app1_server: __clear__
+          agree: __clear__
+          email: __clear__
+          color: __clear__
+
+        default:
+          prod_servers: __default__
+          app1_server: __default__
+          agree: __default__
+          email: __default__
           color: __default__
 
   tasks:
