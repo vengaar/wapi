@@ -33,7 +33,7 @@ pip3 install ansible
 git clone https://github.com/vengaar/liftree.git
 ansible-playbook /home/liftree/liftree/setup/playbooks/setup.yml
 git clone https://github.com/vengaar/wapi.git
-ansible-playbook-3 wapi/setup/playbooks/setup.yml -v
+ansible-playbook wapi/setup/playbooks/setup.yml
 ~~~~
 
 ### Fedora
@@ -47,7 +47,7 @@ As root on your server
 ~~~~
 dnf install ansible-python3
 git clone https://github.com/vengaar/wapi.git
-ansible-playbook-3 wapi/setup/playbooks/setup.yml -v
+ansible-playbook-3 wapi/setup/playbooks/setup.yml
 ~~~~
 
 * For fedora 29
@@ -55,7 +55,17 @@ ansible-playbook-3 wapi/setup/playbooks/setup.yml -v
 ~~~~
 dnf install ansible
 git clone https://github.com/vengaar/wapi.git
-ansible-playbook wapi/setup/playbooks/setup.yml -v
+ansible-playbook wapi/setup/playbooks/setup.yml
+~~~~
+
+### To test devel
+
+~~~~
+git clone https://github.com/vengaar/wapi.git
+cd wapi
+git checkout devel
+git pull
+ansible-playbook setup/playbooks/setup.yml -e "git_version=devel"
 ~~~~
 
 Go on http://localhost/show
