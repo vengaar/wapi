@@ -4,4 +4,10 @@ git_repo: "https://github.com/vengaar/{{ git_name }}.git"
 git_clone: false
 git_version: HEAD
 wapi_user: wapi
+os_version: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}"
+required:
+  os:
+    - "Fedora/28"
+    - "Fedora/29"
+    - "Ubuntu/18"
 ...

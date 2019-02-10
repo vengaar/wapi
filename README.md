@@ -42,7 +42,7 @@ ansible-playbook-3 wapi/setup/playbooks/setup.yml -v
 
 As root on your server
 
-* on fedora 28
+* For fedora 28
 
 ~~~~
 dnf install ansible-python3
@@ -50,7 +50,7 @@ git clone https://github.com/vengaar/wapi.git
 ansible-playbook-3 wapi/setup/playbooks/setup.yml -v
 ~~~~
 
-* on fedora 29
+* For fedora 29
 
 ~~~~
 dnf install ansible
@@ -61,6 +61,8 @@ ansible-playbook wapi/setup/playbooks/setup.yml -v
 Go on http://localhost/show
 
 In the search navbar type `playbook` and select a test playbook
+
+*NB : To install devel version add `-e "git_version=devel"`to ansible command line above*
 
 # Ansible integration
 

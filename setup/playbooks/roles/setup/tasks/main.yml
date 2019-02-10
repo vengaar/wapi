@@ -2,6 +2,13 @@
 - debug: var=wapi_user
 - debug: var=git_clone
 - debug: var=git_version
+- debug: var=os_version
+- debug: var=required.os
+
+- name: Ensure pre-requiste
+  assert:
+    that:
+      - os_version in required.os
 
 - name: Deploy from git
   become: true
