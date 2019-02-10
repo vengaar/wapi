@@ -72,8 +72,6 @@ Go on http://localhost/show
 
 In the search navbar type `playbook` and select a test playbook
 
-*NB : To install devel version add `-e "git_version=devel"`to ansible command line above*
-
 # Ansible integration
 
 ## Make your playbook visible in WAPI
