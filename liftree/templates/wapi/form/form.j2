@@ -221,7 +221,7 @@
       {% if wapi.launch.inventories is defined %}
         {% set inventories = ' -i ' + wapi.launch.inventories|join(' -i ') %}
       {% endif %}
-      {% set options = wapi.launch.opions|default(options_default) %}
+      {% set options = wapi.launch.options|default(options_default) %}
     {% endif %}
     <textarea id="options" name="options" rows="3">{{ options }}{{ inventories }}</textarea>
   </div>
