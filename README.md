@@ -28,10 +28,8 @@ Based on
 As root on your server
 
 ~~~~
-apt install python3-pip
+apt-get install python3-pip
 pip3 install ansible
-git clone https://github.com/vengaar/liftree.git
-ansible-playbook /home/liftree/liftree/setup/playbooks/setup.yml
 git clone https://github.com/vengaar/wapi.git
 ansible-playbook wapi/setup/playbooks/setup.yml
 ~~~~
