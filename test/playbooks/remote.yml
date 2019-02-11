@@ -10,6 +10,7 @@
           #### Playbook to test ssh agent use
           * This playbook to a ssh connection on itself
           * Require to have private key ansible-ws loaded in the wapi configuration
+      launch:
         options: -vv
   tasks:
     - add_host:

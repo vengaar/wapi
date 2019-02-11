@@ -223,7 +223,7 @@ const extra_var_input_onchange = input => {
 }
 
 const extra_vars = new ExtraVars()
-if ('launch' in wapi) {
+if ('launch' in wapi && 'extra_vars' in wapi.launch) {
     wapi.launch.extra_vars.forEach( data => {
         let extra_var = new ExtraVar(data)
         extra_vars.add(extra_var)
