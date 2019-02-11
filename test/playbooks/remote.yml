@@ -15,6 +15,7 @@
   tasks:
     - add_host:
         name: "{{ ansible_default_ipv4.address }}"
+        ansible_python_interpreter: "/usr/bin/python3"
         groups:
           - remote_localhost
 
