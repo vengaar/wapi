@@ -99,9 +99,11 @@ class ExtraVar {
     restore_default() {
         if (this.is_input) {
             this.update(this.default)
-        } else if (this.is_dropdown) {
+        } else if (this.is_search) {
             let values = this.default.map(x => new Object({'name': x, 'value': x}))
             this.$.dropdown('change values', values)
+            this.$.dropdown('set exactly', this.default)
+        } else if (this.is_choices) {
             this.$.dropdown('set exactly', this.default)
         } else if (this.is_boolean) {
             let action = (this.default) ? 'check' : 'uncheck'
