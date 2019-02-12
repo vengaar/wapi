@@ -55,12 +55,12 @@
   </head>
   <body>
     {% include 'wapi/error.j2' %}
-{#
-    {% include 'wapi/ssh_key.j2' %}
-#}    
     <div id="menu" class="ui main _top fixed _inverted blue _secondary _tabular _pointing menu">
       <a class="item" href="https://github.com/vengaar/wapi">
         <i class="grey github icon"></i>wapi
+      </a>
+      <a class="item" href="/show">
+        <i class="home icon"></i>wapi
       </a>
 {% block menu %}
 {% endblock %}
