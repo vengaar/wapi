@@ -1,0 +1,3 @@
+---
+debug: var=inventory_hostname
+...

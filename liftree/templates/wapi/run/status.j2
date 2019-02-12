@@ -1,5 +1,5 @@
 {# DOC #}
-<div class="ui tab _segment active" data-tab="status">
+<div class="ui tab _segment" data-tab="status">
 
 <h3 class="ui dividing header">
   <i class="{{ status_color }} {{ status_icon }} icon"></i>
@@ -51,7 +51,8 @@
 </h4>
 <div class="ui form">
   <div class="ui segment">
-    <a id="copy_cmdline" data-copy="command_line" class="ui blue top left attached label">
+    <a  id="copy_cmdline" data-copy="command_line"
+        class="copy_to_clipboard ui blue top left attached label">
       <i class="copy icon"></i>copy
     </a>
     <textarea class="cmdline"

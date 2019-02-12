@@ -1,0 +1,41 @@
+---
+- hosts: "{{ prod_servers|default('localhost') }}"
+  gather_facts: false
+  tasks:
+
+    - name: Display inventory_hostname
+      debug: var=inventory_hostname
+
+    - name: Display param email
+      debug: var=email
+      tags:
+        - email
+
+    - name: Display param app1_server
+      debug: var=app1_server
+      tags:
+        - app1_server
+
+    - name: Display param prod_servers
+      debug: var=prod_servers
+      tags:
+        - prod_servers
+
+    - name: Display param color
+      debug: var=color
+      tags:
+        - color
+
+    - name: Display param agree
+      debug: var=agree
+      tags:
+        - agree
+
+    - name: Task with tag
+      debug: msg="A tagged task"
+      tags:
+        - tag1
+
+    - name: Task without tag
+      debug: msg="A task without tags"
+...

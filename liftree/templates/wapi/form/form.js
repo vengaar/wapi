@@ -1,213 +1,349 @@
-$.fn.api.settings.api = {
-  'playbook_tasks': '/ansible-ws/tasks?playbook={playbook}',
+/*
+ * 
+ */
+
+class ExtraVar {
+    constructor(data) {
+        this.src = data
+        this.name = data.name
+        this.description = data.description
+        this.attributes = ('attributes' in data) ? data.attributes : []
+        this.id = `extra_vars-${this.name}`
+        this.$id = `#${this.id}`
+        this.$ = $(this.$id)
+        if ('choices' in data) {
+            this.is_choices = true
+            this.is_dropdown = true
+            // init default
+            if ('default' in data) {
+                this.default = (this.is_multiple()) ? data.default : [data.default]
+            } else {
+                this.default = null
+            }
+            this.$.dropdown({
+                onChange: extra_var_dropdown_onchange,
+                clearable: true,
+            })
+        } else if ('boolean' in data) {
+            this.is_boolean = true
+            this.default = data.boolean
+            this.$.checkbox({
+                onChecked: function() {
+                    cmdline_update_extravar(this.name, true)
+                },
+                onUnchecked: function() {
+                    cmdline_update_extravar(this.name, false)
+                },
+            });
+        } else if ('search' in data) {
+            this.is_search = true
+            this.is_dropdown = true
+            // init default
+            if ('default' in data) {
+                this.default = (this.is_multiple()) ? data.default : [data.default]
+            } else {
+                this.default = null
+            }
+            let url = `${data.search}?${data.search_params}`
+            this.$.dropdown({
+                apiSettings: {
+                    url: url,
+                    cache: true
+                },
+                onChange: extra_var_dropdown_onchange,
+                clearable: true,
+                filterRemoteData: true,
+            });
+            if (this.default !== null) {
+                let values = this.default.map(x => new Object({'name': x, 'value': x}))
+                this.$.dropdown('change values', values)
+                this.$.dropdown('set exactly', this.default)
+            }
+        } else {
+            // init default
+            this.is_input = true
+            this.default = ('default' in data) ? data.default : null
+            this.$.change(function() {
+                extra_var_input_onchange(this)
+            });
+            this.update(this.default)
+        }
+    }
+
+    update(value) {
+        if (this.is_input) {
+            this.$.val(value)
+            extra_var_input_onchange(this.$[0])
+        } else if (this.is_choices) {
+            this.$.dropdown('set exactly', value)
+        } else if (this.is_boolean) {
+            value ? this.$.checkbox('check') : this.$.checkbox('uncheck')
+        } else if (this.is_search) {
+            const options = (typeof value === 'string') ? [value] : value;
+            const values = options.map(x => new Object({'name': x, 'value': x}))
+            this.$.dropdown('change values', values)
+            this.$.dropdown('set exactly', options)
+        }
+    }
+
+    clear() {
+        if (this.is_input) {
+            this.update('')
+        } else if (this.is_dropdown) {
+            this.$.dropdown('clear')
+        } else if (this.is_boolean) {
+            this.restore_default()
+        }
+    }
+
+    restore_default() {
+        if (this.is_input) {
+            this.update(this.default)
+        } else if (this.is_search) {
+            let values = this.default.map(x => new Object({'name': x, 'value': x}))
+            this.$.dropdown('change values', values)
+            this.$.dropdown('set exactly', this.default)
+        } else if (this.is_choices) {
+            this.$.dropdown('set exactly', this.default)
+        } else if (this.is_boolean) {
+            let action = (this.default) ? 'check' : 'uncheck'
+            this.$.checkbox(action)
+        }
+    }
+
+    is_required() {
+        return this.attributes.includes('required')
+    }
+    
+    is_multiple() {
+        return this.attributes.includes('multiple')
+    }
+
+    get_check_method() {
+      let check_method
+      if ('check' in this.src) {
+          check_method = this.src.check
+      } else if (this.is_required()) {
+          check_method = 'empty'
+      }
+//       console.log(this.name, check_method)
+      return check_method
+    }
 };
 
+class ExtraVars {
+    constructor(data) {
+      this.index = {}
+    }
+
+    get(name) {
+      return this.index[name]
+    }
+
+    add(extra_var) {
+//       console.log('Add extra var : ', extra_var.name)
+      this.index[extra_var.name] = extra_var
+    }
+    
+    get_form_fields_check() {
+        let form_fields_check = {}
+        for (let name in this.index) {
+            let extra_var = this.get(name)
+            form_fields_check[name] = extra_var.get_check_method()
+        }
+        return form_fields_check
+    }
+}
+
+const runs_dir = '{{ extra.wapi_config.runs_dir }}'
 let cmdline_base = '{{ extra.wapi_config.ansible_cmdline.playbook }}'
 let cmdline_options = $('#options').val()
 let cmdline_playbook = '{{ meta.path }}'
 let cmdline_tags_apply = ''
 let cmdline_tags_skip = ''
 let cmdline_tasks = ''
-let extra_vars = JSON.parse('{{ wapi.extra_vars|wapi_defaults_extra_vars|to_json }}')
-//console.log(extra_vars)
+let cmdline_extra_vars = {}
+{#
+JSON.parse('{{ wapi.launch.extra_vars|wapi_defaults_extra_vars|to_json }}')
+#}
+// console.log('cmdline_extra_vars', cmdline_extra_vars)
 //console.log(cmdline_options)
+const wapi = {{ wapi|to_json }}
+
+const display_cmdline = () => {
+    let cmdline = [
+        cmdline_base,
+        cmdline_playbook,
+        cmdline_options,
+    ]
+    if (Object.getOwnPropertyNames(cmdline_extra_vars).length > 0) {
+        cmdline.push(`--extra-vars '${JSON.stringify(cmdline_extra_vars)}'`)
+    }
+    if (cmdline_tags_apply !== '') {
+        cmdline.push(`--tags="${cmdline_tags_apply}"`)
+    }
+    if (cmdline_tags_skip!== '') {
+        cmdline.push(`--skip-tags="${cmdline_tags_skip}"`)
+    }
+    if (cmdline_tasks !== '') {
+        cmdline.push(`--start-at-task="${cmdline_tasks}"`)
+    }
+    $('#command_line').val(cmdline.join(' '))
+}
+
+const cmdline_update_extravar = (name, value) => {
+//     console.log('cmdline_update_extravar', name, value)
+    if (value === null) {
+        delete cmdline_extra_vars[name]
+    } else {
+        cmdline_extra_vars[name] = value
+    }
+    display_cmdline()
+}
+
+/*
+ * EXTRA VARS
+ */
+
+// SUI onChange callback
+function extra_var_dropdown_onchange(value, text, $selectedItem) {
+//     console.log('extra_var_dropdown_onchange', value)
+    let name = this.id.replace('extra_vars-', '')
+    let values
+    if (value === '') {
+        values = null
+    } else {
+        values = (this.classList.contains('multiple')) ? value.split(',') : value
+    }
+    cmdline_update_extravar(name, values)
+}
+
+// Input test onChange callback
+const extra_var_input_onchange = input => {
+    let value = (input.value === '') ? null : input.value
+    cmdline_update_extravar(input.name, value)
+}
+
+const extra_vars = new ExtraVars()
+if ('launch' in wapi && 'extra_vars' in wapi.launch) {
+    wapi.launch.extra_vars.forEach( data => {
+        let extra_var = new ExtraVar(data)
+        extra_vars.add(extra_var)
+    })
+}
 
 
+
+/*
+ * OPTIONS
+ */
 
 $('#tasks').dropdown({
-  apiSettings: {
-    url: '/ansible-ws/tasks?playbook={{ meta.path }}',
-    cache: true
-  },
-  onChange: function(value, text, $selectedItem) {
-    // console.log(this.id, value)
-    cmdline_tasks = value
-    display_cmdline()
-  },
-  clearable: true,
-  filterRemoteData: true,
+    apiSettings: {
+        url: '/ansible-ws/tasks?playbook={{ meta.path }}',
+        cache: true
+    },
+    onChange: function(value, text, $selectedItem) {
+        cmdline_tasks = value
+        display_cmdline()
+    },
+    clearable: true,
+    filterRemoteData: true,
 });
-
-
 
 $('.playbook-tags').dropdown({
     apiSettings: {
-    url: '/ansible-ws/tags?playbook={{ meta.path }}',
-    cache: true
-  },
-  onChange: function(value, text, $selectedItem) {
-    //console.log(this.id, value)
-    if (this.id === 'tags_apply') {
-      cmdline_tags_apply = value 
-    }
-    else if (this.id === 'tags_skip') {
-      cmdline_tags_skip = value
-    }
-    display_cmdline()
-  },
-  clearable: true,
-  filterRemoteData: true,
+        url: '/ansible-ws/tags?playbook={{ meta.path }}',
+        cache: true
+    },
+    onChange: function(value, text, $selectedItem) {
+        if (this.id === 'tags_apply') {
+            cmdline_tags_apply = value 
+        }
+        else if (this.id === 'tags_skip') {
+            cmdline_tags_skip = value
+        }
+        display_cmdline()
+    },
+    clearable: true,
+    filterRemoteData: true,
 });
 
-
 $('#options').change(function() {
-    // console.log(this)
     cmdline_options = this.value
     display_cmdline()
 });
 
 
 
-$('.extra_vars.input').change(function() {
-    // console.log(this)
-    let name = this.id.replace('extra_vars-', '')
-    if (this.value === '') {
-        delete extra_vars[name]
-    } else {
-        extra_vars[name] = this.value
-    }
-    display_cmdline()    
-});
-
-
-
-$('.ui.toggle.checkbox').checkbox({
-  onChecked: function() {
-    let name = this.id.replace('extra_vars-', '')
-    extra_vars[name] = true
-    display_cmdline()
-  },
-  onUnchecked: function() {
-    let name = this.id.replace('extra_vars-', '')
-    extra_vars[name] = false
-    display_cmdline()
-  },
-});
-
-
-
-function update_extra_var_dropdown(value, text, $selectedItem) {
-  let name = this.id.replace('extra_vars-', '')
-  if (value === '') {
-    delete extra_vars[name]
-  }
-  else if (this.classList.contains('multiple')) {
-    extra_vars[name] = value.split(',')
-  } else {
-    extra_vars[name] = value
-  } 
-  display_cmdline()
-}
-
-
-$('.extra_vars.ui.dropdown.choices').dropdown({
-  onChange: update_extra_var_dropdown,
-  clearable: true,
-})
-
-// util function to extract
-const sui_list_to_selected_options = (values) => {
-  let options = []
-  if (values.length > 0) {
-    options = values.split(',').map(x => new Object({'name': x, 'value': x, 'selected': true}));
-  }
-  return options
-}
-
-{% for param in wapi.extra_vars %}{% if param.search is defined %}
-
-$('#extra_vars-{{ param.name }}').dropdown({
-  apiSettings: {
-    url: '{{ param.search }}?{{ param.search_params }}',
-    cache: true
-  },
-  onChange: update_extra_var_dropdown,
-  clearable: true,
-  values: sui_list_to_selected_options('{{ param.default }}'),
-  filterRemoteData: true,  
-});
-
-{% endif %}{% endfor %}
-
-const display_cmdline = () => {
-  let cmdline = [
-      cmdline_base,
-      cmdline_playbook,
-      cmdline_options,
-  ]
-  //console.log(extra_vars)
-  if (Object.getOwnPropertyNames(extra_vars).length > 0) {
-    let cmdline_extra_vars = "--extra-vars '" + JSON.stringify(extra_vars) + "'"
-    cmdline.push(cmdline_extra_vars)
-  }
-  if (cmdline_tags_apply !== '') {
-    cmdline.push('--tags="' + cmdline_tags_apply + '"')
-  }
-  if (cmdline_tags_skip!== '') {
-    cmdline.push('--skip-tags="' + cmdline_tags_skip + '"')
-  }
-  if (cmdline_tasks !== '') {
-    cmdline.push('--start-at-task="' + cmdline_tasks + '"')
-  }
-  $('#command_line').val(cmdline.join(' '))
-  return JSON.stringify({"cmdline": cmdline})
-//   return cmdline.join(' ')
-
-}
-display_cmdline()
-
-
-
-// $('#launch_playbook')
-$('#playbook_form')
-.api({
+/*
+ * FORM
+ */
+const $playbook_form = $('#playbook_form') 
+$playbook_form.form({
+    fields: extra_vars.get_form_fields_check()
+}).api({
     contentType: 'application/json',
     dataType: 'json',
     url: '/ansible-ws/launch',
     method:'POST',
     serializeForm: true,
-    beforeSend: function(settings) {
-      //console.log("Data submitted:",settings);
-      return $('#playbook_form').form('is valid');
-    },
     onSuccess: function(response, element, xhr) {
-        //console.log('success');
-        //console.log(response);
-        let url = '/show?path={{ extra.wapi_config.runs_dir }}/' + response.results.runid + '/run.status'
-        // window.location.replace(url)
+        let url = `/show?path=${runs_dir}/${response.results.runid}/run.status#/output`
         window.open(url)
-        $(this).removeClass('loading')
-        return false
     },
     onError: function(errorMessage, element, xhr) {
         show_error(errorMessage)
-        return false
     },
     onFailure: function(response, element) {
         show_error(response)
-        return false
     }
 })
-.form({
-    onSuccess: function (event) {
-      $(this).addClass('loading')
-      event.preventDefault();
-      //console.log('valid');
-    },
-    onFailure: function (event) {
-      //console.log('NOT valid');
-      return false;
-    },    
 
-  fields: {
-{% for param in wapi.extra_vars %}
-{% if param.check is defined %}
-    {{ param.name }} : '{{ param.check }}',
-{% elif 'required' in param.attributes|default([]) %}
-    {{ param.name }} : 'empty',
-{% endif %}
-{% endfor %}
+
+
+/*
+ * Configurations
+ */
+
+const configurations = ('configurations' in wapi) ? wapi.configurations : {}
+const load_configuration = (configuration) => {
+//     console.log('load_configuration', configuration)
+    if (configuration in configurations) {
+        for (let key in configurations[configuration]) {
+            const value = configurations[configuration][key]
+            let extra_var = extra_vars.get(key)
+            if (value === '__clear__') {
+                extra_var.clear()
+            } else if (value === '__default__') {
+                extra_var.restore_default()
+            } else {
+                extra_var.update(value)
+            }
+        }
+        // check form validation
+        $playbook_form.form('validate form')
+  } else {
+      error = `Invalid configuration: ${configuration}, this configuration is not defined`
+      show_error(error)
   }
+}
+
+const $configuration = $('#wapi-configuration') 
+$configuration.dropdown({
+  clearable: true,
+  onChange: load_configuration,
+  values: Object.keys(configurations).map(x => new Object({'name': x, 'value': x}))
 })
 
-console.log('ok form')
+
+
+/*
+ * MAIN
+ */
+display_cmdline()
+const urlParams = new URLSearchParams(window.location.search);
+const configuration = urlParams.get("configuration")
+if (configuration !== null) $configuration.dropdown('set exactly', configuration)
+
+console.log('form.js OK')

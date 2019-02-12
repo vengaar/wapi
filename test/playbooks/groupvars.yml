@@ -3,24 +3,26 @@
   gather_facts: false
   vars:
     wapi:
-      author: https://github.com/vengaar
-      state: dev
-      description: |
-        Playbook used to explain groupvars search
-      options: -v
-      inventories:
-        - ~/wapi/test/inventories/hosts
-      extra_vars:
-        - name: country_selected
-          description: One country belong values of countries.all defined as group_vars database
-          attributes: ['required']
-          search: /ansible-ws/groupvars
-          search_params: 'group=database&key=countries.list&inventory=~/wapi/test/inventories'
-        - name: countries_selected
-          description: Several countries
-          attributes: ['required', 'multiple']
-          search: /ansible-ws/groupvars
-          search_params: 'group=database&key=countries.dict&inventory=~/wapi/test/inventories'
+      metadata:
+        author: https://github.com/vengaar
+        state: dev
+        description: |
+          Playbook used to explain groupvars search
+      launch:
+        options: -v
+        inventories:
+          - ~/wapi/test/inventories/hosts
+        extra_vars:
+          - name: country_selected
+            description: One country belong values of countries.all defined as group_vars database
+            attributes: ['required']
+            search: /ansible-ws/groupvars
+            search_params: 'group=database&key=countries.list&inventory=~/wapi/test/inventories'
+          - name: countries_selected
+            description: Several countries
+            attributes: ['required', 'multiple']
+            search: /ansible-ws/groupvars
+            search_params: 'group=database&key=countries.dict&inventory=~/wapi/test/inventories'
 
   tasks:
 

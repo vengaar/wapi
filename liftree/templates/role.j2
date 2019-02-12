@@ -2,17 +2,49 @@
 {% extends "wapi.j2" %}
 
 {% block menu %}
+<a class="item active" data-tab="doc"><i class="book icon"></i>Doc</a>
+<a class="item" data-tab="code"><i class="code icon"></i>Code</a>
+<a class="item disabled" data-tab="play"><i class="play icon"></i>Launch</a>
 {% endblock %}
 
 
 
 {% block body %}
-
-<pre><code>{{ data }}</code></pre>
+{#
+<pre><code>{{ meta }}</code></pre>
+<pre><code>{{ extra }}</code></pre>
+<pre><code>{{ extra.wapi_role|to_yaml }}</code></pre>
+#}
+<div class="ui tab _segment" data-tab="doc">
+{% include 'wapi/role/doc.j2' %}
+</div>
+<div class="ui tab _segment" data-tab="code">
+{% include 'wapi/role/code.j2' %}
+</div>
+<div class="ui tab _segment" data-tab="play">
+{% include 'wapi/role/launch.j2' %}
+</div>
 
 {% endblock %}
 
 
-
 {% block script %}
+  $('#view_file').dropdown({
+    onChange(value, text, $choice) {
+      //console.log(value, text, $choice)
+      view_file(value, 'code')
+    }
+  })
+
+  const view_file = (path, id) => {
+      let url = '/show?path=' + path + '&renderer=raw'
+      //console.log(url)
+      const code = document.getElementById(id)
+      fetch(url)
+        .then(response => response.text())
+        .then(result => {
+            code.innerHTML = result
+            hljs.highlightBlock(code)
+        });
+  }
 {% endblock %}

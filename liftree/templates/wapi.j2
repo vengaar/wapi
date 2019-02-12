@@ -4,7 +4,7 @@
   {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Test</title>
+    <title>{{ meta.path|basename }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
@@ -45,6 +45,9 @@
         background-color: #fbf9eb;
 /*        color: white; */
 /*        font-weight: bold; */
+      }
+      .selectall {
+        margin-left: 1rem;
       }
     </style>
     
@@ -87,12 +90,13 @@
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
       'use strict'
-      {% include 'wapi.js' %}      
+      {% include 'wapi.js' %}
     </script>
     <script>
       'use strict'
 {% block script %}
 {% endblock %}
+      {% include 'common.js' %}
     </script>
   </body>
 </html>
