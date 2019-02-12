@@ -8,6 +8,10 @@ Based on
 
 **Currently in DEV**
 
+# Demo
+
+[demo](http://35.180.126.174/show)
+
 # Setup
 
 ## Prerequisite
