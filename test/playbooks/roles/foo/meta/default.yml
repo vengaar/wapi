@@ -1,0 +1,9 @@
+---
+__wapi__color:
+  description: A choice among a static list
+  choices: ['blue', 'red', 'green']
+  attributes: ['required', 'multiple']
+color:
+  - blue
+  - green
+...

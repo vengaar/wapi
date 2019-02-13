@@ -1,5 +1,11 @@
 ---
-#
-# TODO
-#
+wapi:
+  metadata:
+    author: https://github.com/vengaar
+    state: dev
+    description: |
+      #### Role using for demo
+      
+      * elem1
+      * elem2
 ...
