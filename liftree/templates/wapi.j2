@@ -49,6 +49,15 @@
       .selectall {
         margin-left: 1rem;
       }
+      #wapi_search_result {
+        overflow-y: scroll;
+        overflow-y: none;
+        width: auto;
+        max-height: 85vh;
+      }
+      #wapi_search_result a.result {
+        white-space: nowrap;
+      }
     </style>
     
   {% endblock %}
@@ -71,7 +80,7 @@
             <input class="prompt" type="text" placeholder="Search ...">
             <i class="search link icon"></i>
           </div>
-          <div class="results"></div>
+          <div id="wapi_search_result" class="results"></div>
         </div>
       </div>
     </div>
