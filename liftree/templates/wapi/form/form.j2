@@ -91,8 +91,8 @@
     </label>
         {% endif %}
         
-        {# SEARCH #}
-        {% if param.search is defined %}
+        {# SEARCH / QUERY #}
+        {% if param.search is defined or param.query is defined %}
         
     <div  id="extra_vars-{{ param.name }}"
           class="extra_vars ui {{ param.attributes|get('multiple') }} search selection dropdown">
@@ -100,8 +100,6 @@
       <i class="dropdown icon"></i>
       <input type="text" class="search">
       <div class="default text">Select ...</div>
-      <div class="menu">
-      </div>
     </div>
         
         {# CHOICES #} 

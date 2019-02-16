@@ -20,6 +20,30 @@
         inventories:
           - ~/wapi/test/inventories/hosts
         extra_vars:
+
+          - name: test
+            description: Values coming from demo query
+            query: demo
+            query_parameters:
+              demo1: "C'est pas faux!"
+              demo2:
+                - "Perceval"
+                - "Karadoc"
+            attributes: ['required', 'multiple']
+            default:
+              - "C'est"
+              - "pas" 
+              - "faux"
+
+          - name: test2
+            description: Get ansible groups
+            query: groups
+            query_parameters:
+              pattern: '.*prod'
+              sources:
+                - '~/wapi/test/inventories/hosts'
+            attributes: ['required', 'multiple']
+
           - name: prod_servers
             description: One or several production servers
             search: /ansible-ws/groups
