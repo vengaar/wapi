@@ -21,49 +21,45 @@
           - ~/wapi/test/inventories/hosts
         extra_vars:
 
-          - name: test
+          - name: demo
             description: Values coming from demo query
             query: demo
             query_parameters:
-              demo1: "C'est pas faux!"
+              demo1: "test"
               demo2:
-                - "Perceval"
-                - "Karadoc"
+                - "foo"
+                - "bar"
             attributes: ['required', 'multiple']
             default:
-              - "C'est"
-              - "pas" 
-              - "faux"
+              - "plop"
+              - "plip" 
 
-          - name: test2
-            description: Get ansible groups
+          - name: prod_servers
+            description: One or several production servers
             query: groups
             query_parameters:
               pattern: '.*prod'
               sources:
                 - '~/wapi/test/inventories/hosts'
             attributes: ['required', 'multiple']
-
-          - name: prod_servers
-            description: One or several production servers
-            search: /ansible-ws/groups
-            search_params: 'groups=.*prod&sources=~/wapi/test/inventories/hosts'
-            attributes: ['required', 'multiple']
             default:
               - foo
               - bar 
+
           - name: app1_server
             description: One server for app1 without group selection
             search: /ansible-ws/groups
             search_params: 'groups=.*app1&sources=~/wapi/test/inventories/hosts&groups_selection=no'
             attributes: ['required']
             default: foo
+
           - name: agree
             boolean: true
             description: A toggle true/false
           - name: email
             description: A email to notify
             check: 'email'
+
           - name: color
             description: A choice among a static list
             choices: ['blue', 'red', 'green']
@@ -73,7 +69,8 @@
               - green
 
       configurations:
-        config1:
+        config_ok:
+          demo: __default__
           prod_servers:
             - database_app1_prod
           app1_server: server_prod_12
@@ -81,7 +78,8 @@
           email: foo@bar.io
           color:
             - red
-        config2:
+        config_ko:
+          demo: __clear__
           prod_servers:
             - database_app1_prod
             - database_app2_prod
@@ -92,12 +90,14 @@
             - red
             - green
         clear:
+          demo: __clear__
           prod_servers: __clear__
           app1_server: __clear__
           agree: __clear__
           email: __clear__
           color: __clear__
         default:
+          demo: __default__
           prod_servers: __default__
           app1_server: __default__
           agree: __default__
