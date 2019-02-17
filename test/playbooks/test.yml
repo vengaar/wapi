@@ -48,8 +48,12 @@
 
           - name: app1_server
             description: One server for app1 without group selection
-            search: /ansible-ws/groups
-            search_params: 'groups=.*app1&sources=~/wapi/test/inventories/hosts&groups_selection=no'
+            query: groups
+            query_parameters:
+              pattern: '.*app1'
+              groups_selection: 'no'
+              sources:
+                - '~/wapi/test/inventories/hosts'
             attributes: ['required']
             default: foo
 
