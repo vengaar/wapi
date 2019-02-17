@@ -2,10 +2,17 @@
 {% extends "wapi.j2" %}
 
 {% block menu %}
+<a class="item" data-tab="ssh-key"><i class="key icon"></i>Shh Key</a>
+<a class="item active" data-tab="cache"><i class="clone icon"></i>Cache</a>
 {% endblock %}
 
 {% block body %}
+<div class="ui tab" data-tab="ssh-key">
 {% include 'wapi/config/ssh_key.j2' %}
+</div>
+<div class="ui tab " data-tab="cache">
+{% include 'wapi/config/cache.j2' %}
+</div>
 {% endblock %}
 
 {% block script %}
