@@ -17,7 +17,7 @@
 
       launch:
         options: -v --diff
-        inventories:
+        inventories: &inventories
           - ~/wapi/test/inventories/hosts
         extra_vars:
 
@@ -39,8 +39,7 @@
             query: groups
             query_parameters:
               pattern: '.*prod'
-              sources:
-                - '~/wapi/test/inventories/hosts'
+              sources: *inventories
             attributes: ['required', 'multiple']
             default:
               - foo
@@ -52,8 +51,7 @@
             query_parameters:
               pattern: '.*app1'
               groups_selection: 'no'
-              sources:
-                - '~/wapi/test/inventories/hosts'
+              sources: *inventories
             attributes: ['required']
             default: foo
 

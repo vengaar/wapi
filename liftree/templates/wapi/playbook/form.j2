@@ -85,7 +85,7 @@
         
     <label>
           {% if 'required' in param.attributes or param.check is defined %}
-      <b style="color: #AB2B00">*</b>
+      <i class="right floated red warning icon"></i>
           {% endif %}
       {{ param.description }} <i>({{ param.name }})</i>
     </label>

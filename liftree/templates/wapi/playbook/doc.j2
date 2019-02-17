@@ -1,0 +1,92 @@
+<h3 class="ui dividing header">
+  <i class="book icon"></i>
+  <div class="content">
+    {{ meta.path }}
+    <div class="sub header">Playbook documentation</div>
+  </div>
+</h3>
+
+{% if 'error' in wapi.keys() %}
+
+<div class="ui negative message">
+  <div class="header">Error on wapi data reading</div>
+  <p>{{ wapi.error }}<p>
+</div>
+
+{% else %}
+
+<table class="ui definition table">
+  <tbody>
+
+  {% if wapi.metadata is defined %}
+    {% set metadata = wapi.metadata %}
+    {% for key in ('author', 'state') %}
+      {% if metadata[key] is defined %}
+    <tr>
+      <td class="right aligned">{{ key|capitalize }}</td>
+      <td>{{ metadata[key]|urlize }}</td>
+    </tr>
+      {% endif %}
+    {% endfor %}
+    {% if metadata.description is defined %}
+    <tr>
+      <td class="right aligned">Description</td>
+      <td>{{ metadata.description|to_markdown }}</td>
+    </tr>
+    {% endif %}
+    {% for key in metadata.keys()|sort %}
+      {% if key not in ('author', 'state', 'description') %}
+    <tr>
+      <td class="right aligned">{{ key|capitalize }}</td>
+      <td>{{ metadata[key]|urlize }}</td>
+    </tr>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if wapi.launch is defined %}
+    {% if wapi.launch.extra_vars is defined %}
+    <tr>
+      <td class="right aligned">Extra vars</td>
+      <td>
+        <div class="ui cards">
+      {% for param in wapi.launch.extra_vars %}
+          <div class="card">
+            <div class="content">
+{% if 'required' in param.attributes %}
+              <i class="right floated red warning icon"></i>
+{% endif %}
+{% if 'multiple' in param.attributes %}
+              <i class="right floated list icon"></i>
+{% endif %}
+              <div class="header">{{ param.name }}</div>
+              <div class="meta">{{ param.default }}</div>
+              <div class="description">{{ param.description }}</div>
+            </div>
+          </div>
+      {% endfor %}
+        </div>
+      </td>
+    </tr>
+    {% endif %}
+    {% for key in ('options', 'inventories') %}
+      {% if wapi.launch[key] is defined %}
+    <tr>
+      <td class="right aligned">{{ key|capitalize }}</td>
+      <td>{{ wapi.launch[key]|urlize }}</td>
+    </tr>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  {% if extra.git.status == 'M' %}
+    <tr class="negative"><td class="right aligned">Git status</td><td>modified (untracked={{ extra.git.untracked }})</td></tr>
+    <tr><td class="right aligned">Git diff</td><td><pre><code>{{ extra.git.diff }}</code></pre></td></tr>
+  {% else %}
+    <tr class="positive"><td class="right aligned">Git status</td><td>Ok</td></tr>
+  {% endif %}
+
+  </tbody>
+</table>
+
+{% endif %}

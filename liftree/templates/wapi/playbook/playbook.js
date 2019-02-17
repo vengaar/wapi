@@ -202,6 +202,8 @@ JSON.parse('{{ wapi.launch.extra_vars|wapi_defaults_extra_vars|to_json }}')
 //console.log(cmdline_options)
 const wapi = {{ wapi|to_json }}
 
+const command_line = document.getElementById('command_line')
+//command_line.style.height = '30px'
 const display_cmdline = () => {
     let cmdline = [
         cmdline_base,
@@ -220,7 +222,10 @@ const display_cmdline = () => {
     if (cmdline_tasks !== '') {
         cmdline.push(`--start-at-task="${cmdline_tasks}"`)
     }
-    $('#command_line').val(cmdline.join(' '))
+    command_line.value = cmdline.join(' ')
+    const height = (command_line.scrollHeight === 0) ? '5em' : `${command_line.scrollHeight}px`
+    command_line.style.height = height;
+
 }
 
 const cmdline_update_extravar = (name, value) => {
