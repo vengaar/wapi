@@ -10,7 +10,7 @@ Based on
 
 # Demo
 
-[demo](http://35.180.126.174/show)
+[demo](http://52.47.108.127/show)
 
 # Setup
 
