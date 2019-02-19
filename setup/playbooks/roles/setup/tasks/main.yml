@@ -37,6 +37,10 @@
   become_user: root
   block:
 
+    - name: Install dependencies
+      pip:
+        name: ansible-inventory-grapher
+
     - name: Deploy wapi liftree config include
       copy:
         dest: /etc/liftree/conf.d/50-wapi.conf
