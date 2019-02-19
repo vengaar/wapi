@@ -1,12 +1,14 @@
 
 [database:children]
-database_app1_prod
-database_app2_prod
-database_app1_dev
-database_app2_dev
+database_prod
+database_dev
 
 [database:vars]
 ansible_connection=local
+
+[database_prod:children]
+database_app1_prod
+database_app2_prod
 
 [database_app1_prod]
 server_prod_11
@@ -18,12 +20,20 @@ server_prod_21
 server_prod_22
 server_prod_23
 
+[database_dev:children]
+database_app1_dev
+database_app2_dev
+
 [database_app1_dev]
-server_dev_11
-server_dev_12
-server_dev_13
+server_dev_x1
 
 [database_app2_dev]
-server_dev_21
-server_dev_22
-server_dev_23
+server_dev_x2
+
+[database_app1:children]
+database_app1_prod
+database_app1_dev
+
+[database_app2:children]
+database_app2_prod
+database_app2_dev

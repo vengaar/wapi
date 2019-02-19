@@ -1,0 +1,33 @@
+
+<h2 class="ui header">Vars defined on host : {{ meta.path|basename }}</h2>
+
+{% if data is none %}
+
+<div class="ui info message">
+  <div class="header">
+    No vars defined
+  </div>
+</div>
+
+{% else %}
+
+<div class="ui cards">
+  {% for key, value in data.items()|sort %}
+  <div class="card">
+    <div class="content">
+      <div class="header">{{ key }}</div>
+      <div class="description">
+{% if value is not string and value is not number %}
+        <pre>{{ value|to_yaml }}</pre>
+{% else %}
+        {{ value }}
+{% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+  
+{% endif %}
+
+<h2 class="ui header">Vars comming from groups</h2>
