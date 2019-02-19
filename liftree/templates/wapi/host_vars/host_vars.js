@@ -1,5 +1,5 @@
 $.fn.api.settings.api = {
-  'sw2/grapher': '/sw2/query?query=grapher&host={host}',
+  'sw2/grapher': '/sw2/query?query=grapher&host={host}&inventory={inventory}',
 };
 
 const host = '{{ meta.path|basename }}'

@@ -1,5 +1,6 @@
 <button class="ui primary button update-graph"
         data-host="{{ meta.path|basename }}"
+        data-inventory="{{ meta.path|dirname|dirname }}"
         data-action="sw2/grapher" >
   Refresh graph
 </button>
