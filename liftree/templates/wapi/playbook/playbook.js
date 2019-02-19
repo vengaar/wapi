@@ -339,6 +339,7 @@ $playbook_form.form({
     serializeForm: true,
     onSuccess: function(response, element, xhr) {
         let url = `/show?path=${runs_dir}/${response.results.runid}/run.status#/output`
+//        console.log(url)
         window.open(url)
     },
     onError: function(errorMessage, element, xhr) {
