@@ -5,15 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ meta.path|basename }}</title>
-{#
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
-#}
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
     <style>
       .main.container {
         padding-top: 6em;
+        padding-bottom: 2em;
       }
       #menu {
         _background-color: #F5F5F5;
@@ -22,35 +20,26 @@
         height: 70vh;
         overflow-y: scroll;
       }
-      .ui.form textarea.cmdline {
+      .ui.form textarea.cmdline,
+      .cmdline {
+        white-space: pre-wrap; 
+        word-break: break-word;
         font-family: monospace;
-        background-color: darkslategrey;
-        color: white;
-        _font-weight: bold;
-      }
-      .console::-moz-selection,
-      .ui.form textarea.cmdline::-moz-selection {
-        background-color: white;
-        color: darkblue;
-      }
-      .console::selection,
-      .ui.form textarea.cmdline::selection {
-        background-color: white;
-        color: darkblue;
+        background-color: #fbf9eb;
       }
       .console {
         display: block;
         padding: 12px;
-        white-space: pre-wrap; 
-        word-break: break-word;
-        font-family: monospace;
-/*        background-color: darkslategrey; */
-        background-color: #fbf9eb;
-/*        color: white; */
-/*        font-weight: bold; */
       }
       .selectall {
         margin-left: 1rem;
+      }
+      #menu input[type=text] {
+        width: 150px;
+        transition: width .35s ease-in-out;
+      }
+      #menu input[type=text]:focus {
+        width: 300px;
       }
       #wapi_search_result {
         overflow-y: scroll;
@@ -76,7 +65,6 @@
 {% block menu %}
 {% endblock %}
       <div class="right menu">
-        <a class="item" href="/show?path=/etc/wapi/wapi.yml"><i class="settings icon"></i>Wapi config</a>
         <div class="ui right aligned category search item">
           <div class="ui _transparent icon input">
             <input class="prompt" type="text" placeholder="Search ...">
@@ -84,6 +72,7 @@
           </div>
           <div id="wapi_search_result" class="results"></div>
         </div>
+        <a class="item" href="/show?path=/etc/wapi/wapi.yml"><i class="settings icon"></i>Wapi config</a>
       </div>
     </div>
     <div class="ui main container">
@@ -93,9 +82,6 @@
     <!-- scripts -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.js"></script>
-{#    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-#}
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
@@ -108,8 +94,12 @@
     </script>
     <script>
       'use strict'
+      try {
 {% block script %}
 {% endblock %}
+      } catch(error) {
+        show_error(error)
+      }
       {% include 'common.js' %}
     </script>
   </body>

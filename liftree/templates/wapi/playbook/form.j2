@@ -1,20 +1,4 @@
 {% set form_label_class = "ui grey top right attached label" %}
-<style>
-  .ui.form textarea.cmdline {
-    font-family: monospace;
-    background-color: darkslategrey;
-    color: white;
-    font-weight: bold;
-  }
-  .ui.form textarea.cmdline::-moz-selection {
-    background-color: white;
-    color: darkblue;
-  }
-  .ui.form textarea.cmdline::selection {
-    background-color: white;
-    color: darkblue;
-  }
-</style>
 {# FORM #}
 
 <h3 class="ui dividing header">
@@ -46,13 +30,13 @@
 
 <input  type="hidden" name="playbook" value="{{ meta.path }}">  
 <div class="ui segment">
-  <a  id="copy_cmdline" data-copy="command_line"
+  <a  id="copy_cmdline" data-copy="cmdline"
       class="copy_to_clipboard ui blue top left attached label">
     <i class="copy icon"></i>copy
   </a>
   <textarea class="cmdline"
             name="cmdline"
-            id="command_line"
+            id="cmdline"
             rows="2"></textarea>
 </div>
 

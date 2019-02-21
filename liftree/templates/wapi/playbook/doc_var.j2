@@ -1,0 +1,43 @@
+{# vars #}
+{% if 'boolean' in doc_var %}
+    {% set doc_var_color = "green" %}
+    {% set doc_var_required = true %}
+{% elif 'required' in doc_var.attributes or 'check' in doc_var %}
+    {% set doc_var_required = true %}
+    {% if 'default' in doc_var %}
+        {% set doc_var_color = "green" %}
+    {% else %}
+        {% set doc_var_color = "red" %}
+    {% endif %}
+{% else %}
+    {% set doc_var_color = "blue" %}
+{% endif %}
+{# page #}
+<div class="{{ doc_var_color }} card">
+    <div class="content">
+{% if doc_var_required %}
+        <i class="right floated red warning icon"></i>
+{% endif %}
+{% if 'boolean' in doc_var %}
+        <i class="toggle on icon floated" style="float: right"></i>
+{% endif %}
+{% if 'multiple' in doc_var.attributes %}
+        <i class="right floated list icon"></i>
+{% endif %}
+        <div class="header">{{ doc_var.name }}</div>
+        <div class="meta">{{ doc_var.default }}</div>
+        <div class="description">{{ doc_var.description }}</div>
+    </div>
+{% if 'choices' in doc_var %}
+    <div class="extra content">
+        <i class="eye icon"></i>
+        {{ doc_var.choices }}
+    </div>
+{% endif %}
+{% if 'check' in doc_var %}
+    <div class="extra content">
+        <i class="check icon"></i>
+        {{ doc_var.check }}
+    </div>
+{% endif %}
+</div>

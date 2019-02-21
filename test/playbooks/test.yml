@@ -6,15 +6,17 @@
 
       metadata:
         author: https://github.com/vengaar
-        state: dev
+        state: prod
         description: |
           #### Playbook using for test and demo
           
-          * elem1
-          * elem2
-          
-          See [https://github.com/vengaar/wapi]() for more information
+          * This playbook run on local connection
+          * Below several type of extra vars provided by wapi
+              * Dynamic host coming from inventories
+              * Toggle true/false
+              * Value.s to choose among static list 
 
+          See [https://github.com/vengaar/wapi]() for more information
       launch:
         options: -v --diff
         inventories: &inventories
@@ -29,10 +31,7 @@
               demo2:
                 - "foo"
                 - "bar"
-            attributes: ['required', 'multiple']
-            default:
-              - "plop"
-              - "plip" 
+            attributes: ['required']
 
           - name: prod_servers
             description: One or several production servers
