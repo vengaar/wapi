@@ -35,6 +35,38 @@ class ExtraVar {
                     cmdline_update_extravar(this.name, false)
                 },
             });
+
+        } else if ('query' in data) {
+            this.is_query = true
+            this.is_dropdown = true
+            // init default
+            if ('default' in data) {
+                this.default = (this.is_multiple()) ? data.default : [data.default]
+            } else {
+                this.default = null
+            }
+            let parameters = data.query_parameters || {}
+//             console.log(parameters)
+            this.$.dropdown({
+                apiSettings: {
+                    url: '/sw2/query',
+//                     method: 'POST',
+                    data: {
+                      query: data.query,
+                      parameters: JSON.stringify(parameters)
+                    }, 
+                    cache: true
+                },
+                onChange: extra_var_dropdown_onchange,
+                clearable: true,
+                filterRemoteData: true,
+            });
+            if (this.default !== null) {
+                let values = this.default.map(x => new Object({'name': x, 'value': x}))
+                this.$.dropdown('change values', values)
+                this.$.dropdown('set exactly', this.default)
+            }
+
         } else if ('search' in data) {
             this.is_search = true
             this.is_dropdown = true
@@ -78,7 +110,7 @@ class ExtraVar {
             this.$.dropdown('set exactly', value)
         } else if (this.is_boolean) {
             value ? this.$.checkbox('check') : this.$.checkbox('uncheck')
-        } else if (this.is_search) {
+        } else if (this.is_search || this.is_query) {
             const options = (typeof value === 'string') ? [value] : value;
             const values = options.map(x => new Object({'name': x, 'value': x}))
             this.$.dropdown('change values', values)
@@ -99,7 +131,7 @@ class ExtraVar {
     restore_default() {
         if (this.is_input) {
             this.update(this.default)
-        } else if (this.is_search) {
+        } else if (this.is_search || this.is_query) {
             let values = this.default.map(x => new Object({'name': x, 'value': x}))
             this.$.dropdown('change values', values)
             this.$.dropdown('set exactly', this.default)
@@ -170,6 +202,8 @@ JSON.parse('{{ wapi.launch.extra_vars|wapi_defaults_extra_vars|to_json }}')
 //console.log(cmdline_options)
 const wapi = {{ wapi|to_json }}
 
+const command_line = document.getElementById('command_line')
+//command_line.style.height = '30px'
 const display_cmdline = () => {
     let cmdline = [
         cmdline_base,
@@ -188,7 +222,10 @@ const display_cmdline = () => {
     if (cmdline_tasks !== '') {
         cmdline.push(`--start-at-task="${cmdline_tasks}"`)
     }
-    $('#command_line').val(cmdline.join(' '))
+    command_line.value = cmdline.join(' ')
+    const height = (command_line.scrollHeight === 0) ? '5em' : `${command_line.scrollHeight}px`
+    command_line.style.height = height;
+
 }
 
 const cmdline_update_extravar = (name, value) => {
@@ -237,10 +274,16 @@ if ('launch' in wapi && 'extra_vars' in wapi.launch) {
 /*
  * OPTIONS
  */
+const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
 
 $('#tasks').dropdown({
     apiSettings: {
-        url: '/ansible-ws/tasks?playbook={{ meta.path }}',
+//         url: '/ansible-ws/tasks?playbook={{ meta.path }}',
+        url: '/sw2/query',
+        data: {
+          query: 'tasks',
+          parameters: sw2_playbook_parameter
+        },
         cache: true
     },
     onChange: function(value, text, $selectedItem) {
@@ -252,8 +295,14 @@ $('#tasks').dropdown({
 });
 
 $('.playbook-tags').dropdown({
+
     apiSettings: {
-        url: '/ansible-ws/tags?playbook={{ meta.path }}',
+//         url: '/ansible-ws/tags?playbook={{ meta.path }}',
+        url: '/sw2/query',
+        data: {
+          query: 'tags',
+          parameters: sw2_playbook_parameter
+        },
         cache: true
     },
     onChange: function(value, text, $selectedItem) {
@@ -290,6 +339,7 @@ $playbook_form.form({
     serializeForm: true,
     onSuccess: function(response, element, xhr) {
         let url = `/show?path=${runs_dir}/${response.results.runid}/run.status#/output`
+//        console.log(url)
         window.open(url)
     },
     onError: function(errorMessage, element, xhr) {

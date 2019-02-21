@@ -35,4 +35,4 @@ dans la page `Wapi config` (bonton a gauche du search
 
 Liftree est le framework sur lequel se base WAPI.
 
-Vous pouvez accéder à la page de test de Liftree [ici](/show?path=/home/vengaar/liftree/tests/README.md)
+Vous pouvez accéder à la page de test de Liftree [ici](/show?path=~/liftree/tests/README.md)

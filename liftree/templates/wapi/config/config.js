@@ -2,7 +2,10 @@ $.fn.api.settings.api = {
   'ssh_agent_kill': '/ssh-agent/kill?id=wapi',
   'ssh_agent_info': '/ssh-agent/info?id=wapi',
   'ssh_agent_add': '/ssh-agent/add?id=wapi',
+  'sw2': '/sw2/query?query={query}',
+  'sw2/cache/flush': '/sw2/query?query=cache_flush&key={key}',
 };
+
 
 const $ssh_key_status = $('#ssh_key_status')
 const $ssh_key_form = $('#ssh_key_load')
@@ -70,7 +73,7 @@ $.ajax({
 	   $ssh_key_status.addClass('red')
    },
    success: function(result, status, xhr) {
-	   console.log(result);
+// 	   console.log(result);
 	   if(result.results.keys.length > 0) {
 		   $ssh_key_status.addClass('green')
 		   $public_keys.val(result.results.keys)
@@ -101,6 +104,49 @@ $ssh_agent_kill.api({
     show_error(response)
     return false
   }
+});
+
+
+/*
+ * CACHE
+ */
+
+const $cache_information = $('#cache-information tbody')
+const $botton_load_cache = $('.button.cache-load')
+const load_cache_information = cache_informations => {
+//     console.log(cache_informations)
+    $cache_information.empty()
+    for (let cache_info of cache_informations) {
+//         console.log(cache_info)
+        const line = `
+            <tr>
+              <td class="center aligned">
+                <i  data-action="sw2/cache/flush"
+                    data-key="${cache_info.key}"
+                    class="trash link icon cache-flush"></i>
+              </td>
+              <td>${cache_info.key}</td>
+              <td class="center aligned">${cache_info.metadata.category}</td>
+              <td>${cache_info.metadata.discriminant}</td>
+            </tr>`
+        $cache_information.append(line);
+    }
+    $('.cache-flush').api({
+        onSuccess: function(response) {
+            console.log(response)
+            $botton_load_cache.click()
+        },
+        onFailure: function(response) { show_error(response) },
+        onError: function(errorMessage) { show_error(errorMessage) },
+    });
+}
+
+$botton_load_cache.api({
+    onSuccess: function(response) {
+        load_cache_information(response.results)
+    },
+    onFailure: function(response) { show_error(response) },
+    onError: function(errorMessage) { show_error(errorMessage) },
 });
 
 console.log('ok config')

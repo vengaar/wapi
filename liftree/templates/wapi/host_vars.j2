@@ -1,0 +1,26 @@
+{% set wapi = extra.wapi %}
+{% extends "wapi.j2" %}
+
+{% block menu %}
+<a class="item" data-tab="vars"><i class="id card icon"></i>Vars</a>
+<a class="item" data-tab="graph"><i class="sitemap icon"></i>Graph</a>
+<a class="item" data-tab="facts"><i class="cogs icon"></i>Facts</a>
+{% endblock %}
+
+
+{% block body %}
+<div class="ui tab" data-tab="vars">
+{% include 'wapi/host_vars/vars.j2' %}
+</div>
+<div class="ui tab " data-tab="graph">
+{% include 'wapi/host_vars/graph.j2' %}
+</div>
+<div class="ui tab " data-tab="facts">
+{% include 'wapi/host_vars/facts.j2' %}
+</div>
+{% endblock %}
+
+
+{% block script %}
+{% include 'wapi/host_vars/host_vars.js' %}
+{% endblock %}

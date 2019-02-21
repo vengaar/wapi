@@ -1,0 +1,5 @@
+---
+database_user: read
+database_name: app1
+database_type: master
+...

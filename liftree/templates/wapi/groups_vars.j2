@@ -8,11 +8,7 @@
 
 {% block body %}
 
-<div>{{ 'all'|wapi_grapher }}</div>
-
-<div>{{ meta.path|basename|wapi_grapher }}</div>
-
-<pre><code>{{ data }}</code></pre>
+<pre><code>{{ data|to_yaml }}</code></pre>
 
 {% endblock %}
 

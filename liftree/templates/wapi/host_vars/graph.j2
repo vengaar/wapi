@@ -1,0 +1,20 @@
+<button class="ui primary button update-graph"
+        data-host="{{ meta.path|basename }}"
+        data-inventory="{{ meta.path|dirname|dirname }}"
+        data-action="sw2/grapher" >
+  Refresh graph
+</button>
+<span>
+  Provided by
+  <a href="https://github.com/willthames/ansible-inventory-grapher">
+    ansible-inventory-grapher
+  </a>
+  <i class="github icon"></i>
+</span>
+<div class="ui divider"></div>
+<div class="ui segment">
+  <img  id="host-graph"
+        class="ui medium rounded image"
+        alt="No graph available"
+        src="/ansible-ws/graph/{{ meta.path|basename }}.png">
+</div>
