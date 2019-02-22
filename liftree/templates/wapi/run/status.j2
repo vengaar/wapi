@@ -1,6 +1,7 @@
-{# DOC #}
-<div class="ui tab _segment" data-tab="status">
-
+{# DEBUG 
+<pre><code>{{ data|to_yaml }}</code></pre>
+#}
+{# PAGE #}
 <h3 class="ui dividing header">
   <i class="{{ status_color }} {{ status_icon }} icon"></i>
   <div class="content">
@@ -15,7 +16,7 @@
       <td>Playbook</td>
       <td>{{ data.description.playbook|liftree_link }}</td>
     </tr>
-    <tr>    
+    <tr>
       <td>Started</td>
       <td>{{ data.begin|timestamp2date }}</td>
     </tr>
@@ -61,10 +62,3 @@
               rows="2">{{ data.description.cmdline }}</textarea>
   </div>
 </div>
-
-{#
-<pre><code>{{ data|to_yaml }}</code></pre>
-#}
-
-</div>
-
