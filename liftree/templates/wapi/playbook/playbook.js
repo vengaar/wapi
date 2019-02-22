@@ -52,8 +52,8 @@ class ExtraVar {
 					url: '/sw2/query',
 // method: 'POST',
 					data: {
-					  query: data.query,
-					  parameters: JSON.stringify(parameters)
+						query: data.query,
+						parameters: JSON.stringify(parameters)
 					}, 
 					cache: true
 				},
@@ -154,29 +154,29 @@ class ExtraVar {
 	}
 
 	get_check_method() {
-	  let check_method
-	  if ('check' in this.src) {
-		  check_method = this.src.check
-	  } else if (this.is_required()) {
-		  check_method = 'empty'
-	  }
+		let check_method
+		if ('check' in this.src) {
+			check_method = this.src.check
+		} else if (this.is_required()) {
+			check_method = 'empty'
+		}
 // console.log(this.name, check_method)
-	  return check_method
+		return check_method
 	}
 };
 
 class ExtraVars {
 	constructor(data) {
-	  this.index = {}
+		this.index = {}
 	}
 
 	get(name) {
-	  return this.index[name]
+		return this.index[name]
 	}
 
 	add(extra_var) {
 // console.log('Add extra var : ', extra_var.name)
-	  this.index[extra_var.name] = extra_var
+		this.index[extra_var.name] = extra_var
 	}
 	
 	get_form_fields_check() {
@@ -281,8 +281,8 @@ $('#tasks').dropdown({
 // url: '/ansible-ws/tasks?playbook={{ meta.path }}',
 		url: '/sw2/query',
 		data: {
-		  query: 'tasks',
-		  parameters: sw2_playbook_parameter
+			query: 'tasks',
+			parameters: sw2_playbook_parameter
 		},
 		cache: true
 	},
@@ -300,8 +300,8 @@ $('.playbook-tags').dropdown({
 // url: '/ansible-ws/tags?playbook={{ meta.path }}',
 		url: '/sw2/query',
 		data: {
-		  query: 'tags',
-		  parameters: sw2_playbook_parameter
+			query: 'tags',
+			parameters: sw2_playbook_parameter
 		},
 		cache: true
 	},
@@ -383,9 +383,9 @@ const load_configuration = (configuration) => {
 
 const $configuration = $('#wapi-configuration') 
 $configuration.dropdown({
-  clearable: true,
-  onChange: load_configuration,
-  values: Object.keys(configurations).map(x => new Object({'name': x, 'value': x}))
+	clearable: true,
+	onChange: load_configuration,
+	values: Object.keys(configurations).map(x => new Object({'name': x, 'value': x}))
 })
 
 
