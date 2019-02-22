@@ -18,197 +18,31 @@
 
 {% else %}
 
-  {% if 'warning' in wapi.keys() %}
-
-<div class="ui warning message">
-  <div class="header">No wapi data found</div>
-</div>
-
-  {% endif %}
-
 <form id="playbook_form" class="ui form">
 
-<input  type="hidden" name="playbook" value="{{ meta.path }}">  
-<div class="ui segment">
-  <a  id="copy_cmdline" data-copy="cmdline"
-      class="copy_to_clipboard ui blue top left attached label">
-    <i class="copy icon"></i>copy
-  </a>
-  <textarea class="cmdline"
-            name="cmdline"
-            id="cmdline"
-            rows="2"></textarea>
-</div>
-
-<div class="ui divider"></div>
-
-
-  {% if wapi.configurations is defined %}
-<div class="ui segment">
-  <div class="{{ form_label_class }}">Configurations</div>
-  <div class="field">
-    <label>Select the launch configuration to load</label>
-    <div id="wapi-configuration" class="ui fluid selection dropdown">
-      <input type="hidden" name="configuration">
-      <i class="dropdown icon"></i>
-      <div class="default text">Select your configuration</div>
+    <input  type="hidden" name="playbook" value="{{ meta.path }}">  
+    <div class="ui segment">
+        <a  id="copy_cmdline" data-copy="cmdline"
+            class="copy_to_clipboard ui blue top left attached label">
+            <i class="copy icon"></i>copy
+        </a>
+        <textarea class="cmdline"
+                  name="cmdline"
+                  id="cmdline"
+                  rows="2"></textarea>
     </div>
-  </div>
-</div>
-  {% endif %}
 
-  {% if wapi.launch is defined %}
-    {% if wapi.launch.extra_vars|count > 0 %}
-<div class="ui segment">
-  <div class="{{ form_label_class }}">extra_vars</div>
-      {% for param in wapi.launch.extra_vars %}
-  <div class="_inline field">
-      
-        {# LABEL #}
-        {% if param.boolean is undefined %}
-        
-    <label>
-          {% if 'required' in param.attributes or param.check is defined %}
-      <i class="right floated red warning icon"></i>
-          {% endif %}
-      {{ param.description }} <i>({{ param.name }})</i>
-    </label>
-        {% endif %}
-        
-        {# SEARCH / QUERY #}
-        {% if param.search is defined or param.query is defined %}
-        
-    <div  id="extra_vars-{{ param.name }}"
-          class="extra_vars ui {{ param.attributes|get('multiple') }} search selection dropdown">
-      <input  type="hidden" name="{{ param.name }}">
-      <i class="dropdown icon"></i>
-      <input type="text" class="search">
-      <div class="default text">Select ...</div>
-    </div>
-        
-        {# CHOICES #} 
-        {% elif param.choices is defined %}
-        
-    <div  id="extra_vars-{{ param.name }}"
-          class="extra_vars choices ui {{ param.attributes|get('multiple') }} search selection dropdown">
-      <input  type="hidden"
-          {% if 'multiple' in  param.attributes %}      
-              value="{{ param.default|default([])|join(',') }}"
-          {% else %}
-              value="{{ param.default }}"
-          {% endif%}
-              name="{{ param.name }}">
-      <i class="dropdown icon"></i>
-      <div class="default text">Select {{ param.name }}</div>
-      <div class="menu">
-        <div class="divider"></div>
-        <div id="select_all_users" class="ui toggle checkbox selectall">
-          <input type="checkbox">
-          <label>select all</label>
+    <div class="ui divider"></div>
+
+    <div class="ui stackable two column grid">
+        <div class="column">
+            {% include '/wapi/playbook/form_launch.j2' %}
         </div>
-        <div class="divider"></div>
-          {% for choice in param.choices %}
-        <div class="item" data-value="{{ choice }}">{{ choice }}</div>
-          {% endfor %}
-      </div>
+        <div class="column">
+            {% include '/wapi/playbook/form_extra_vars.j2' %}
+        </div>
     </div>
-        
-        {# BOOLEAN #}
-        {% elif param.boolean is defined %}
-        
-    <div id="extra_vars-{{ param.name }}" class="ui toggle checkbox">
-      <input  type="checkbox"
-              class="boolean"
-          {% if param.boolean %}
-              checked="checked"
-          {% endif %}
-              name="{{ param.name }}">
-      <label><b>{{ param.description }} <i>({{ param.name }})</i></b></label>
-    </div>
-        
-        {# INPUT #}
-        {% else %}
-        
-    <input  class="extra_vars input"
-            id="extra_vars-{{ param.name }}"
-            name="{{ param.name }}"
-          {% if param.properties is defined %}
-            {% for name, value in param.properties.items() %}
-            {{ name }}="{{ value }}"
-            {% endfor %}
-          {% else %}
-            type="text"
-          {% endif %}
-            value="{{ param.default|default('') }}"
-            placeholder="{{ param.description }}">
-        {% endif %}
-  </div>
-      {% endfor %}
-</div>
-    {% endif %}
-  {% endif %}
 
-  <div id="launch_playbook" class="ui primary submit button">Launch</div>
-  <div class="ui error message"></div>
-  
-{# OPTIONS #}  
-<div class="ui segment">
-  <div class="{{ form_label_class }}">options</div>
-  
-  <div class="field">
-    <label></label>
-    <div  id="tasks"
-          class="ui search api selection dropdown">
-      <input type="hidden" name="tasks">
-      <i class="dropdown icon"></i>
-      <input type="text" class="search">
-      <div class="default text">Start a task...</div>
-    </div>
-  </div>
-  
-  <div class="two fields">
-  
-    <div class="field">
-      <label></label>
-      <div  id="tags_apply"
-            class="playbook-tags ui multiple search selection dropdown">
-        <input type="hidden" name="tags_apply">
-        <div class="ui grey label"><i class="tags icon"></i>applied</div>
-        <i class="dropdown icon"></i>
-        <input type="text" class="search">
-        <div class="default text">Apply tags</div>
-      </div>
-    </div>
-  
-    <div class="field">
-      <label></label>
-      <div  id="tags_skip"
-            class="playbook-tags ui multiple search selection dropdown">
-        <input type="hidden" name="tags_skip">
-        <div class="ui grey label"><i class="tags icon"></i>skipped</div>
-        <i class="dropdown icon"></i>
-        <input type="text" class="search">
-        <div class="default text">Skip tags</div>
-      </div>
-    </div>
-  
-  </div>
-  
-  <div class="field">
-    <label>Options</label>
-    {% set options_default = '' %}
-    {% set options = options_default %}
-    {% set inventories = '' %}
-    {% if wapi.launch is defined %}
-      {% if wapi.launch.inventories is defined %}
-        {% set inventories = ' -i ' + wapi.launch.inventories|join(' -i ') %}
-      {% endif %}
-      {% set options = wapi.launch.options|default(options_default) %}
-    {% endif %}
-    <textarea id="options" name="options" rows="3">{{ options }}{{ inventories }}</textarea>
-  </div>
-</div>
-  
 </form>
 
 {% endif %}
