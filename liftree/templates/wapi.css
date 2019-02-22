@@ -1,0 +1,49 @@
+.main.container {
+  padding-top: 6em;
+  padding-bottom: 2em;
+}
+
+#output {
+  height: 70vh;
+  overflow-y: scroll;
+}
+
+.ui.form textarea.cmdline, .cmdline {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: monospace;
+  background-color: #fbf9eb;
+}
+
+.console {
+  display: block;
+  padding: 12px;
+}
+
+.selectall {
+  margin-left: 1rem;
+}
+
+#menu {
+  _background-color: #F5F5F5;
+}
+
+#menu input[type=text] {
+  width: 150px;
+  transition: width .35s ease-in-out;
+}
+
+#menu input[type=text]:focus {
+  width: 300px;
+}
+
+#wapi_search_result {
+  overflow-y: scroll;
+  overflow-y: none;
+  width: auto;
+  max-height: 85vh;
+}
+
+#wapi_search_result a.result {
+  white-space: nowrap;
+}

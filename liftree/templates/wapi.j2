@@ -1,7 +1,6 @@
 <!doctype html>
 <html>
   <head>
-  {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ meta.path|basename }}</title>
@@ -9,49 +8,8 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/atom-one-light.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
     <style>
-      .main.container {
-        padding-top: 6em;
-        padding-bottom: 2em;
-      }
-      #menu {
-        _background-color: #F5F5F5;
-      }
-      #output {
-        height: 70vh;
-        overflow-y: scroll;
-      }
-      .ui.form textarea.cmdline,
-      .cmdline {
-        white-space: pre-wrap; 
-        word-break: break-word;
-        font-family: monospace;
-        background-color: #fbf9eb;
-      }
-      .console {
-        display: block;
-        padding: 12px;
-      }
-      .selectall {
-        margin-left: 1rem;
-      }
-      #menu input[type=text] {
-        width: 150px;
-        transition: width .35s ease-in-out;
-      }
-      #menu input[type=text]:focus {
-        width: 300px;
-      }
-      #wapi_search_result {
-        overflow-y: scroll;
-        overflow-y: none;
-        width: auto;
-        max-height: 85vh;
-      }
-      #wapi_search_result a.result {
-        white-space: nowrap;
-      }
+      {% include 'wapi.css' %}
     </style>
-  {% endblock %}
   </head>
   <body>
     {% include 'wapi/error.j2' %}
