@@ -358,7 +358,7 @@ $playbook_form.form({
 
 const configurations = ('configurations' in wapi) ? wapi.configurations : {}
 const load_configuration = (configuration) => {
-// console.log('load_configuration', configuration)
+	console.log('load_configuration', configuration)
 	if (configuration in configurations) {
 		for (let key in configurations[configuration]) {
 			const value = configurations[configuration][key]
@@ -373,10 +373,12 @@ const load_configuration = (configuration) => {
 		}
 		// check form validation
 		$playbook_form.form('validate form')
-  } else {
-	  error = `Invalid configuration: ${configuration}, this configuration is not defined`
-	  show_error(error)
-  }
+	} else {
+		if (configuration !== '') {
+			error = `Invalid configuration: ${configuration}, this configuration is not defined`;
+			show_error(error)
+		}
+	}
 }
 
 const $configuration = $('#wapi-configuration') 
