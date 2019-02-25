@@ -224,8 +224,12 @@ const display_cmdline = () => {
 		cmdline.push(`--start-at-task="${cmdline_tasks}"`)
 	}
 	$cmdline.value = cmdline.join(' ')
-	const height = ($cmdline.scrollHeight === 0) ? '5em' : `${$cmdline.scrollHeight}px`
-	$cmdline.style.height = height;
+//	console.log($cmdline.style.height)
+//	console.log($cmdline.scrollHeight)
+//	console.log($cmdline.scrollTop)
+	if ($cmdline.scrollHeight > 0) {
+		$cmdline.style.height = `${$cmdline.scrollHeight}px`
+	}
 }
 
 const cmdline_update_extravar = (name, value) => {

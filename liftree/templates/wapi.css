@@ -15,6 +15,11 @@
   background-color: #fbf9eb;
 }
 
+.cmdline.example {
+  min-height: 80px;
+  overflow: hidden;
+}
+
 .console {
   display: block;
   padding: 12px;
