@@ -282,7 +282,6 @@ const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
 
 $('#tasks').dropdown({
 	apiSettings: {
-// url: '/ansible-ws/tasks?playbook={{ meta.path }}',
 		url: '/sw2/query',
 		data: {
 			query: 'tasks',
@@ -299,9 +298,7 @@ $('#tasks').dropdown({
 });
 
 $('.playbook-tags').dropdown({
-
 	apiSettings: {
-// url: '/ansible-ws/tags?playbook={{ meta.path }}',
 		url: '/sw2/query',
 		data: {
 			query: 'tags',
