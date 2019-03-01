@@ -1,5 +1,7 @@
+{# PAGE #}
+{% include '/wapi/common/tab_header.j2' %}
 
-<h2 class="ui header">Vars defined on host : {{ meta.path|basename }}</h2>
+<h4 class="ui header">Vars defined on host</h4>
 
 {% if data is none %}
 
@@ -30,4 +32,6 @@
   
 {% endif %}
 
-<h2 class="ui header">Vars comming from groups</h2>
+<h4 class="ui header">Vars comming from groups</h4>
+
+TODO

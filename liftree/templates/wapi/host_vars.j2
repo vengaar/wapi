@@ -1,26 +1,36 @@
-{% set wapi = extra.wapi %}
+{% set wapi_page_name = meta.path|basename %}
+{% set tabs = [
+    {
+        'id': 'vars',
+        'name': 'Vars',
+        'icon': 'id card',
+        'title': wapi_page_name,
+        'subtitle': 'Variables for this host',
+        'template': '/wapi/host_vars/vars.j2'
+    },
+    {
+        'id': 'graph',
+        'name': 'Graph',
+        'icon': 'sitemap',
+        'title': wapi_page_name,
+        'subtitle': 'Ansible inventory graph dependency',
+        'template': '/wapi/host_vars/graph.j2'
+    },
+    {
+        'id': 'facts',
+        'name': 'Facts',
+        'icon': 'cogs',
+        'title': wapi_page_name,
+        'subtitle': 'Ansible facts in cache',
+        'template': '/wapi/host_vars/facts.j2'
+    }
+] %}
 {% extends "wapi.j2" %}
-
-{% block menu %}
-<a class="item" data-tab="vars"><i class="id card icon"></i>Vars</a>
-<a class="item" data-tab="graph"><i class="sitemap icon"></i>Graph</a>
-<a class="item" data-tab="facts"><i class="cogs icon"></i>Facts</a>
-{% endblock %}
-
-
-{% block body %}
-<div class="ui tab" data-tab="vars">
-{% include 'wapi/host_vars/vars.j2' %}
-</div>
-<div class="ui tab " data-tab="graph">
-{% include 'wapi/host_vars/graph.j2' %}
-</div>
-<div class="ui tab " data-tab="facts">
-{% include 'wapi/host_vars/facts.j2' %}
-</div>
-{% endblock %}
 
 
 {% block script %}
-{% include 'wapi/host_vars/host_vars.js' %}
+{
+  {% include 'wapi/host_vars/host_vars.js' %}
+}
+
 {% endblock %}
