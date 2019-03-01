@@ -1,6 +1,6 @@
 $.fn.api.settings.api = {
 	// '/sw2/query?query=run&from={from}&to={to}&playbook={playbook}&status={status}',
-	'sw2/runs': '/sw2/query?query=run',
+	'sw2/runs': '/sw2/query?query=runs',
 };
 
 $('#search-runs').form({

@@ -33,14 +33,14 @@
       </div>
     </div>
     <div class="field">
-      <label>Expected runs status</label>
+      <label>Expected runs states</label>
       <div class="ui clearable multiple selection dropdown">
-        <input id="status" type="hidden" name="status" value="{{ data.search.status|join(',') }}">
+        <input id="status" type="hidden" name="states" value="{{ data.search.states|join(',') }}">
         <i class="dropdown icon"></i>
         <div class="default text">Select status</div>
         <div class="menu">
           <div class="item" data-value="running"><i class="blue notched circle _loading icon"></i>running</div>
-          <div class="item" data-value="success"><i class="green check icon"></i>success</div>
+          <div class="item" data-value="succeeded"><i class="green check icon"></i>succeeded</div>
           <div class="item" data-value="failed"><i class="red close icon"></i> failed</div>
         </div>
       </div>
