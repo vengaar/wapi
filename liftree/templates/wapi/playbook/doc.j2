@@ -1,10 +1,4 @@
-<h3 class="ui dividing header">
-  <i class="book icon"></i>
-  <div class="content">
-    {{ meta.path }}
-    <div class="sub header">Metadata WAPI documentation</div>
-  </div>
-</h3>
+{% include '/wapi/common/tab_header.j2' %}
 
 {% if 'error' in wapi.keys() %}
 
@@ -88,7 +82,7 @@
   <i class="play icon"></i>
   <div class="content">
     {{ meta.path }}
-    <div class="sub header">Launch WAPI domumentation</div>
+    <div class="sub header">WAPI launch domumentation.</div>
   </div>
 </h3>
 

@@ -1,7 +1,11 @@
+{% if tab is defined %}
 <h3 class="ui dividing header">
   <i id="tab-icon-{{ tab.id }}" class="{{ tab.icon }} icon"></i>
   <div class="content">
     {{ tab.title }}
-    <div class="sub header">{{ tab.subtitle|default('') }}</div>
+    <div class="sub header">{{ tab.subtitle }}</div>
   </div>
 </h3>
+{% else %}
+<div class="ui warning message">tab information missing</div>
+{% endif %}
