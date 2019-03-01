@@ -1,6 +1,6 @@
 {% if tab is defined %}
 <h3 class="ui dividing header">
-  <i id="tab-icon-{{ tab.id }}" class="{{ tab.icon }} icon"></i>
+  <i id="tab-icon-{{ tab.id }}" class="{{ tab_icon|default(tab.icon) }} icon"></i>
   <div class="content">
     {{ tab.title }}
     <div class="sub header">{{ tab.subtitle }}</div>
