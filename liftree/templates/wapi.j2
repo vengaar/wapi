@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ meta.path|basename }}</title>
+    <title>{{ wapi_page_name|default(meta.path|basename) }}</title>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/atom-one-light.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
@@ -20,8 +20,16 @@
       <a class="item" href="/show">
         <i class="home icon"></i>wapi
       </a>
+{% if tabs is defined %}
+  {% for tab in tabs %}
+      <a class="item" data-tab="{{ tab.id }}">
+        <i class="{{ tab.icon }} icon"></i> {{ tab.name }}
+      </a>
+  {% endfor %}
+{% else %}
 {% block menu %}
 {% endblock %}
+{% endif %}
       <div class="right menu">
         <div class="ui right aligned category search item">
           <div class="ui _transparent icon input">
@@ -34,8 +42,16 @@
       </div>
     </div>
     <div class="ui main container">
+{% if tabs is defined %}
+  {% for tab in tabs %}
+    <div class="ui tab" data-tab="{{ tab.id }}">
+      {% include tab.template %}
+    </div>
+  {% endfor %}
+{% else %}
 {% block body %}
 {% endblock %}
+{% endif %}
     </div>
     <!-- scripts -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -59,7 +75,7 @@
         show_error(error)
       }
       {% include 'common.js' %}
-      console.log('END');
+      console.log('-- WAPI END --');
     </script>
   </body>
 </html>

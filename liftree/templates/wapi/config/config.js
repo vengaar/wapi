@@ -6,8 +6,6 @@ $.fn.api.settings.api = {
   'sw2/cache/flush': '/sw2/query?query=cache_flush&key={key}',
 };
 
-
-const $ssh_key_status = $('#ssh_key_status')
 const $ssh_key_form = $('#ssh_key_load')
 const $public_keys = $('#public_keys')
 const $ssh_agent_kill= $('#ssh_agent_kill')
@@ -73,7 +71,7 @@ $.ajax({
 	   $ssh_key_status.addClass('red')
    },
    success: function(result, status, xhr) {
-// 	   console.log(result);
+// console.log(result);
 	   if(result.results.keys.length > 0) {
 		   $ssh_key_status.addClass('green')
 		   $public_keys.val(result.results.keys)
@@ -114,10 +112,10 @@ $ssh_agent_kill.api({
 const $cache_information = $('#cache-information tbody')
 const $botton_load_cache = $('.button.cache-load')
 const load_cache_information = cache_informations => {
-//     console.log(cache_informations)
+// console.log(cache_informations)
     $cache_information.empty()
     for (let cache_info of cache_informations) {
-//         console.log(cache_info)
+// console.log(cache_info)
         const line = `
             <tr>
               <td class="center aligned">
@@ -149,4 +147,4 @@ $botton_load_cache.api({
     onError: function(errorMessage) { show_error(errorMessage) },
 });
 
-console.log('ok config')
+console.log('OK - config.js')

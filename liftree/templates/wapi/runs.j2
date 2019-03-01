@@ -1,0 +1,22 @@
+{% set wapi_page_name = 'Runs search' %}
+{% set tabs = [
+    {
+        'id': 'runs',
+        'name': 'Runs',
+        'icon': 'search',
+        'title': 'Runs search',
+        'subtitle': 'Search playbook runs',
+        'template': '/wapi/runs/runs.j2'
+    }
+] %}
+{% extends "wapi.j2" %}
+
+
+
+{% block script %}
+{
+    const search_default = {{ data.search|to_json }}
+    console.log(search_default)
+    {% include 'wapi/runs/runs.js' %}  
+}
+{% endblock %}
