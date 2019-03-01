@@ -25,13 +25,6 @@
         dest: /home/{{ wapi_user }}/{{ git_name }}
         force: yes
 
-- name: Deploy wapi liftree.conf
-  template:
-    src: liftree.conf
-    dest: /home/{{ wapi_user }}/{{ git_name }}/liftree/liftree.conf
-    owner: "{{ wapi_user }}"
-    group: "{{ wapi_user }}"
-
 - name: Config
   become: yes
   become_user: root
@@ -58,4 +51,7 @@
         - "wapi_{{ ansible_distribution|lower }}_{{ ansible_distribution_major_version }}.yml"
         - "wapi_{{ ansible_distribution|lower }}.yml"
         - "wapi.yml"
+
+    - name: Display test url
+      debug: msg="Go on http://{{ ansible_default_ipv4.address }}/show to test"
 ...

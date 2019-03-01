@@ -15,5 +15,4 @@ $(".ui.multiple.selection.dropdown .selectall").checkbox({
         $dropdown.dropdown('clear');
     },
 });
-
-console.log('common.js OK')
+console.log('common.js OK');

@@ -1,0 +1,121 @@
+<!-- CONFIGURATION -->
+{% if wapi.configurations is defined %}
+
+<div class="ui segment">
+  <div class="{{ form_label_class }}">Configurations</div>
+  <div class="field">
+    <label>Select the launch configuration to load</label>
+    <div id="wapi-configuration" class="ui fluid selection dropdown">
+      <input type="hidden" name="configuration">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select your configuration</div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+
+<div class="ui message">
+  <div class="header">No configuration defined in WAPI</div>
+</div>
+
+{% endif %}
+
+
+<!-- EXTRA-VARS -->
+{% if wapi.launch is defined and wapi.launch.extra_vars|count > 0 %}
+
+<div class="ui segment">
+  <div class="{{ form_label_class }}">extra_vars</div>
+      {% for param in wapi.launch.extra_vars %}
+  <div class="_inline field">
+      
+        {# LABEL #}
+        {% if param.boolean is undefined %}
+        
+    <label>
+          {% if 'required' in param.attributes or param.check is defined %}
+      <i class="right floated red warning icon"></i>
+          {% endif %}
+      {{ param.description }} <i>({{ param.name }})</i>
+    </label>
+        {% endif %}
+        
+        {# SEARCH / QUERY #}
+        {% if param.search is defined or param.query is defined %}
+        
+    <div  id="extra_vars-{{ param.name }}"
+          class="extra_vars ui {{ param.attributes|get('multiple') }} search selection dropdown">
+      <input  type="hidden" name="{{ param.name }}">
+      <i class="dropdown icon"></i>
+      <input type="text" class="search">
+      <div class="default text">Select ...</div>
+    </div>
+        
+        {# CHOICES #} 
+        {% elif param.choices is defined %}
+        
+    <div  id="extra_vars-{{ param.name }}"
+          class="extra_vars choices ui {{ param.attributes|get('multiple') }} search selection dropdown">
+      <input  type="hidden"
+          {% if 'multiple' in  param.attributes %}      
+              value="{{ param.default|default([])|join(',') }}"
+          {% else %}
+              value="{{ param.default }}"
+          {% endif%}
+              name="{{ param.name }}">
+      <i class="dropdown icon"></i>
+      <div class="default text">Select {{ param.name }}</div>
+      <div class="menu">
+        <div class="divider"></div>
+        <div id="select_all_users" class="ui toggle checkbox selectall">
+          <input type="checkbox">
+          <label>select all</label>
+        </div>
+        <div class="divider"></div>
+          {% for choice in param.choices %}
+        <div class="item" data-value="{{ choice }}">{{ choice }}</div>
+          {% endfor %}
+      </div>
+    </div>
+        
+        {# BOOLEAN #}
+        {% elif param.boolean is defined %}
+        
+    <div id="extra_vars-{{ param.name }}" class="ui toggle checkbox">
+      <input  type="checkbox"
+              class="boolean"
+          {% if param.boolean %}
+              checked="checked"
+          {% endif %}
+              name="{{ param.name }}">
+      <label><b>{{ param.description }} <i>({{ param.name }})</i></b></label>
+    </div>
+        
+        {# INPUT #}
+        {% else %}
+        
+    <input  class="extra_vars input"
+            id="extra_vars-{{ param.name }}"
+            name="{{ param.name }}"
+          {% if param.properties is defined %}
+            {% for name, value in param.properties.items() %}
+            {{ name }}="{{ value }}"
+            {% endfor %}
+          {% else %}
+            type="text"
+          {% endif %}
+            value="{{ param.default|default('') }}"
+            placeholder="{{ param.description }}">
+        {% endif %}
+  </div>
+      {% endfor %}
+</div>
+
+{% else %}
+
+<div class="ui message">
+  <div class="header">No extra vars defined in WAPI</div>
+</div>
+
+{% endif %}

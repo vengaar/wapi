@@ -1,3 +1,4 @@
+{# VARS #}
 {% set wapi = extra.wapi %}
 {% if data.status == 'finished' %}
   {% if data.return_code == 0 %}
@@ -15,6 +16,7 @@
   {% set status_color = 'greyred' %}
 {% endif %}
 {% extends 'wapi.j2' %}
+{# PAGE #}
 
 
 {% block menu %}
@@ -24,8 +26,12 @@
 
 
 {% block body %}
-{% include 'wapi/run/status.j2' %}
+<div class="ui tab _segment" data-tab="status">
+  {% include 'wapi/run/status.j2' %}
+</div>
+<div class="ui tab _segment" data-tab="output">
 {% include 'wapi/run/output.j2' %}
+</div>
 {% endblock %}
 
 

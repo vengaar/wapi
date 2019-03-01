@@ -1,0 +1,57 @@
+<div id="launch_playbook" class="fluid ui positive submit button">Launch</div>
+<div class="ui error message"></div>
+  
+{# OPTIONS #}  
+<div class="ui segment">
+  <div class="{{ form_label_class }}">options</div>
+  
+  <div class="field">
+    <label></label>
+    <div  id="tasks"
+          class="ui search api selection dropdown">
+      <input type="hidden" name="tasks">
+      <i class="dropdown icon"></i>
+      <input type="text" class="search">
+      <div class="default text">Start a task...</div>
+    </div>
+  </div>
+  
+  
+  <div class="field">
+    <label></label>
+    <div  id="tags_apply"
+          class="playbook-tags ui multiple search selection dropdown">
+      <input type="hidden" name="tags_apply">
+      <div class="ui grey label"><i class="tags icon"></i>applied</div>
+      <i class="dropdown icon"></i>
+      <input type="text" class="search">
+      <div class="default text">Apply tags</div>
+    </div>
+  </div>
+  
+  <div class="field">
+    <label></label>
+    <div  id="tags_skip"
+          class="playbook-tags ui multiple search selection dropdown">
+      <input type="hidden" name="tags_skip">
+      <div class="ui grey label"><i class="tags icon"></i>skipped</div>
+      <i class="dropdown icon"></i>
+      <input type="text" class="search">
+      <div class="default text">Skip tags</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Options</label>
+    {% set options_default = '' %}
+    {% set options = options_default %}
+    {% set inventories = '' %}
+    {% if wapi.launch is defined %}
+      {% if wapi.launch.inventories is defined %}
+        {% set inventories = ' -i ' + wapi.launch.inventories|join(' -i ') %}
+      {% endif %}
+      {% set options = wapi.launch.options|default(options_default) %}
+    {% endif %}
+    <textarea id="options" name="options" rows="3">{{ options }}{{ inventories }}</textarea>
+  </div>
+</div>

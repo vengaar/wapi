@@ -12,10 +12,10 @@
 
 
 {% block body %}
-
 {#
 DEBUG 
 <pre><code>{{ wapi }}</code></pre>
+<pre><code>{{ extra.git|to_yaml }}</code></pre>
 #}
 
 {# DOC #}
@@ -32,7 +32,7 @@ DEBUG
       <div class="sub header">Playbook code</div>
     </div>
   </h3>
-  <pre><code>{{ data }}</code></pre>
+  <pre class="ui segment"><code class="cmdline jinja">{{ data }}</code></pre>
 </div>
 
 
