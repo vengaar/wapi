@@ -27,7 +27,6 @@ $('#search-runs').form({
 });
 
 const $runs_table = $('#runs-tables tbody')
-const runs_dir = '{{ data.runs_dir }}'
 const search_runs = runs => {
 	console.log(runs)
 	$runs_table.empty()

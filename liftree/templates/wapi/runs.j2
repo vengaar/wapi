@@ -17,6 +17,8 @@
 {
     const search_default = {{ data.search|to_json }}
     console.log(search_default)
+    const runs_dir = '{{ extra.wapi_config.runs_dir }}'
+    console.log(runs_dir)
     {% include 'wapi/runs/runs.js' %}  
 }
 {% endblock %}
