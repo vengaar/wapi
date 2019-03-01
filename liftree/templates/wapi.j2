@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/atom-one-light.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
     <style>
-      {% include 'wapi.css' %}
+      {% include '/wapi/layout/wapi.css' %}
     </style>
   </head>
   <body>
-    {% include 'wapi/error.j2' %}
+    {% include '/wapi/layout/error.j2' %}
     <div id="menu" class="ui main _top fixed _inverted blue _secondary _tabular _pointing menu">
       <a class="item" href="https://github.com/vengaar/wapi">
         <i class="grey github icon"></i>wapi
@@ -64,7 +64,7 @@
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
       'use strict'
-      {% include 'wapi.js' %}
+      {% include '/wapi/layout/wapi.js' %}
     </script>
     <script>
       'use strict'
@@ -74,7 +74,7 @@
       } catch(error) {
         show_error(error)
       }
-      {% include 'common.js' %}
+      {% include '/wapi/layout/common.js' %}
       console.log('-- WAPI END --');
     </script>
   </body>
