@@ -14,12 +14,23 @@
   <body>
     {% include '/wapi/layout/error.j2' %}
     <div id="menu" class="ui main _top fixed _inverted blue _secondary _tabular _pointing menu">
-      <a class="item" href="https://github.com/vengaar/wapi">
-        <i class="grey github icon"></i>wapi
-      </a>
-      <a class="item" href="/show">
-        <i class="home icon"></i>wapi
-      </a>
+      <div class="ui dropdown icon item">
+        <i class="bars icon"></i>
+        <div class="menu">
+          <a class="item" href="/show"><i class="home icon"></i>Home</a>
+          <a class="item" href="/show?path=/etc/wapi/runs.yml"><i class="search icon"></i>Runs search</a>
+          <a class="item" href="/show?path=/etc/wapi/wapi.yml"><i class="settings icon"></i>Configs</a>
+          <div class="item">
+            <i class="dropdown icon"></i>
+            <span class="text"><i class="github icon"></i>Github</span>
+            <div class="menu">
+              <a class="item" href="https://github.com/vengaar/wapi"><i class="github icon"></i>wapi</a>
+              <a class="item" href="https://github.com/vengaar/ansible-ws"><i class="github icon"></i>ansible-ws</a>
+              <a class="item" href="https://github.com/vengaar/liftree"><i class="github icon"></i>liftree</a>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end menu -->
 {% if tabs is defined %}
   {% for tab in tabs %}
       <a class="item" data-tab="{{ tab.id }}">
@@ -38,9 +49,8 @@
           </div>
           <div id="wapi_search_result" class="results"></div>
         </div>
-        <a class="item" href="/show?path=/etc/wapi/wapi.yml"><i class="settings icon"></i>Wapi config</a>
       </div>
-    </div>
+    </div> <!-- end navbar -->
     <div class="ui main container">
 {% if tabs is defined %}
   {% for tab in tabs %}
