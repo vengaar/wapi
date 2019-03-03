@@ -1,5 +1,7 @@
 {% set wapi_page_name = 'Run' %}
-{% set wapi = extra.wapi %}
+{% set wapi_star_cat = 'run' %}
+{% set wapi_star_name = data.runid %}
+{% set wapi_star_icon = 'play' %}
 {% if data.return_code is none %}
     {% set tab_icon = 'blue notched circle loading' %}
 {% elif data.return_code == 0 %}

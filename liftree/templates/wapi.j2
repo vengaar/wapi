@@ -63,7 +63,6 @@
     </div> <!-- end navbar -->
 
     <div class="ui main container">
-{{ meta.renderer.name }}
 {% if tabs is defined %}
   {% for tab in tabs %}
     <div class="ui tab" data-tab="{{ tab.id }}">
@@ -88,7 +87,7 @@
       'use strict'
       const path = '{{ meta.path }}'
       {
-        const wapi_star_cat = '{{ wapi_star_cat|default(meta.renderer.name) }}'
+        const wapi_star_cat  = '{{ wapi_star_cat|default(meta.renderer.name) }}'
         const wapi_star_name = '{{ wapi_star_name|default(meta.path|basename) }}'
         const wapi_star_icon = '{{ wapi_star_icon|default("dungeon") }}'
         console.log('star', wapi_star_cat, wapi_star_name, wapi_star_icon)
