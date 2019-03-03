@@ -56,3 +56,7 @@
 #wapi_search_result a.result {
   white-space: nowrap;
 }
+
+.nowrap {
+  white-space: nowrap;
+}

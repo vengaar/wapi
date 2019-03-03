@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+{#    
+    <link rel="icon" href="/ansible-ws/graph/wapi.ico" />
+#}
     <title>{{ wapi_page_name|default(meta.path|basename) }}</title>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/atom-one-light.min.css">
@@ -14,23 +17,32 @@
   <body>
     {% include '/wapi/layout/error.j2' %}
     <div id="menu" class="ui main _top fixed _inverted blue _secondary _tabular _pointing menu">
-      <div class="ui dropdown icon item">
-        <i class="bars icon"></i>
-        <div class="menu">
-          <a class="item" href="/show"><i class="home icon"></i>Home</a>
-          <a class="item" href="/show?path=/etc/wapi/runs.yml"><i class="search icon"></i>Runs search</a>
-          <a class="item" href="/show?path=/etc/wapi/wapi.yml"><i class="settings icon"></i>Configs</a>
-          <div class="item">
-            <i class="dropdown icon"></i>
-            <span class="text"><i class="github icon"></i>Github</span>
-            <div class="menu">
+      <a class="browse item"><i class="bars icon"></i></a>
+      <div class="ui _fluid flowing popup transition hidden" style="width: 80%;">
+        <div class="ui three column relaxed divided stackable grid">
+          <div class="column">
+            <h4 class="ui dividing header"><i class="dungeon icon"></i>WAPI</h4>
+            <div class="ui fluid vertical secondary menu">
+              <a class="item" href="/show"><i class="home icon"></i>Home</a>
+              <a class="item" href="/show?path=/etc/wapi/runs.yml"><i class="search icon"></i>Runs</a>
+              <a class="item" href="/show?path=/etc/wapi/wapi.yml"><i class="settings icon"></i>Configs</a>
+            </div>
+          </div>
+          <div class="_four _wide column">
+            <h4 class="ui dividing header"><i class="github icon"></i>Git</h4>
+            <div class="ui vertical secondary menu" style="width: auto;">
               <a class="item" href="https://github.com/vengaar/wapi"><i class="github icon"></i>wapi</a>
               <a class="item" href="https://github.com/vengaar/ansible-ws"><i class="github icon"></i>ansible-ws</a>
               <a class="item" href="https://github.com/vengaar/liftree"><i class="github icon"></i>liftree</a>
             </div>
           </div>
+          <div class="_height _wide column">
+            <h4 class="ui dividing header"><i class="yellow star icon"></i>Favorites</h4>
+            <div id="wapi-stars" class="ui vertical secondary menu" style="width: auto;">
+            </div>
+          </div>
         </div>
-      </div> <!-- end menu -->
+      </div>
 {% if tabs is defined %}
   {% for tab in tabs %}
       <a class="item" data-tab="{{ tab.id }}">
@@ -51,7 +63,9 @@
         </div>
       </div>
     </div> <!-- end navbar -->
+
     <div class="ui main container">
+{{ meta.renderer.name }}
 {% if tabs is defined %}
   {% for tab in tabs %}
     <div class="ui tab" data-tab="{{ tab.id }}">
@@ -74,7 +88,14 @@
     <script>hljs.initHighlightingOnLoad();</script>
     <script>
       'use strict'
-      {% include '/wapi/layout/wapi.js' %}
+      const path = '{{ meta.path }}'
+      {
+        const wapi_star_cat = '{{ wapi_star_cat|default(meta.renderer.name) }}'
+        const wapi_star_name = '{{ wapi_star_name|default(meta.path|basename) }}'
+        const wapi_star_icon = '{{ wapi_star_icon|default("dungeon") }}'
+        console.log('star', wapi_star_cat, wapi_star_name, wapi_star_icon)
+        {% include '/wapi/layout/wapi.js' %}
+      }
     </script>
     <script>
       'use strict'
