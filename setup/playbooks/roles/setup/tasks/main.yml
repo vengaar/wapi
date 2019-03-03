@@ -25,6 +25,13 @@
         dest: /home/{{ wapi_user }}/{{ git_name }}
         force: yes
 
+- name: deploy favincon
+  copy:
+    src: wapi.ico
+    dest: ~/ansible-ws@working/graphs/wapi.ico
+  become: true
+  become_user: "{{ wapi_user }}"
+
 - name: Config
   become: yes
   become_user: root
