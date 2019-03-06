@@ -1,9 +1,9 @@
 $.fn.api.settings.api = {
-	'ssh_agent_kill': '/ssh-agent/kill?id=wapi',
-	'ssh_agent_info': '/ssh-agent/info?id=wapi',
-	'ssh_agent_add': '/ssh-agent/add?id=wapi',
-	'sw2': '/sw2/query?query={query}',
-	'sw2/cache/flush': '/sw2/query?query=cache_flush&key={key}',
+	'ssh-agent':      '/sw2/query?query=SSHAgent&id=wapi',
+	'ssh-agent/add':  '/sw2/query?query=SSHAgentAdd&id=wapi',
+	'ssh-agent/kill': '/sw2/query?query=SSHAgentKill&id=wapi',
+	'cache': '/sw2/query?query=cache_info',
+	'cache/flush': '/sw2/query?query=cache_flush&key={key}',
 };
 
 const $ssh_key_form = $('#ssh_key_load')
@@ -15,10 +15,7 @@ $('#private_key').dropdown({
 });
 
 $ssh_key_form.api({
-	contentType: 'application/json',
-	dataType: 'json',
-	url: '/ssh-agent/add?id=wapi',
-	method:'GET',
+	action: 'ssh-agent/add',
 	serializeForm: true,
 	beforeSend: function(settings) {
 		console.log("Data submitted =",settings);
@@ -26,7 +23,7 @@ $ssh_key_form.api({
 	},
 	onSuccess: function(response, element, xhr) {
 		console.log('key-add success');
-		console.log(response);
+		// console.log(response);
 		$ssh_key_status.addClass('green');
 		$public_keys.val(response.results.keys)
 	},
@@ -60,27 +57,29 @@ $ssh_key_form.api({
 	}
 });
 
-$.ajax({
-	url: '/ssh-agent/info?id=wapi',
-	type: 'GET',
-	error: function(xhr, status, error) {
-		show_error(error)
-		$ssh_key_status.addClass('red')
-	},
-	success: function(result, status, xhr) {
-		// console.log(result);
-		if(result.results.keys.length > 0) {
+$('body').api({
+	action: 'ssh-agent',
+	on: 'now',
+	onSuccess: function(response) {
+		console.log(response.results.agent);
+		if(response.results.keys.length > 0) {
 			$ssh_key_status.addClass('green')
-			$public_keys.val(result.results.keys)
+			$public_keys.val(response.results.keys)
 		} else {
 			$ssh_key_status.addClass('red')
 			$public_keys.val("NO keys loaded")
 		}
 	},
-});
+	onFailure: function(response) {
+		show_error(error)
+	},
+	onError: function(errorMessage) {
+		show_error(error)
+	},
+})	
 
 $ssh_agent_kill.api({
-	action: 'ssh_agent_kill',
+	action: 'ssh-agent/kill',
 	onSuccess: function(response, element, xhr) {
 		console.log('ssh_agent_kill success');
 		console.log(response);
@@ -115,7 +114,7 @@ const load_cache_information = cache_informations => {
 		const line = `
 			<tr>
 				<td class="center aligned">
-					<i	data-action="sw2/cache/flush"
+					<i	data-action="cache/flush"
 						data-key="${cache_info.key}"
 						class="trash link icon cache-flush"></i>
 				</td>
