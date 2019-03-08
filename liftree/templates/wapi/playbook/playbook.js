@@ -2,11 +2,6 @@
  * 
  */
 
-$.fn.api.settings.api = {
-	'playbook/launch': '/sw2/query?query=launch',
-	'sw2': '/sw2/query',
-};
-
 class ExtraVar {
 	constructor(data) {
 		this.src = data
@@ -54,7 +49,7 @@ class ExtraVar {
 // console.log(parameters)
 			this.$.dropdown({
 				apiSettings: {
-					url: '/sw2/query',
+					action: 'sw2',
 // method: 'POST',
 					data: {
 						query: data.query,
@@ -287,10 +282,10 @@ const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
 
 $('#tasks').dropdown({
 	apiSettings: {
-		url: '/sw2/query',
+		action: 'sw2',
 		data: {
 			query: 'tasks',
-			parameters: sw2_playbook_parameter
+			parameters: sw2_playbook_parameter,
 		},
 		cache: true
 	},
@@ -304,7 +299,7 @@ $('#tasks').dropdown({
 
 $('.playbook-tags').dropdown({
 	apiSettings: {
-		url: '/sw2/query',
+		action: 'sw2',
 		data: {
 			query: 'tags',
 			parameters: sw2_playbook_parameter
@@ -338,7 +333,7 @@ const $playbook_form = $('#playbook_form')
 $playbook_form.form({
 	fields: extra_vars.get_form_fields_check()
 }).api({
-	action: 'playbook/launch',
+	action: 'sw2',
 	method:'POST',
 	serializeForm: true,
 	data: {

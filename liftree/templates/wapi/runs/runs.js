@@ -1,7 +1,6 @@
-$.fn.api.settings.api = {
-	// '/sw2/query?query=run&from={from}&to={to}&playbook={playbook}&status={status}',
-	'sw2/runs': '/sw2/query?query=runs',
-};
+/**
+ * 
+ */
 
 $('#search-runs').form({
 	fields: {
@@ -11,7 +10,10 @@ $('#search-runs').form({
 		status   : 'empty',
 	}
 }).api({
-	action: 'sw2/runs',
+	action: 'sw2',
+	data: {
+		query: 'runs'
+	},
 	serializeForm: true,
 	beforeSend: function(settings) {
 		console.log(settings.data);
@@ -22,7 +24,10 @@ $('#search-runs').form({
 		console.log(response)
 		search_runs(response.results)
 	},
-	onFailure: function(response) { show_error(response) },
+	onFailure: function(response) {
+		console.error(response)
+		show_error(JSON.stringify(response.usages, null, 2))
+	},
 	onError: function(errorMessage) { show_error(errorMessage) },
 });
 

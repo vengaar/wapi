@@ -1,10 +1,3 @@
-$.fn.api.settings.api = {
-	'ssh-agent':      '/sw2/query?query=SSHAgent&id=wapi',
-	'ssh-agent/add':  '/sw2/query?query=SSHAgentAdd&id=wapi',
-	'ssh-agent/kill': '/sw2/query?query=SSHAgentKill&id=wapi',
-	'cache': '/sw2/query?query=cache_info',
-	'cache/flush': '/sw2/query?query=cache_flush&key={key}',
-};
 
 const $ssh_key_form = $('#ssh_key_load')
 const $public_keys = $('#public_keys')
