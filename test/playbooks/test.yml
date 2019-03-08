@@ -58,6 +58,7 @@
           - name: agree
             boolean: true
             description: A toggle true/false
+
           - name: email
             description: A email to notify
             check: 'email'
