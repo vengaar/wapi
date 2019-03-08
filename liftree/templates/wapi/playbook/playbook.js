@@ -183,7 +183,10 @@ class ExtraVars {
 		let form_fields_check = {}
 		for (let name in this.index) {
 			let extra_var = this.get(name)
-			form_fields_check[name] = extra_var.get_check_method()
+			const check_method = extra_var.get_check_method()
+			if (check_method !== undefined) {
+				form_fields_check[name] = extra_var.get_check_method()
+			}
 		}
 		return form_fields_check
 	}
