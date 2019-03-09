@@ -1,6 +1,11 @@
-/*
+/**
  * 
  */
+
+$.fn.api.settings.api = {
+	'playbook/launch': '/sw2/query?query=launch',
+	'sw2': '/sw2/query',
+};
 
 class ExtraVar {
 	constructor(data) {
@@ -224,9 +229,9 @@ const display_cmdline = () => {
 		cmdline.push(`--start-at-task="${cmdline_tasks}"`)
 	}
 	$cmdline.value = cmdline.join(' ')
-//	console.log($cmdline.style.height)
-//	console.log($cmdline.scrollHeight)
-//	console.log($cmdline.scrollTop)
+// console.log($cmdline.style.height)
+// console.log($cmdline.scrollHeight)
+// console.log($cmdline.scrollTop)
 	if ($cmdline.scrollHeight > 0) {
 		$cmdline.style.height = `${$cmdline.scrollHeight}px`
 	}
@@ -282,7 +287,6 @@ const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
 
 $('#tasks').dropdown({
 	apiSettings: {
-// url: '/ansible-ws/tasks?playbook={{ meta.path }}',
 		url: '/sw2/query',
 		data: {
 			query: 'tasks',
@@ -299,9 +303,7 @@ $('#tasks').dropdown({
 });
 
 $('.playbook-tags').dropdown({
-
 	apiSettings: {
-// url: '/ansible-ws/tags?playbook={{ meta.path }}',
 		url: '/sw2/query',
 		data: {
 			query: 'tags',
@@ -336,14 +338,15 @@ const $playbook_form = $('#playbook_form')
 $playbook_form.form({
 	fields: extra_vars.get_form_fields_check()
 }).api({
-	contentType: 'application/json',
-	dataType: 'json',
-	url: '/ansible-ws/launch',
+	action: 'playbook/launch',
 	method:'POST',
 	serializeForm: true,
+	data: {
+		query: 'launch'
+	},
 	onSuccess: function(response, element, xhr) {
 		let url = `/show?path=${runs_dir}/${response.results.runid}/run.status#/output`
-// console.log(url)
+		// console.log(url)
 		window.open(url)
 	},
 	onError: function(errorMessage, element, xhr) {

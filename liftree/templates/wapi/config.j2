@@ -1,0 +1,28 @@
+{% set wapi_page_name = 'Wapi config' %}
+{% set tabs = [
+    {
+        'id': 'ssh-key',
+        'name': 'SSH key',
+        'icon': 'key',
+        'title': 'SSh key managment',
+        'subtitle': 'Manage ssh key used by ansible-ws to launch playbook',
+        'template': '/wapi/config/ssh_key.j2'
+    },
+    {
+        'id': 'cache',
+        'name': 'cache',
+        'icon': 'clone',
+        'title': 'Wapi cache management',
+        'subtitle': 'Manage data cached by ansible-ws for tasks, tags, invnetories, ...',
+        'template': '/wapi/config/cache.j2'
+    }
+] %}
+{% extends "wapi.j2" %}
+
+
+{% block script %}
+{
+  const $ssh_key_status = $('#tab-icon-ssh-key')
+  {% include 'wapi/config/config.js' %}
+}
+{% endblock %}

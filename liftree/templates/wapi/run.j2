@@ -1,0 +1,35 @@
+{% set wapi_page_name = 'Run' %}
+{% set wapi_star_cat = 'run' %}
+{% set wapi_star_name = data.runid %}
+{% set wapi_star_icon = 'play' %}
+{% if data.return_code is none %}
+    {% set tab_icon = 'blue notched circle loading' %}
+{% elif data.return_code == 0 %}
+    {% set tab_icon = 'green check' %}
+{% else %}
+    {% set tab_icon = 'red close' %}
+{% endif %}
+{% set tabs = [
+    {
+        'id': 'status',
+        'name': 'Status',
+        'icon': 'tasks',
+        'title': 'Run status',
+        'subtitle': data.runid,
+        'template': '/wapi/run/status.j2'
+    },
+    {
+        'id': 'output',
+        'name': 'Output',
+        'icon': 'terminal',
+        'title': 'Run output',
+        'subtitle': data.runid,
+        'template': '/wapi/run/output.j2'
+    }
+] %}
+{% extends 'wapi.j2' %}
+
+
+{% block script %}
+{% include 'wapi/run/run.js' %}
+{% endblock %}

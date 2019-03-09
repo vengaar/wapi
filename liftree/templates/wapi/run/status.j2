@@ -2,13 +2,7 @@
 <pre><code>{{ data|to_yaml }}</code></pre>
 #}
 {# PAGE #}
-<h3 class="ui dividing header">
-  <i class="{{ status_color }} {{ status_icon }} icon"></i>
-  <div class="content">
-    Run status
-    <div class="sub header">{{ data.runid }}</div>
-  </div>
-</h3>
+{% include '/wapi/common/tab_header.j2' %}
 
 <table class="ui compact definition table">
   <tbody>

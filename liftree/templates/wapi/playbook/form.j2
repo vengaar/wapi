@@ -1,13 +1,6 @@
 {% set form_label_class = "ui grey top right attached label" %}
 {# FORM #}
-
-<h3 class="ui dividing header">
-  <i class="play icon"></i>
-  <div class="content">
-    {{ meta.path }}
-    <div class="sub header">Playbook launch</div>
-  </div>
-</h3>
+{% include '/wapi/common/tab_header.j2' %}
 
 {% if 'error' in wapi.keys() %}
 

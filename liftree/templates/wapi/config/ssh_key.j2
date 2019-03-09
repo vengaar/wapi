@@ -1,18 +1,4 @@
-<h1 class="ui center aligned icon header">
-  <i class="settings icon"></i>
-  <div class="content">
-    Wapi configuration
-    <div class="sub header"></div>
-  </div>
-</h1>
-
-<h2 class="ui header">
-  <i id="ssh_key_status" class="key icon"></i>
-  <div class="content">
-    Ssh key management
-    <div class="sub header"></div>
-  </div>
-</h2>
+{% include '/wapi/common/tab_header.j2' %}
 
 <form id="ssh_key_load" class="ui form">
   <div class="field">
@@ -42,7 +28,6 @@
     <i class="trash icon"></i> Kill agent
   </div>
   
-  <h3 class="ui header">Public key loaded</h3>
+  <h3 class="ui header">Plublic key currently loaded</h3>
   <textarea class="console" id="public_keys"></textarea>
-
 </form>

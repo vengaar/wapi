@@ -1,0 +1,13 @@
+#
+# {{ ansible_managed }}
+#
+---
+search:
+  from: 7 
+  to: 1
+  playbook: ''
+  states:
+    - running
+    - succeeded
+    - failed
+...

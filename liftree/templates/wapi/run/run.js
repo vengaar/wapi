@@ -53,7 +53,7 @@ const update_page = (response) => {
 const get_run_output = () => {
 	$.ajax({
 		dataType: "json",
-		url: '/ansible-ws/run?runid={{ data.runid }}',
+		url: '/sw2/query?query=run&runid={{ data.runid }}',
 		success: update_page
 	});
 }

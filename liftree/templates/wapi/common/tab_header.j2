@@ -1,0 +1,11 @@
+{% if tab is defined %}
+<h3 class="ui dividing header">
+  <i id="tab-icon-{{ tab.id }}" class="{{ tab_icon|default(tab.icon) }} icon"></i>
+  <div class="content">
+    {{ tab.title }} <i class="wapi-start star outline link icon"></i>
+    <div class="sub header">{{ tab.subtitle }}</div>
+  </div>
+</h3>
+{% else %}
+<div class="ui warning message">tab information missing</div>
+{% endif %}

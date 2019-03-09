@@ -1,0 +1,40 @@
+{% set wapi_star_cat = meta.renderer.name %}
+{% set wapi_star_name = meta.path|basename %}
+{% set wapi_star_icon = 'book' %}
+{% set wapi = extra.wapi %}
+{% set tabs = [
+    {
+        'id': 'doc',
+        'name': 'Doc',
+        'icon': 'book',
+        'title': meta.path,
+        'subtitle': 'WAPI documentation',
+        'template': '/wapi/playbook/doc.j2'
+    },
+    {
+        'id': 'code',
+        'name': 'Code',
+        'icon': 'code',
+        'title': meta.path,
+        'subtitle': 'Playbook code',
+        'template': '/wapi/playbook/code.j2'
+    },
+    {
+        'id': 'play',
+        'name': 'Launch',
+        'icon': 'play',
+        'title': meta.path,
+        'subtitle': 'Playbook launch',
+        'template': '/wapi/playbook/form.j2'
+    }
+] %}
+{% extends "wapi.j2" %}
+
+
+{% block script %}
+{% if 'error' not in wapi.keys() %}
+{
+  {% include 'wapi/playbook/playbook.js' %}
+}
+{% endif %}
+{% endblock %}
