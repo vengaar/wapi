@@ -50,16 +50,9 @@ class ExtraVar {
 			this.$.dropdown({
 				apiSettings: {
 					action: 'sw2',
-//					method: 'POST',
+					method: 'POST',
 					contentType: 'application/json',
-					data: JSON.stringify({
-						'sw2': {
-							'query': data.query,
-							'debug': true,
-							'cache': 'bypass'
-						},
-						'parameters': parameters
-					}),
+					data: get_sw2_query(data.query, parameters),
 					cache: true
 				},
 				onChange: extra_var_dropdown_onchange,
@@ -286,28 +279,14 @@ if ('launch' in wapi && 'extra_vars' in wapi.launch) {
 /*
  * OPTIONS
  */
-const playbook = '{{ meta.path }}'
-const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
-const get_sw2_playbook_query = (query) => {
-	const data = {
-		'sw2': {
-			'query': query,
-			'debug': true
-		},
-		'parameters': {
-			'playbook': playbook
-		}
-	}
-	console.log(data)
-	return JSON.stringify(data)
-}
+const sw2_playbook_parameter = {'playbook': path}
 
 $('#tasks').dropdown({
 	apiSettings: {
 		action: 'sw2',
 		method:'POST',
 		contentType: 'application/json',
-		data: get_sw2_playbook_query('tasks'),
+		data: get_sw2_query('tasks', sw2_playbook_parameter),
 		cache: true
 	},
 	onChange: function(value, text, $selectedItem) {
@@ -323,7 +302,7 @@ $('.playbook-tags').dropdown({
 		action: 'sw2',
 		method:'POST',
 		contentType: 'application/json',
-		data: get_sw2_playbook_query('tags'),
+		data: get_sw2_query('tasks', sw2_playbook_parameter),
 		cache: true
 	},
 	onChange: function(value, text, $selectedItem) {
@@ -358,16 +337,7 @@ $playbook_form.form({
 	contentType: 'application/json',
 	serializeForm: true,
 	beforeSend: function(settings) {
-		console.log(settings.data)
-		const data = {
-			'sw2': {
-				'query': 'launch',
-				'debug': true
-			},
-			'parameters': settings.data
-		}
-		settings.data = JSON.stringify(data)
-		console.log(settings.data)
+		settings.data = get_sw2_query('launch', settings.data)
 		return settings;
 	},
 	onSuccess: function(response, element, xhr) {

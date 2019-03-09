@@ -15,7 +15,7 @@ $('#search-runs').form({
 	contentType: 'application/json',
 	serializeForm: true,
 	beforeSend: function(settings) {
-		settings.data = get_sw2_query_from_form('runs', settings.data)
+		settings.data = get_sw2_query('runs', settings.data)
 		return settings;
 	},
 	onSuccess: function(response) {

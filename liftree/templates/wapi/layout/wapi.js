@@ -7,11 +7,12 @@ $.fn.api.settings.api = {
 	'sw2': '/sw2/query',
 };
 
-const get_sw2_query_from_form = (query, parameters) => {
+const get_sw2_query = (query, parameters) => {
 	const data = {
 		'sw2': {
 			'query': query,
-			'debug': true
+			'debug': true,
+//			'cache': 'bypass',
 		},
 		'parameters': parameters
 	}

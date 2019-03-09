@@ -70,4 +70,4 @@ const get_run_output = () => {
 
 get_run_output()
 
-console.log('run.js OK')
+console.log('OK - run.js')
