@@ -46,15 +46,20 @@ class ExtraVar {
 				this.default = null
 			}
 			let parameters = data.query_parameters || {}
-// console.log(parameters)
+			// console.log(parameters)
 			this.$.dropdown({
 				apiSettings: {
 					action: 'sw2',
-// method: 'POST',
-					data: {
-						query: data.query,
-						parameters: JSON.stringify(parameters)
-					}, 
+//					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({
+						'sw2': {
+							'query': data.query,
+							'debug': true,
+							'cache': 'bypass'
+						},
+						'parameters': parameters
+					}),
 					cache: true
 				},
 				onChange: extra_var_dropdown_onchange,
@@ -281,15 +286,28 @@ if ('launch' in wapi && 'extra_vars' in wapi.launch) {
 /*
  * OPTIONS
  */
+const playbook = '{{ meta.path }}'
 const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
+const get_sw2_playbook_query = (query) => {
+	const data = {
+		'sw2': {
+			'query': query,
+			'debug': true
+		},
+		'parameters': {
+			'playbook': playbook
+		}
+	}
+	console.log(data)
+	return JSON.stringify(data)
+}
 
 $('#tasks').dropdown({
 	apiSettings: {
 		action: 'sw2',
-		data: {
-			query: 'tasks',
-			parameters: sw2_playbook_parameter,
-		},
+		method:'POST',
+		contentType: 'application/json',
+		data: get_sw2_playbook_query('tasks'),
 		cache: true
 	},
 	onChange: function(value, text, $selectedItem) {
@@ -303,10 +321,9 @@ $('#tasks').dropdown({
 $('.playbook-tags').dropdown({
 	apiSettings: {
 		action: 'sw2',
-		data: {
-			query: 'tags',
-			parameters: sw2_playbook_parameter
-		},
+		method:'POST',
+		contentType: 'application/json',
+		data: get_sw2_playbook_query('tags'),
 		cache: true
 	},
 	onChange: function(value, text, $selectedItem) {
@@ -338,9 +355,20 @@ $playbook_form.form({
 }).api({
 	action: 'sw2',
 	method:'POST',
+	contentType: 'application/json',
 	serializeForm: true,
-	data: {
-		query: 'launch'
+	beforeSend: function(settings) {
+		console.log(settings.data)
+		const data = {
+			'sw2': {
+				'query': 'launch',
+				'debug': true
+			},
+			'parameters': settings.data
+		}
+		settings.data = JSON.stringify(data)
+		console.log(settings.data)
+		return settings;
 	},
 	onSuccess: function(response, element, xhr) {
 		let url = `/show?path=${runs_dir}/${response.results.runid}/run.status#/output`
@@ -403,4 +431,4 @@ const urlParams = new URLSearchParams(window.location.search);
 const configuration = urlParams.get("configuration")
 if (configuration !== null) $configuration.dropdown('set exactly', configuration)
 
-console.log('form.js OK')
+console.log('OK - form.js')

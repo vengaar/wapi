@@ -14,11 +14,11 @@ const $watch = $('#run_control_watch .eye.icon')
 $run_control_kill.addClass('disabled')
 
 $run_control_start.click( () => {
-	console.log("go start")
+	console.log('go start')
 	$output.scrollTop(0);
 });
 $run_control_end.click( () => {
-	console.log("go end")
+	console.log('go end')
 	$output.scrollTop($output[0].scrollHeight);
 });
 
@@ -50,13 +50,24 @@ const update_page = (response) => {
 	}
 }
 
+const runid = '{{ data.runid }}'
+const data = {
+	'sw2': {
+		'query': 'run',
+		'debug': true
+	},
+	'parameters': { 'runid': runid }
+}
 const get_run_output = () => {
 	$.ajax({
-		dataType: "json",
-		url: '/sw2/query?query=run&runid={{ data.runid }}',
+		method:'POST',
+		contentType: 'application/json',
+		url: '/sw2/query',
+		data: JSON.stringify(data),
 		success: update_page
 	});
 }
+
 get_run_output()
 
 console.log('run.js OK')

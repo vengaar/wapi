@@ -5,13 +5,18 @@
 $.fn.api.settings.api = {
 	'search': '/search?query={query}&format=sui',
 	'sw2': '/sw2/query',
-	'sw2/grapher': '/sw2/query?query=grapher&host={host}&inventory={inventory}',
-	'ssh-agent': '/sw2/query?query=SSHAgent&id=wapi',
-	'ssh-agent/add': '/sw2/query?query=SSHAgentAdd&id=wapi',
-	'ssh-agent/kill': '/sw2/query?query=SSHAgentKill&id=wapi',
-	'cache': '/sw2/query?query=cache_info',
-	'cache/flush': '/sw2/query?query=cache_flush&key={key}',
 };
+
+const get_sw2_query_from_form = (query, parameters) => {
+	const data = {
+		'sw2': {
+			'query': query,
+			'debug': true
+		},
+		'parameters': parameters
+	}
+	return JSON.stringify(data)
+}
 
 $('.ui.dropdown').dropdown();
 
