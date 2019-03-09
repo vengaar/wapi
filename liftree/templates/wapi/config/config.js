@@ -7,74 +7,46 @@ $('#private_key').dropdown({
 	clearable: true
 });
 
-$ssh_key_form.api({
+$ssh_key_form.form({
+	fields: {
+		private_key: 'empty',
+		passphrase: 'empty'
+	},
+}).api({
 	action: 'sw2',
 	method:'POST',
 	contentType: 'application/json',
 	serializeForm: true,
 	beforeSend: function(settings) {
-		console.log(settings.data)
-		const data = {
-			'sw2': {
-				'query': 'SSHAgentAdd',
-				'debug': true
-			},
-			'parameters': settings.data
-		}
-		settings.data = JSON.stringify(data)
-		console.log(settings.data)
+		settings.data = get_sw2_query('SSHAgentAdd', settings.data)
 		return settings;
 	},	
 	onSuccess: function(response, element, xhr) {
-		console.log('key-add success');
+		// console.log('key-add success');
 		// console.log(response);
 		$ssh_key_status.addClass('green');
 		$public_keys.val(response.results.keys)
 	},
 	onError: function(errorMessage, element, xhr) {
-		console.error('key-add error');
+		// console.error('key-add error');
 		$ssh_key_status.addClass('red');
 		show_error(errorMessage)
-		return false
 	},
 	onFailure: function(response, element) {
-		console.error('key-add failure');
+		// console.error('key-add failure');
 		$ssh_key_status.addClass('red')
 		show_error(response)
-		return false
-	}
-})
-.form({
-	onSuccess: function (event) {
-		$(this).addClass('loading')
-		event.preventDefault();
-		console.log('valid');
-		return false;
-	},
-	onFailure: function (event) {
-		console.log('NOT valid');
-		return false;
-	},
-	fields: {
-		private_key: 'empty',
-		passphrase: 'empty'
 	}
 });
 
+
+const sw2_agent_parameters = {'id': 'wapi'}
 $('body').api({
 	action: 'sw2',
 	method:'POST',
 	contentType: 'application/json',
 	on: 'now',
-	data: JSON.stringify({
-		'sw2': {
-			'query': 'SSHAgent',
-			'debug': true
-		},
-		'parameters': {
-		'id': 'wapi'
-		}
-	}),
+	data: get_sw2_query('SSHAgent', sw2_agent_parameters),
 	onSuccess: function(response) {
 		console.log(response.results.agent);
 		if(response.results.keys.length > 0) {
@@ -86,7 +58,7 @@ $('body').api({
 		}
 	},
 	onFailure: function(response) {
-		show_error(error)
+		show_error(error.errors)
 	},
 	onError: function(errorMessage) {
 		show_error(error)
@@ -97,18 +69,10 @@ $ssh_agent_kill.api({
 	action: 'sw2',
 	method:'POST',
 	contentType: 'application/json',
-	data: JSON.stringify({
-		'sw2': {
-			'query': 'SSHAgentKill',
-			'debug': true
-		},
-		'parameters': {
-			'id': 'wapi'
-		}
-	}),	
+	data: get_sw2_query('SSHAgentKill', sw2_agent_parameters),
 	onSuccess: function(response, element, xhr) {
-		console.log('ssh_agent_kill success');
-		console.log(response);
+		// console.log('ssh_agent_kill success');
+		// console.log(response.results.agent);
 		$ssh_key_status.removeClass('green')
 		$ssh_key_status.addClass('red')
 		$public_keys.val("NO keys loaded")
@@ -116,12 +80,10 @@ $ssh_agent_kill.api({
 	onError: function(errorMessage, element, xhr) {
 		console.error('ssh_agent_kill error');
 		show_error(errorMessage)
-		return false
 	},
 	onFailure: function(response, element) {
 		console.error('ssh_agent_kill failure');
-		show_error(response)
-		return false
+		show_error(response.erros)
 	}
 });
 
@@ -133,6 +95,9 @@ const $cache_information = $('#cache-information tbody')
 const $botton_load_cache = $('.button.cache-load')
 const load_cache_information = cache_informations => {
 	// console.log(cache_informations)
+	if (cache_informations.length == 0) {
+		$('body').toast({message: 'No cache found'});
+	}
 	$cache_information.empty()
 	for (let cache_info of cache_informations) {
 		// console.log(cache_info)
@@ -153,27 +118,15 @@ const load_cache_information = cache_informations => {
 		method:'POST',
 		contentType: 'application/json',
 		beforeSend: function(settings) {
-			console.log(settings.data)
-			const key = $(this).data('key')
-			const data = {
-				'sw2': {
-					'query': 'cache_flush',
-					'debug': true
-				},
-				'parameters': {
-					'key': key
-				}
-			}
-			console.log(data)
-			settings.data = JSON.stringify(data)
-			console.log(settings.data)
+			const parameters = {'key': $(this).data('key')}
+			settings.data = get_sw2_query('cache_flush', parameters)
 			return settings;
 		},	
 		onSuccess: function(response) {
 			console.log(response)
 			$botton_load_cache.click()
 		},
-		onFailure: function(response) { show_error(response) },
+		onFailure: function(response) { show_error(response.errors) },
 		onError: function(errorMessage) { show_error(errorMessage) },
 	});
 }
@@ -182,13 +135,7 @@ $botton_load_cache.api({
 	action: 'sw2',
 	method:'POST',
 	contentType: 'application/json',
-	data: JSON.stringify({
-		'sw2': {
-			'query': 'cache_info',
-			'debug': true
-		},
-		'parameters': {}
-	}),
+	data: get_sw2_query('cache_info'),
 	onSuccess: function(response) {
 		load_cache_information(response.results)
 	},

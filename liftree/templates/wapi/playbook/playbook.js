@@ -302,7 +302,7 @@ $('.playbook-tags').dropdown({
 		action: 'sw2',
 		method:'POST',
 		contentType: 'application/json',
-		data: get_sw2_query('tasks', sw2_playbook_parameter),
+		data: get_sw2_query('tags', sw2_playbook_parameter),
 		cache: true
 	},
 	onChange: function(value, text, $selectedItem) {
