@@ -53,7 +53,9 @@ class ExtraVar {
 					method: 'POST',
 					contentType: 'application/json',
 					data: get_sw2_query(data.query, parameters),
-					cache: true
+					cache: true,
+//					onFailure: sw2_on_failure,
+//					onError: sw2_on_error,
 				},
 				onChange: extra_var_dropdown_onchange,
 				clearable: true,
@@ -287,7 +289,9 @@ $('#tasks').dropdown({
 		method:'POST',
 		contentType: 'application/json',
 		data: get_sw2_query('tasks', sw2_playbook_parameter),
-		cache: true
+		cache: true,
+//		onFailure: sw2_on_failure,
+//		onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		cmdline_tasks = value
@@ -303,7 +307,9 @@ $('.playbook-tags').dropdown({
 		method:'POST',
 		contentType: 'application/json',
 		data: get_sw2_query('tags', sw2_playbook_parameter),
-		cache: true
+		cache: true,
+//		onFailure: sw2_on_failure,
+//		onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		if (this.id === 'tags_apply') {
@@ -345,12 +351,8 @@ $playbook_form.form({
 		// console.log(url)
 		window.open(url)
 	},
-	onError: function(errorMessage, element, xhr) {
-		show_error(errorMessage)
-	},
-	onFailure: function(response, element) {
-		show_error(response)
-	}
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,
 })
 
 

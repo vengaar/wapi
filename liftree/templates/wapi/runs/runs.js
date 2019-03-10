@@ -22,11 +22,8 @@ $('#search-runs').form({
 //		console.log(response)
 		search_runs(response.results)
 	},
-	onFailure: function(response) {
-//		console.error(response)
-		show_error(JSON.stringify(response.errors, null, 2))
-	},
-	onError: function(errorMessage) { show_error(errorMessage) },
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,	
 });
 
 const $runs_table = $('#runs-tables tbody')

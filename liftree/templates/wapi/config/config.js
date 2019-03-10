@@ -15,6 +15,7 @@ $ssh_key_form.form({
 }).api({
 	action: 'sw2',
 	method:'POST',
+	data: {id: 'wapi'},
 	contentType: 'application/json',
 	serializeForm: true,
 	beforeSend: function(settings) {
@@ -22,21 +23,17 @@ $ssh_key_form.form({
 		return settings;
 	},	
 	onSuccess: function(response, element, xhr) {
-		// console.log('key-add success');
-		// console.log(response);
 		$ssh_key_status.addClass('green');
 		$public_keys.val(response.results.keys)
 	},
 	onError: function(errorMessage, element, xhr) {
-		// console.error('key-add error');
 		$ssh_key_status.addClass('red');
 		show_error(errorMessage)
 	},
 	onFailure: function(response, element) {
-		// console.error('key-add failure');
 		$ssh_key_status.addClass('red')
-		show_error(response)
-	}
+		sw2_on_failure(response)
+	},
 });
 
 
@@ -57,12 +54,8 @@ $('body').api({
 			$public_keys.val("NO keys loaded")
 		}
 	},
-	onFailure: function(response) {
-		show_error(error.errors)
-	},
-	onError: function(errorMessage) {
-		show_error(error)
-	},
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,
 })	
 
 $ssh_agent_kill.api({
@@ -77,14 +70,8 @@ $ssh_agent_kill.api({
 		$ssh_key_status.addClass('red')
 		$public_keys.val("NO keys loaded")
 	},
-	onError: function(errorMessage, element, xhr) {
-		console.error('ssh_agent_kill error');
-		show_error(errorMessage)
-	},
-	onFailure: function(response, element) {
-		console.error('ssh_agent_kill failure');
-		show_error(response.erros)
-	}
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,
 });
 
 
@@ -126,8 +113,8 @@ const load_cache_information = cache_informations => {
 			console.log(response)
 			$botton_load_cache.click()
 		},
-		onFailure: function(response) { show_error(response.errors) },
-		onError: function(errorMessage) { show_error(errorMessage) },
+		onFailure: sw2_on_failure,
+		onError: sw2_on_error,
 	});
 }
 
@@ -139,8 +126,8 @@ $botton_load_cache.api({
 	onSuccess: function(response) {
 		load_cache_information(response.results)
 	},
-	onFailure: function(response) { show_error(response) },
-	onError: function(errorMessage) { show_error(errorMessage) },
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,
 });
 
 console.log('OK - config.js')

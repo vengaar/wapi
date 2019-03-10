@@ -98,6 +98,21 @@ const show_error = (error) => {
 	$error_modal.modal('show');
 }
 
+const sw2_on_failure = (response, element) => {
+	const type = typeof response
+	//console.log(type)
+	if (type === 'object') {
+		console.error(response)
+		show_error(JSON.stringify(response.errors, null, 2))		
+	} else {
+		show_error(response)
+	}
+}
+
+const sw2_on_error = (errorMessage, element, xhr) => {
+	show_error(errorMessage)
+}
+
 /**
  * Copy
  * 
