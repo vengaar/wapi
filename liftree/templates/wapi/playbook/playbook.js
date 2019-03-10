@@ -11,6 +11,7 @@ class ExtraVar {
 		this.id = `extra_vars-${this.name}`
 		this.$id = `#${this.id}`
 		this.$ = $(this.$id)
+
 		if ('choices' in data) {
 			this.is_choices = true
 			this.is_dropdown = true
@@ -24,6 +25,7 @@ class ExtraVar {
 				onChange: extra_var_dropdown_onchange,
 				clearable: true,
 			})
+
 		} else if ('boolean' in data) {
 			this.is_boolean = true
 			this.default = data.boolean
@@ -67,30 +69,6 @@ class ExtraVar {
 				this.$.dropdown('set exactly', this.default)
 			}
 
-		} else if ('search' in data) {
-			this.is_search = true
-			this.is_dropdown = true
-			// init default
-			if ('default' in data) {
-				this.default = (this.is_multiple()) ? data.default : [data.default]
-			} else {
-				this.default = null
-			}
-			let url = `${data.search}?${data.search_params}`
-			this.$.dropdown({
-				apiSettings: {
-					url: url,
-					cache: true
-				},
-				onChange: extra_var_dropdown_onchange,
-				clearable: true,
-				filterRemoteData: true,
-			});
-			if (this.default !== null) {
-				let values = this.default.map(x => new Object({'name': x, 'value': x}))
-				this.$.dropdown('change values', values)
-				this.$.dropdown('set exactly', this.default)
-			}
 		} else {
 			// init default
 			this.is_input = true
@@ -110,7 +88,7 @@ class ExtraVar {
 			this.$.dropdown('set exactly', value)
 		} else if (this.is_boolean) {
 			value ? this.$.checkbox('check') : this.$.checkbox('uncheck')
-		} else if (this.is_search || this.is_query) {
+		} else if (this.is_query) {
 			const options = (typeof value === 'string') ? [value] : value;
 			const values = options.map(x => new Object({'name': x, 'value': x}))
 			this.$.dropdown('change values', values)
@@ -131,7 +109,7 @@ class ExtraVar {
 	restore_default() {
 		if (this.is_input) {
 			this.update(this.default)
-		} else if (this.is_search || this.is_query) {
+		} else if (this.is_query) {
 			if (this.default !== null) {
 				let values = this.default.map(x => new Object({'name': x, 'value': x}))
 				this.$.dropdown('change values', values)
