@@ -27,8 +27,8 @@ en tapant `playbook` dans le search à droite dans la barre de navigation.
 Le playbook `remote.yml` fait une connexion ssh sur lui-même... il lui faut d'un une clef.
 
 Si elle n'est pas déjà chargée, charger la clef `ansible-ws` 
-( la passphrase de la clef est  `ansible-ws` )
-dans la page `Wapi config` (bonton a gauche du search
+(la passphrase de la clef est  `ansible-ws`)
+dans la page `Configs` accéssible depuis le menu.
 
 
 ### Liftree
