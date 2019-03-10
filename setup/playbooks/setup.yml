@@ -11,6 +11,10 @@
       - ansible-ws
       - wapi
   tasks:
+    - name: Remove existing WAPI liftree config.
+      file:
+        path: /etc/liftree/conf.d/50-wapi.conf
+        state: absent
     - name: Clone repo
       git:
         repo: https://github.com/vengaar/{{ repo_name }}.git

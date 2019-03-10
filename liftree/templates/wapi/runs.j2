@@ -11,14 +11,12 @@
 ] %}
 {% extends "wapi.j2" %}
 
-
-
 {% block script %}
 {
     const search_default = {{ data.search|to_json }}
-    console.log(search_default)
+    //console.log(search_default)
     const runs_dir = '{{ extra.wapi_config.runs_dir }}'
-    console.log(runs_dir)
-    {% include 'wapi/runs/runs.js' %}  
+    //console.log(runs_dir)
+    {% include 'wapi/runs/runs.js' %}
 }
 {% endblock %}

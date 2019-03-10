@@ -2,11 +2,6 @@
  * 
  */
 
-$.fn.api.settings.api = {
-	'playbook/launch': '/sw2/query?query=launch',
-	'sw2': '/sw2/query',
-};
-
 class ExtraVar {
 	constructor(data) {
 		this.src = data
@@ -16,6 +11,7 @@ class ExtraVar {
 		this.id = `extra_vars-${this.name}`
 		this.$id = `#${this.id}`
 		this.$ = $(this.$id)
+
 		if ('choices' in data) {
 			this.is_choices = true
 			this.is_dropdown = true
@@ -29,6 +25,7 @@ class ExtraVar {
 				onChange: extra_var_dropdown_onchange,
 				clearable: true,
 			})
+
 		} else if ('boolean' in data) {
 			this.is_boolean = true
 			this.default = data.boolean
@@ -51,16 +48,16 @@ class ExtraVar {
 				this.default = null
 			}
 			let parameters = data.query_parameters || {}
-// console.log(parameters)
+			// console.log(parameters)
 			this.$.dropdown({
 				apiSettings: {
-					url: '/sw2/query',
-// method: 'POST',
-					data: {
-						query: data.query,
-						parameters: JSON.stringify(parameters)
-					}, 
-					cache: true
+					action: 'sw2',
+					method: 'POST',
+					contentType: 'application/json',
+					data: get_sw2_query(data.query, parameters),
+					cache: true,
+//					onFailure: sw2_on_failure,
+//					onError: sw2_on_error,
 				},
 				onChange: extra_var_dropdown_onchange,
 				clearable: true,
@@ -72,30 +69,6 @@ class ExtraVar {
 				this.$.dropdown('set exactly', this.default)
 			}
 
-		} else if ('search' in data) {
-			this.is_search = true
-			this.is_dropdown = true
-			// init default
-			if ('default' in data) {
-				this.default = (this.is_multiple()) ? data.default : [data.default]
-			} else {
-				this.default = null
-			}
-			let url = `${data.search}?${data.search_params}`
-			this.$.dropdown({
-				apiSettings: {
-					url: url,
-					cache: true
-				},
-				onChange: extra_var_dropdown_onchange,
-				clearable: true,
-				filterRemoteData: true,
-			});
-			if (this.default !== null) {
-				let values = this.default.map(x => new Object({'name': x, 'value': x}))
-				this.$.dropdown('change values', values)
-				this.$.dropdown('set exactly', this.default)
-			}
 		} else {
 			// init default
 			this.is_input = true
@@ -115,7 +88,7 @@ class ExtraVar {
 			this.$.dropdown('set exactly', value)
 		} else if (this.is_boolean) {
 			value ? this.$.checkbox('check') : this.$.checkbox('uncheck')
-		} else if (this.is_search || this.is_query) {
+		} else if (this.is_query) {
 			const options = (typeof value === 'string') ? [value] : value;
 			const values = options.map(x => new Object({'name': x, 'value': x}))
 			this.$.dropdown('change values', values)
@@ -136,7 +109,7 @@ class ExtraVar {
 	restore_default() {
 		if (this.is_input) {
 			this.update(this.default)
-		} else if (this.is_search || this.is_query) {
+		} else if (this.is_query) {
 			if (this.default !== null) {
 				let values = this.default.map(x => new Object({'name': x, 'value': x}))
 				this.$.dropdown('change values', values)
@@ -188,7 +161,10 @@ class ExtraVars {
 		let form_fields_check = {}
 		for (let name in this.index) {
 			let extra_var = this.get(name)
-			form_fields_check[name] = extra_var.get_check_method()
+			const check_method = extra_var.get_check_method()
+			if (check_method !== undefined) {
+				form_fields_check[name] = extra_var.get_check_method()
+			}
 		}
 		return form_fields_check
 	}
@@ -283,16 +259,17 @@ if ('launch' in wapi && 'extra_vars' in wapi.launch) {
 /*
  * OPTIONS
  */
-const sw2_playbook_parameter = JSON.stringify({'playbook': '{{ meta.path }}'})
+const sw2_playbook_parameter = {'playbook': path}
 
 $('#tasks').dropdown({
 	apiSettings: {
-		url: '/sw2/query',
-		data: {
-			query: 'tasks',
-			parameters: sw2_playbook_parameter
-		},
-		cache: true
+		action: 'sw2',
+		method:'POST',
+		contentType: 'application/json',
+		data: get_sw2_query('tasks', sw2_playbook_parameter),
+		cache: true,
+//		onFailure: sw2_on_failure,
+//		onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		cmdline_tasks = value
@@ -304,12 +281,13 @@ $('#tasks').dropdown({
 
 $('.playbook-tags').dropdown({
 	apiSettings: {
-		url: '/sw2/query',
-		data: {
-			query: 'tags',
-			parameters: sw2_playbook_parameter
-		},
-		cache: true
+		action: 'sw2',
+		method:'POST',
+		contentType: 'application/json',
+		data: get_sw2_query('tags', sw2_playbook_parameter),
+		cache: true,
+//		onFailure: sw2_on_failure,
+//		onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		if (this.id === 'tags_apply') {
@@ -338,23 +316,21 @@ const $playbook_form = $('#playbook_form')
 $playbook_form.form({
 	fields: extra_vars.get_form_fields_check()
 }).api({
-	action: 'playbook/launch',
+	action: 'sw2',
 	method:'POST',
+	contentType: 'application/json',
 	serializeForm: true,
-	data: {
-		query: 'launch'
+	beforeSend: function(settings) {
+		settings.data = get_sw2_query('launch', settings.data)
+		return settings;
 	},
 	onSuccess: function(response, element, xhr) {
 		let url = `/show?path=${runs_dir}/${response.results.runid}/run.status#/output`
 		// console.log(url)
 		window.open(url)
 	},
-	onError: function(errorMessage, element, xhr) {
-		show_error(errorMessage)
-	},
-	onFailure: function(response, element) {
-		show_error(response)
-	}
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,
 })
 
 
@@ -405,4 +381,4 @@ const urlParams = new URLSearchParams(window.location.search);
 const configuration = urlParams.get("configuration")
 if (configuration !== null) $configuration.dropdown('set exactly', configuration)
 
-console.log('form.js OK')
+console.log('OK - form.js')

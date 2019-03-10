@@ -1,7 +1,6 @@
-$.fn.api.settings.api = {
-	// '/sw2/query?query=run&from={from}&to={to}&playbook={playbook}&status={status}',
-	'sw2/runs': '/sw2/query?query=runs',
-};
+/**
+ * 
+ */
 
 $('#search-runs').form({
 	fields: {
@@ -11,24 +10,25 @@ $('#search-runs').form({
 		status   : 'empty',
 	}
 }).api({
-	action: 'sw2/runs',
+	action: 'sw2',
+	method:'POST',
+	contentType: 'application/json',
 	serializeForm: true,
 	beforeSend: function(settings) {
-		console.log(settings.data);
-		settings.urlData = settings.data
+		settings.data = get_sw2_query('runs', settings.data)
 		return settings;
 	},
 	onSuccess: function(response) {
-		console.log(response)
+//		console.log(response)
 		search_runs(response.results)
 	},
-	onFailure: function(response) { show_error(response) },
-	onError: function(errorMessage) { show_error(errorMessage) },
+	onFailure: sw2_on_failure,
+	onError: sw2_on_error,	
 });
 
 const $runs_table = $('#runs-tables tbody')
 const search_runs = runs => {
-	console.log(runs)
+//	console.log(runs)
 	$runs_table.empty()
 	for (let run of runs) {
 		const begin = new Date(run['begin']*1000).toLocaleString()
@@ -62,7 +62,7 @@ const from     = new Date(today.getFullYear(), today.getMonth(), today.getDate()
 const to       = new Date(today.getFullYear(), today.getMonth(), today.getDate() + search_default['to']);
 const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
 
-console.log(today, from, to, tomorrow)
+//console.log(today, from, to, tomorrow)
 
 $('#rangestart').calendar({
 	type: 'date',
@@ -84,4 +84,4 @@ $('#rangeend').calendar({
 	},
 }).calendar('set date', to, true, false);
 
-console.log('ok runs.js')
+console.log('OK - runs.js')

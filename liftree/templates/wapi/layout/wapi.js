@@ -1,6 +1,24 @@
 /**
  * Semantic UI
  */
+
+$.fn.api.settings.api = {
+	'search': '/search?query={query}&format=sui',
+	'sw2': '/sw2/query',
+};
+
+const get_sw2_query = (query, parameters) => {
+	const data = {
+		'sw2': {
+			'query': query,
+			'debug': true,
+//			'cache': 'bypass',
+		},
+		'parameters': parameters
+	}
+	return JSON.stringify(data)
+}
+
 $('.ui.dropdown').dropdown();
 
 $('.menu .item').tab({
@@ -9,9 +27,6 @@ $('.menu .item').tab({
 
 $('.ui.search').search({
 	type: 'category',
-	apiSettings: {
-		url: '/search?query={query}&format=sui'
-	},
 });
 
 /**
@@ -81,6 +96,21 @@ const show_error = (error) => {
 	console.error(error);
 	$error_msg.text(error);
 	$error_modal.modal('show');
+}
+
+const sw2_on_failure = (response, element) => {
+	const type = typeof response
+	//console.log(type)
+	if (type === 'object') {
+		console.error(response)
+		show_error(JSON.stringify(response.errors, null, 2))		
+	} else {
+		show_error(response)
+	}
+}
+
+const sw2_on_error = (errorMessage, element, xhr) => {
+	show_error(errorMessage)
 }
 
 /**
