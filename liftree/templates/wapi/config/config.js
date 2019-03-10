@@ -15,10 +15,10 @@ $ssh_key_form.form({
 }).api({
 	action: 'sw2',
 	method:'POST',
-	data: {id: 'wapi'},
 	contentType: 'application/json',
 	serializeForm: true,
 	beforeSend: function(settings) {
+		settings.data['id'] = 'wapi'
 		settings.data = get_sw2_query('SSHAgentAdd', settings.data)
 		return settings;
 	},	
