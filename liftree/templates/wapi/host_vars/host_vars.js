@@ -15,6 +15,10 @@ $button_update_graph.api({
 	contentType: 'application/json',
 	data: get_sw2_query('grapher', parameters),
 	onSuccess: function(response) {
+		$('body').toast({
+			class: 'success',
+			message: `Grahp for ${host} successfully generated`
+		});
 		document.getElementById('host-graph').src = `${host_img_src}?random=${new Date().getTime()}`;
 	},
 	onFailure: sw2_on_failure,
