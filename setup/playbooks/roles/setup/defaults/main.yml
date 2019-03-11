@@ -10,4 +10,5 @@ required:
     - "Fedora/28"
     - "Fedora/29"
     - "Ubuntu/18"
+wapi_ansible_facts_folder: ~/ansible_facts
 ...

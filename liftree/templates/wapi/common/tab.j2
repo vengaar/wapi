@@ -1,6 +1,5 @@
-{% if tab is defined %}
 <h3 class="ui dividing header">
-{% block header_right %}
+{% block tab_header_right %}
 {% endblock %}
   <i id="tab-icon-{{ tab.id }}" class="{{ tab_icon|default(tab.icon) }} icon"></i>
   <div class="content">
@@ -8,6 +7,6 @@
     <div class="sub header">{{ tab.subtitle }}</div>
   </div>
 </h3>
-{% else %}
-<div class="ui warning message">tab information missing</div>
-{% endif %}
+
+{% block tab_content %}
+{% endblock %}

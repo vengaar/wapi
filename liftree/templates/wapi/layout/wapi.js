@@ -11,7 +11,7 @@ const get_sw2_query = (query, parameters) => {
 	const data = {
 		'sw2': {
 			'query': query,
-			'debug': true,
+//			'debug': true,
 //			'cache': 'bypass',
 		},
 		'parameters': parameters
@@ -114,7 +114,6 @@ const sw2_on_error = (errorMessage, element, xhr) => {
 
 /**
  * Copy
- * 
  */
 $('.copy_to_clipboard').click( function() {
 	document.getElementById(this.dataset.copy).select();
