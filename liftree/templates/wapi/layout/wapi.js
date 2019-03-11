@@ -80,7 +80,6 @@ $('.menu .browse').popup({
 	lastResort: 'bottom left',
 	offset: 10,
 	on: 'click',
-	// on: 'click',
 	delay: {
 		show: 300,
 		hide: 800
