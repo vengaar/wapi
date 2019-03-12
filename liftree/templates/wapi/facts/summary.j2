@@ -1,5 +1,5 @@
 {% set stat_file = meta.path|file_stat %}
-
+{# PAGE #}
 <div class="ui segment">
 <div class="ribbon ui primary label">Facts freshness {{ stat_file.st_mtime|timestamp2date }}</div>
 <table class="ui compact very basic _definition celled striped table">
