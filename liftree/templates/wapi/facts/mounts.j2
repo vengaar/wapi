@@ -1,0 +1,33 @@
+<div class="ui fluid card">
+    <div class="content">
+        <div class="header">
+            <div class="right floated meta">{{ data.ansible_mounts|count }}</div>
+            <i class="database icon"></i>
+            Files systems
+        </div>
+    </div>
+{% for mount in data.ansible_mounts %}
+  {% if 'bind' not in mount.options.split(',') %}
+    {% set used = mount.size_total - mount.size_available %}
+    {% set used_percent = used  * 100 / mount.size_total %}
+    {% if used_percent > extra.facts.mounts.critical %}
+      {% set mount_color = 'red' %}
+    {% elif used_percent > extra.facts.mounts.warning %}
+      {% set mount_color = 'orange' %}
+    {% else %}
+      {% set mount_color = 'green' %}
+    {% endif %}
+    <div class="extra content">
+        <div class="ui {{ mount_color }} progress" data-value="{{ used }}" data-total="{{ mount.size_total }}">
+            <div class="bar">
+                <div class="progress"></div>
+            </div>
+            <div class="label">
+               / ({{ (mount.size_available/1024/1024/1024)|int }}/{{ (mount.size_total/1024/1024/1024)|int }}GB)
+              {{ mount.fstype }} ({{ mount.options }}) on {{ mount.device }}
+          </div>
+        </div>
+    </div>
+{% endif %}
+{% endfor %}
+</div>

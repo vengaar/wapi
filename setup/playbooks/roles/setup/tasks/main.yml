@@ -13,7 +13,6 @@
 - name: Deploy from git
   become: true
   become_user: "{{ wapi_user }}"
-  when: git_clone
   block:
   
     - name: Clone git wapi repo on user home
@@ -24,13 +23,34 @@
         version: "{{ git_version }}"
         dest: /home/{{ wapi_user }}/{{ git_name }}
         force: yes
+      when: git_clone
 
-- name: deploy favincon
-  copy:
-    src: wapi.ico
-    dest: ~/ansible-ws@working/graphs/wapi.ico
-  become: true
-  become_user: "{{ wapi_user }}"
+    - name: Deploy favicon
+      copy:
+        src: wapi.ico
+        dest: ~/ansible-ws@working/graphs/wapi.ico
+
+    - name: Create folder for ansible facts
+      file:
+        path: "{{ wapi_ansible_facts_folder }}"
+        state: directory
+
+    - name: Copy default ansible.cfg
+      copy:
+        src: /etc/ansible/ansible.cfg
+        dest: ~/.ansible.cfg
+
+    - name: Enable json facts caching
+      lineinfile:
+        path: ~/.ansible.cfg
+        regexp: '^{{ item.key }}\s*=.*$'
+        insertafter: '^\[defaults\]'
+        line: "{{ item.key }} = {{ item.value }}"
+      loop: "{{ dict|dict2items }}"
+      vars:
+        dict:
+          fact_caching: jsonfile
+          fact_caching_connection: "{{ wapi_ansible_facts_folder }}"
 
 - name: Config
   become: yes
@@ -57,6 +77,7 @@
       loop:
         - "wapi.yml"
         - "runs.yml"
+        - "facts.yml"
 
     - name: Display test url
       debug: msg="Go on http://{{ ansible_default_ipv4.address }}/show to test"

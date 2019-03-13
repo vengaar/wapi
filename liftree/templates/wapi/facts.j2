@@ -1,0 +1,29 @@
+{% set wapi_page_name = 'Facts' %}
+{% set wapi_star_icon = 'industry' %}
+{% set fqdn = meta.path|basename %}
+{% set tabs = [
+    {
+        'id': 'facts',
+        'name': 'Facts',
+        'icon': 'industry',
+        'title': fqdn,
+        'subtitle': 'Ansible cached facts',
+        'template': '/wapi/facts/facts.j2'
+    },
+    {
+        'id': 'raw',
+        'name': 'Raw',
+        'icon': 'code',
+        'title': fqdn,
+        'subtitle': 'Ansible cached facts',
+        'template': '/wapi/facts/raw.j2'
+    },
+] %}
+{% extends "wapi.j2" %}
+
+
+{% block script %}
+{
+  {% include 'wapi/facts/facts.js' %}
+}
+{% endblock %}

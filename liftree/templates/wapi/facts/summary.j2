@@ -1,0 +1,40 @@
+{% set stat_file = meta.path|file_stat %}
+{# PAGE #}
+<div class="ui segment">
+<div class="ribbon ui primary label">Facts freshness {{ stat_file.st_mtime|timestamp2date }}</div>
+<table class="ui compact very basic _definition celled striped table">
+  <tbody>
+    <tr>
+      <td class="right aligned">
+        <strong>
+          <i class="stopwatch icon"></i> Uptime
+        </strong>
+      </td>
+      <td>{{ data.ansible_uptime_seconds|seconds2duration }}</td>
+    </tr>
+{% for field in extra.facts.summary.fields %}
+    <tr>
+
+      <td class="right aligned">
+        <strong>
+  {% if field.name is defined %}
+          {{ field.name }}
+  {% else %}
+          {{ field.fact.replace('ansible_', '').replace('_', ' ')|capitalize }}
+  {% endif %}
+        </strong>
+      </td>
+      <td>
+  {% if field.fact is defined %}
+          {{ data[field.fact]|default('fact not available') }}
+  {% else %}
+    {% for fact in field.facts %}
+          {{ data[fact]|default('fact not available') }}
+    {% endfor %}
+  {% endif %}
+      </td>
+    </tr>
+{% endfor %}
+  <tbody>
+</table>
+</div>

@@ -1,5 +1,5 @@
 import json
-import subprocess
+import os
 
 def filter_wapi_defaults_extra_vars(extravars):
     """
@@ -13,14 +13,10 @@ def filter_wapi_defaults_extra_vars(extravars):
             defaults[name] = extra_var['boolean']
     return defaults
 
-
-
-def filter_wapi_grapher(value):
+def filter_file_stat(value):
     """
     """
-    try:
-        cmd = f'ansible-inventory-grapher -i /home/vengaar/wapi/test/inventories/hosts {value} | dot -Tsvg'
-        svg = subprocess.check_output(cmd, shell=True)
-        return svg
-    except:
-        'ERROR'
+    if os.path.isfile(value):
+        return os.stat(value)
+    else:
+        return value

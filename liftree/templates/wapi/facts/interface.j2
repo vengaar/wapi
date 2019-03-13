@@ -1,0 +1,56 @@
+{# VARS #}
+{% set status_color = 'grey' %}
+{% if interface.active %}  
+  {% set status_color = 'green' %}
+{% endif %}
+{# PAGE #}
+<div class="ui card">
+    <div class="content">
+        <div class="header">
+            <div class="right floated meta">{{ interface.ipv4.address }}</div>
+  {% if interface.type == 'ether' %}
+            <i class="ethernet {{ status_color }} icon"></i>
+  {% endif %}
+            {{ interface_name }}
+        </div>
+        <div class="description">
+            <div class="ui relaxed _divided list">
+  {% for name, value in interface.ipv4.items() %}
+    {% if name not in ['address'] %}
+                <div class="item">
+                    <div class="content">
+                        <div class="">{{ name }}</div>
+                        <div class="meta">{{ value }}</div>
+                    </div>
+                </div>
+    {% endif %}
+  {% endfor %}
+            </div>
+        </div>
+    </div>
+{#
+    <div class="content">
+      {{ interface.ipv6 }}
+    </div>
+#}
+  {% if interface.macaddress is defined %}
+    <div class="extra content">
+      {{ interface.macaddress }}
+    </div>
+  {% endif %}
+
+    <div class="extra content">
+            <div class="ui relaxed divided list">
+  {% for key in extra.facts.interfaces %}
+    {% if interface[key] is defined %}
+                <div class="item">
+                    <div class="content">
+                        <div class="">{{ key }}</div>
+                        <div class="meta">{{ interface[key] }}</div>
+                    </div>
+                </div>
+    {% endif %}
+  {% endfor %}
+            </div>
+    </div>
+</div>

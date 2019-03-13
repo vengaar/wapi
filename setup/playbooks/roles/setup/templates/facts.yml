@@ -1,0 +1,23 @@
+#
+# {{ ansible_managed }}
+#
+---
+summary:
+  fields:
+  - fact: ansible_nodename
+  - name: OS
+    facts:
+    - ansible_distribution
+    - ansible_distribution_major_version
+  - fact: ansible_kernel
+  - fact: ansible_bios_date
+  - fact: ansible_bios_version
+  - fact: ansible_architecture
+interfaces:
+  - module
+  - mtu
+  - speed
+mounts:
+  warning: 85
+  critical: 90
+...

@@ -74,6 +74,7 @@
 {% endblock %}
 {% endif %}
     </div>
+
     <!-- scripts -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.js"></script>
@@ -86,6 +87,7 @@
     <script>
       'use strict'
       const path = '{{ meta.path }}'
+      const file = '{{ meta.path|basename }}'
       const wapi_star_cat  = '{{ wapi_star_cat|default(meta.renderer.name) }}'
       const wapi_star_name = '{{ wapi_star_name|default(meta.path|basename) }}'
       const wapi_star_icon = '{{ wapi_star_icon|default("dungeon") }}'

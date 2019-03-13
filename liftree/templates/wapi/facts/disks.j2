@@ -1,0 +1,27 @@
+<div class="ui fluid card">
+    <div class="content">
+        <div class="header">
+            <div class="right floated meta">{{ data.ansible_devices|count }}</div>
+            <i class="hdd icon"></i>
+            Disks
+        </div>
+    </div>
+{% for disk_name, disk in data.ansible_devices.items() %}
+  {% if disk.sectors|int > 0 %}
+    <div class="extra content">
+        <div class="ui styled accordion">
+            <div class="title">
+                <div class="right floated meta">{{ disk.size }}</div>
+                <div class="header"><i class="dropdown icon"></i>{{ disk_name }}</div>
+            </div>
+            <div class="content">
+    {% for name, partition in disk.partitions.items() %}
+                <div class="right floated meta">{{ partition.size }}</div>
+                <div>{{ name }} / {{ partition.links.labels[0] }}</div>
+    {% endfor %}
+            </div>
+        </div>
+    </div>
+  {% endif %}
+{% endfor %}
+</div>
