@@ -7,7 +7,7 @@
         </div>
     </div>
 {% for mount in data.ansible_mounts %}
-  {% if 'bind' not in mount.options.split(',') %}
+  {% if mount.fstype in extra.facts.mounts.fstypes %}
     {% set used = mount.size_total - mount.size_available %}
     {% set used_percent = used  * 100 / mount.size_total %}
     {% if used_percent > extra.facts.mounts.critical %}

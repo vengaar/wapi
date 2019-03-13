@@ -13,11 +13,23 @@ summary:
   - fact: ansible_bios_date
   - fact: ansible_bios_version
   - fact: ansible_architecture
+
+#
+# NETWORK INTERFACES
+# - Fields displayed
+#
 interfaces:
   - module
   - mtu
   - speed
+
+#
+# MOUNTS
+# - threshold for % used
+# - expected filesystems
 mounts:
   warning: 85
   critical: 90
+  fstypes:
+    - ext4
 ...
