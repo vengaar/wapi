@@ -7,6 +7,7 @@
         </div>
     </div>
 {% for disk_name, disk in data.ansible_devices.items() %}
+  {% if disk.sectors|int > 0 %}
     <div class="extra content">
         <div class="ui styled accordion">
             <div class="title">
@@ -14,12 +15,13 @@
                 <div class="header"><i class="dropdown icon"></i>{{ disk_name }}</div>
             </div>
             <div class="content">
-  {% for name, partition in disk.partitions.items() %}
+    {% for name, partition in disk.partitions.items() %}
                 <div class="right floated meta">{{ partition.size }}</div>
                 <div>{{ name }} / {{ partition.links.labels[0] }}</div>
-  {% endfor %}
+    {% endfor %}
             </div>
         </div>
     </div>
+  {% endif %}
 {% endfor %}
 </div>

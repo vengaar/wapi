@@ -17,4 +17,7 @@ interfaces:
   - module
   - mtu
   - speed
+mounts:
+  warning: 85
+  critical: 90
 ...
