@@ -6,8 +6,9 @@
             Disks
         </div>
     </div>
+{% set disks_ids = data.ansible_device_links.ids.keys() %}
 {% for disk_name, disk in data.ansible_devices.items() %}
-  {% if disk.sectors|int > 0 %}
+  {% if disk_name in disks_ids %}
     <div class="extra content">
         <div class="ui styled accordion">
             <div class="title">
