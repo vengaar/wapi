@@ -4,8 +4,17 @@
 <div class="ribbon ui primary label">Facts freshness {{ stat_file.st_mtime|timestamp2date }}</div>
 <table class="ui compact very basic _definition celled striped table">
   <tbody>
+    <tr>
+      <td class="right aligned">
+        <strong>
+          <i class="stopwatch icon"></i> Uptime
+        </strong>
+      </td>
+      <td>{{ data.ansible_uptime_seconds|seconds2duration }}</td>
+    </tr>
 {% for field in extra.facts.summary.fields %}
     <tr>
+
       <td class="right aligned">
         <strong>
   {% if field.name is defined %}
