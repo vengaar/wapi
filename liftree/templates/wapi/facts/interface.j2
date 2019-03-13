@@ -41,12 +41,12 @@
 
     <div class="extra content">
             <div class="ui relaxed divided list">
-  {% for name, value in interface.items() %}
-    {% if  name not in ['ipv4', 'ipv6', 'macaddress', 'active', 'type', 'device'] %}
+  {% for key in extra.facts.interfaces %}
+    {% if interface[key] is defined %}
                 <div class="item">
                     <div class="content">
-                        <div class="">{{ name }}</div>
-                        <div class="meta">{{ value }}</div>
+                        <div class="">{{ key }}</div>
+                        <div class="meta">{{ interface[key] }}</div>
                     </div>
                 </div>
     {% endif %}

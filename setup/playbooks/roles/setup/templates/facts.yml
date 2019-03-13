@@ -13,4 +13,8 @@ summary:
   - fact: ansible_bios_date
   - fact: ansible_bios_version
   - fact: ansible_architecture
+interfaces:
+  - module
+  - mtu
+  - speed
 ...
