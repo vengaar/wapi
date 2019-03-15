@@ -1,12 +1,12 @@
-{% set wapi_page_name = 'Facts' %}
+{% set host = meta.path|basename %}
+{% set wapi_page_name = 'Facts - ' + host %}
 {% set wapi_star_icon = 'industry' %}
-{% set fqdn = meta.path|basename %}
 {% set tabs = [
     {
         'id': 'facts',
         'name': 'Facts',
         'icon': 'industry',
-        'title': fqdn,
+        'title': host,
         'subtitle': 'Ansible cached facts',
         'template': '/wapi/facts/facts.j2'
     },
@@ -14,9 +14,17 @@
         'id': 'raw',
         'name': 'Raw',
         'icon': 'code',
-        'title': fqdn,
+        'title': host,
         'subtitle': 'Ansible cached facts',
         'template': '/wapi/facts/raw.j2'
+    },
+    {
+        'id': 'vars',
+        'name': 'Host',
+        'icon': 'laptop',
+        'title': host,
+        'subtitle': 'Variables for this host',
+        'template': '/wapi/facts/host.j2'
     },
 ] %}
 {% extends "wapi.j2" %}
@@ -25,5 +33,9 @@
 {% block script %}
 {
   {% include 'wapi/facts/facts.js' %}
+}
+{
+  const inventories = {{ extra.wapi_config.inventories|default([])|to_json }}
+  {% include 'wapi/common/facts.js' %}
 }
 {% endblock %}

@@ -1,4 +1,34 @@
+{% set server = meta.path|basename %}
+{% set facts_folder = meta.config.folders|json_query("[?name=='facts'].path|[0]") %}
+{% set fact_file = facts_folder + '/' + server %}
+{# DEBUG 
+<pre>
+{{ facts_folder }}
+{{ fact_file }}
+{{ fact_file }} is file => {{ fact_file is file }}
+</pre>
+#}
 {# PAGE #}
 {% include '/wapi/common/tab_header.j2' %}
 
-TODO
+{% if fact_file is file %}
+
+<a class="item" href="/show?path={{ fact_file }}">Go on fact page</a>
+
+{% else %}
+
+<div class="ui _compact icon warning message">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        <div class="header">
+            There is currently no facts file for {{ server }}
+        </div>
+        <p>Do you want try generate them ?</p>
+        <div  id="facts_update"
+              class="ui positive button">
+              Yes !
+        </div>
+    </div>
+</div>
+
+{% endif %}

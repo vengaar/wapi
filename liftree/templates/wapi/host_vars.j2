@@ -1,13 +1,14 @@
-{% set wapi_page_name = meta.path|basename %}
+{% set host = meta.path|basename %}
+{% set wapi_page_name = 'Host - ' + host %}
 {% set wapi_star_cat = meta.renderer.name %}
 {% set wapi_star_name = meta.path|basename %}
 {% set wapi_star_icon = 'laptop' %}
 {% set tabs = [
     {
         'id': 'vars',
-        'name': 'Vars',
-        'icon': 'id card',
-        'title': wapi_page_name,
+        'name': 'Host',
+        'icon': 'laptop',
+        'title': host,
         'subtitle': 'Variables for this host',
         'template': '/wapi/host_vars/vars.j2'
     },
@@ -15,15 +16,15 @@
         'id': 'graph',
         'name': 'Graph',
         'icon': 'sitemap',
-        'title': wapi_page_name,
+        'title': host,
         'subtitle': 'Ansible inventory graph dependency',
         'template': '/wapi/host_vars/graph.j2'
     },
     {
         'id': 'facts',
         'name': 'Facts',
-        'icon': 'cogs',
-        'title': wapi_page_name,
+        'icon': 'industry',
+        'title': host,
         'subtitle': 'Ansible facts in cache',
         'template': '/wapi/host_vars/facts.j2'
     }
@@ -35,5 +36,9 @@
 {
   {% include 'wapi/host_vars/host_vars.js' %}
 }
-
+{
+  const inventories = ['{{ meta.path|dirname|dirname }}']
+  console.log(inventories)
+  {% include 'wapi/common/facts.js' %}
+}
 {% endblock %}

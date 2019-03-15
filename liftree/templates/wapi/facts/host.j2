@@ -1,0 +1,30 @@
+{% set server = meta.path|basename %}
+{% set host_folder = meta.config.folders|json_query("[?name=='inventory'].path|[0]") %}
+{% set host_file = host_folder + '/host_vars/' + server %}
+{# DEBUG
+<pre>
+{{ host_folder }}
+{{ host_file }}
+{{ host_file }} is file => {{ host_file is file }}
+</pre>
+#}
+{# PAGE #}
+{% include '/wapi/common/tab_header.j2' %}
+
+{% if host_file is file %}
+
+<a class="item" href="/show?path={{ host_file }}">Go on host page</a>
+
+{% else %}
+
+<div class="ui _compact icon warning message">
+    <i class="exclamation triangle icon"></i>
+    <div class="content">
+        <div class="header">
+            There is no host file for {{ server }}
+        </div>
+        <p>{{ host_file }} doesn't exist.</p>
+    </div>
+</div>
+
+{% endif %}
