@@ -74,6 +74,7 @@
       template:
         src: "{{ item }}"
         dest: /etc/wapi/{{ item }}
+        backup: true
       loop:
         - "wapi.yml"
         - "runs.yml"
