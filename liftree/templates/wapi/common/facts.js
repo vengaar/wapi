@@ -19,7 +19,7 @@ $('#facts_update').api({
 	},
 	onSuccess: function(response) {
 		console.log(response)
-		//location.reload();
+		location.reload();
 	},
 	onFailure: sw2_on_failure,
 	onError: sw2_on_error,	
