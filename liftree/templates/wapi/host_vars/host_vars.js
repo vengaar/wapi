@@ -1,5 +1,5 @@
 /**
- * 
+ * Graph
  */
 
 const host = '{{ meta.path|basename }}'

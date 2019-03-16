@@ -178,9 +178,7 @@ let cmdline_tags_apply = ''
 let cmdline_tags_skip = ''
 let cmdline_tasks = ''
 let cmdline_extra_vars = {}
-{#
-JSON.parse('{{ wapi.launch.extra_vars|wapi_defaults_extra_vars|to_json }}')
-#}
+
 // console.log('cmdline_extra_vars', cmdline_extra_vars)
 // console.log(cmdline_options)
 const wapi = {{ wapi|to_json }}
