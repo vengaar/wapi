@@ -6,8 +6,6 @@ Based on
 * https://github.com/vengaar/liftree to display/browse playbooks
 * https://github.com/vengaar/ansible-ws to handle Ansible
 
-**Currently in DEV**
-
 # Demo
 
 [demo](http://52.47.108.127/show)
