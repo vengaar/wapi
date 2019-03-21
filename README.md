@@ -59,13 +59,11 @@ In the search navbar type `wapi/wapi` and select a test playbook
 
 # Ansible integration
 
+
+
 ## Make your playbook visible in WAPI
 
-To have playbook just visible update `liftree.conf` of wapi to defined the folder with your playbooks.
-
-Caution : the folder and files must be readable by the wapi_user used. 
-
-*The wapi_user must also have permissions to read the ssh key used by ansible*
+See the wiki page[Howto define my playbooks in WAPI](https://github.com/vengaar/wapi/wiki/Howto-define-my-playbooks-in-WAPI-%3F)
 
 # WAPI format
 
@@ -73,4 +71,4 @@ To have extra_vars managed by form in wapi.
 
 You must defined in the first play of your playbook a variable wapi the the informations.
 
-See wiki
+See wiki pages [Wapi format](https://github.com/vengaar/wapi/wiki/Wapi-format)
