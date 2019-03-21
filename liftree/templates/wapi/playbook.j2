@@ -1,6 +1,8 @@
+{% set playbook = meta.path|basename %}
 {% set wapi_star_cat = meta.renderer.name %}
-{% set wapi_star_name = meta.path|basename %}
+{% set wapi_star_name = playbook %}
 {% set wapi_star_icon = 'book' %}
+{% set wapi_page_name = 'Playbook - ' + playbook %}
 {% set wapi = extra.wapi %}
 {% set tabs = [
     {

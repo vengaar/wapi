@@ -25,9 +25,19 @@ $('.menu .item').tab({
 	history: true,
 });
 
-$('.ui.search').search({
+const wapi_search = $('#wapi-search').search({
 	type: 'category',
 });
+
+$('#search_cat').dropdown({
+	onChange: function(value, text, $choice) {
+		// console.log(value, text, $choice)
+		wapi_search.search('set value', value)
+		wapi_search.search('search remote', value)
+		$('#search-input').focus()
+	}
+})
+
 
 /**
  * stars

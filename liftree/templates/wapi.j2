@@ -52,6 +52,7 @@
 {% endblock %}
 {% endif %}
       <div class="right menu">
+{# 
         <div class="ui right aligned category search item">
           <div class="ui _transparent icon input">
             <input class="prompt" type="text" placeholder="Search ...">
@@ -59,10 +60,33 @@
           </div>
           <div id="wapi_search_result" class="results"></div>
         </div>
+#}
+        <div id="wapi-search" class="ui right aligned category search item">
+          <div id="wapi_search_result" class="results"></div>
+          <div class="ui right action left icon search input">
+            <i class="search icon"></i>
+            <input id="search-input" class="prompt" type="text" placeholder="Search...">
+            <div id="search_cat" class="ui basic floating dropdown button">
+              <div class="text">All categories</div>
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <div class="item" data-value="">All categories</div>
+{% for category in meta.config.mappings %}
+  {% if category.search %}
+                <div class="item" data-value="{{ category.path }}">{{ category.renderer }}</div>
+  {% endif %}
+{% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div> <!-- end navbar -->
 
     <div class="ui main container">
+{#
+    <pre>{{ meta.config.mappings|to_yaml }}</pre>
+#}
 {% if tabs is defined %}
   {% for tab in tabs %}
     <div class="ui tab" data-tab="{{ tab.id }}">
