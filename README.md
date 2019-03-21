@@ -63,7 +63,7 @@ In the search navbar type `wapi/wapi` and select a test playbook
 
 ## Make your playbook visible in WAPI
 
-See the wiki page[Howto define my playbooks in WAPI](https://github.com/vengaar/wapi/wiki/Howto-define-my-playbooks-in-WAPI-%3F)
+See the wiki page [Howto define my playbooks in WAPI](https://github.com/vengaar/wapi/wiki/Howto-define-my-playbooks-in-WAPI-%3F)
 
 # WAPI format
 
