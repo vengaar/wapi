@@ -51,7 +51,8 @@
     </tr>
       {% endif %}
     {% endfor %}
-    {% if extra.git.status == 'M' %}
+    {% if extra.git is defined %}
+      {% if extra.git.status == 'M' %}
     <tr class="negative">
       <td class="right aligned">Git status</td>
       <td>modified (untracked={{ extra.git.untracked }})</td>
@@ -64,6 +65,7 @@
     <tr class="positive">
       <td class="right aligned">Git status</td><td>Ok</td>
     </tr>
+      {% endif %}
     {% endif %}
   </tbody>
 </table>
