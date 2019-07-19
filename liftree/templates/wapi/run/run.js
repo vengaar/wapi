@@ -53,11 +53,11 @@ const update_page = (response) => {
 const runid = '{{ data.runid }}'
 const get_run_output = () => {
 	$('body').api({
-		action: 'sw2',
-		method:'POST',
 		contentType: 'application/json',
-		on: 'now',
+		action: 'run/get',
+		method:'POST',
 		data: get_sw2_query('run', {'runid': runid}),
+		on: 'now',
 		onSuccess: update_page,
 		onFailure: sw2_on_failure,
 		onError: sw2_on_error,
@@ -65,4 +65,4 @@ const get_run_output = () => {
 }
 get_run_output()
 
-console.log('OK - run.js')
+console.log('OK - run.js');
