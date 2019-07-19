@@ -2,9 +2,22 @@
  * Semantic UI
  */
 
+const url_sw2 = '/sw2/query';
 $.fn.api.settings.api = {
 	'search': '/search?query={query}&format=sui',
-	'sw2': '/sw2/query',
+	'extravars/query': `${url_sw2}?{parameters}`,
+	'playbook/tags': `${url_sw2}?{parameters}`,
+	'playbook/tasks': `${url_sw2}?{parameters}`,
+	'playbook/launch': url_sw2,
+	'grapher/update': url_sw2,
+	'facts/update': url_sw2,
+	'runs/search': url_sw2,
+	'run/get': url_sw2,
+	'agent/get': url_sw2,
+	'agent/add': url_sw2,
+	'agent/kill': url_sw2,
+	'cache/get': url_sw2,
+	'cache/flush': url_sw2,
 };
 
 const get_sw2_query = (query, parameters) => {
@@ -130,4 +143,4 @@ $('.copy_to_clipboard').click( function() {
 	document.execCommand("copy");
 });
 
-console.log('OK - wapi.js')
+console.log('OK - wapi.js');

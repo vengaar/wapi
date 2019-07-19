@@ -10,9 +10,9 @@ $('#search-runs').form({
 		status   : 'empty',
 	}
 }).api({
-	action: 'sw2',
-	method:'POST',
 	contentType: 'application/json',
+	action: 'runs/search',
+	method:'POST',
 	serializeForm: true,
 	beforeSend: function(settings) {
 		settings.data = get_sw2_query('runs', settings.data)
@@ -84,4 +84,4 @@ $('#rangeend').calendar({
 	},
 }).calendar('set date', to, true, false);
 
-console.log('OK - runs.js')
+console.log('OK - runs.js');

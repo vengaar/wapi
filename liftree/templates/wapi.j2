@@ -1,3 +1,5 @@
+{% set version_semantic_ui = '2.7.6' %}
+{% set version_highlightjs = '9.15.8' %}
 <!doctype html>
 <html>
   <head>
@@ -5,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/ansible-ws/graph/wapi.ico" />
     <title>{{ wapi_page_name|default(meta.path|basename) }}</title>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/styles/atom-one-light.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fomantic-ui@{{ version_semantic_ui }}/dist/semantic.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/{{ version_highlightjs }}/styles/atom-one-light.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
     <style>
       {% include '/wapi/layout/wapi.css' %}
@@ -101,8 +103,8 @@
 
     <!-- scripts -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/fomantic-ui@2.7.2/dist/semantic.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.14.2/highlight.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/fomantic-ui@{{ version_semantic_ui }}/dist/semantic.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/{{ version_highlightjs }}/highlight.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.address/1.6/jquery.address.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js"></script>

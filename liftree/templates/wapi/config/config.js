@@ -13,10 +13,10 @@ $ssh_key_form.form({
 		passphrase: 'empty'
 	},
 }).api({
-	action: 'sw2',
-	method:'POST',
 	contentType: 'application/json',
+	action: 'agent/add',
 	serializeForm: true,
+	method:'POST',
 	beforeSend: function(settings) {
 		settings.data['id'] = 'wapi'
 		settings.data = get_sw2_query('SSHAgentAdd', settings.data)
@@ -39,11 +39,11 @@ $ssh_key_form.form({
 
 const sw2_agent_parameters = {'id': 'wapi'}
 $('body').api({
-	action: 'sw2',
-	method:'POST',
 	contentType: 'application/json',
-	on: 'now',
+	action: 'agent/get',
+	method:'POST',
 	data: get_sw2_query('SSHAgent', sw2_agent_parameters),
+	on: 'now',
 	onSuccess: function(response) {
 		console.log(response.results.agent);
 		if(response.results.keys.length > 0) {
@@ -59,9 +59,9 @@ $('body').api({
 })	
 
 $ssh_agent_kill.api({
-	action: 'sw2',
-	method:'POST',
 	contentType: 'application/json',
+	action: 'agent/kill',
+	method:'POST',
 	data: get_sw2_query('SSHAgentKill', sw2_agent_parameters),
 	onSuccess: function(response, element, xhr) {
 		// console.log('ssh_agent_kill success');
@@ -101,9 +101,9 @@ const load_cache_information = cache_informations => {
 		$cache_information.append(line);
 	}
 	$('.cache-flush').api({
-		action: 'sw2',
-		method:'POST',
 		contentType: 'application/json',
+		action: 'cache/flush',
+		method:'POST',
 		beforeSend: function(settings) {
 			const parameters = {'key': $(this).data('key')}
 			settings.data = get_sw2_query('cache_flush', parameters)
@@ -119,9 +119,9 @@ const load_cache_information = cache_informations => {
 }
 
 $botton_load_cache.api({
-	action: 'sw2',
-	method:'POST',
 	contentType: 'application/json',
+	action: 'cache/get',
+	method:'POST',
 	data: get_sw2_query('cache_info'),
 	onSuccess: function(response) {
 		load_cache_information(response.results)
@@ -130,4 +130,4 @@ $botton_load_cache.api({
 	onError: sw2_on_error,
 });
 
-console.log('OK - config.js')
+console.log('OK - config.js');

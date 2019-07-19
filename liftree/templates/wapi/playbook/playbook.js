@@ -51,16 +51,19 @@ class ExtraVar {
 			// console.log(parameters)
 			this.$.dropdown({
 				apiSettings: {
-					action: 'sw2',
-					method: 'POST',
 					contentType: 'application/json',
+					action: 'extravars/query',
+					urlData: {
+						parameters: get_sw2_query(data.query, parameters),
+					},
+					method: 'POST',
 					data: get_sw2_query(data.query, parameters),
-					cache: true,
-//					onFailure: sw2_on_failure,
-//					onError: sw2_on_error,
+					// onFailure: sw2_on_failure,
+					// onError: sw2_on_error,
 				},
 				onChange: extra_var_dropdown_onchange,
 				clearable: true,
+				fullTextSearch: 'exact',
 				filterRemoteData: true,
 			});
 			if (this.default !== null) {
@@ -261,31 +264,37 @@ const sw2_playbook_parameter = {'playbook': path}
 
 $('#tasks').dropdown({
 	apiSettings: {
-		action: 'sw2',
-		method:'POST',
 		contentType: 'application/json',
-		data: get_sw2_query('tasks', sw2_playbook_parameter),
-		cache: true,
-//		onFailure: sw2_on_failure,
-//		onError: sw2_on_error,
+		action: 'playbook/tasks',
+		urlData: {
+			parameters: get_sw2_query('tasks', sw2_playbook_parameter),
+		},
+		// method:'POST',
+		// data: get_sw2_query('tasks', sw2_playbook_parameter),
+		// onFailure: sw2_on_failure,
+		// onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		cmdline_tasks = value
 		display_cmdline()
 	},
 	clearable: true,
+	fullTextSearch: 'exact',
+	cache: true,
 	filterRemoteData: true,
 });
 
 $('.playbook-tags').dropdown({
 	apiSettings: {
-		action: 'sw2',
-		method:'POST',
 		contentType: 'application/json',
-		data: get_sw2_query('tags', sw2_playbook_parameter),
-		cache: true,
-//		onFailure: sw2_on_failure,
-//		onError: sw2_on_error,
+		action: 'playbook/tags',
+		urlData: {
+			parameters: get_sw2_query('tags', sw2_playbook_parameter),
+		},
+		// method:'POST',
+		// data: get_sw2_query('tags', sw2_playbook_parameter),
+		// onFailure: sw2_on_failure,
+		// onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		if (this.id === 'tags_apply') {
@@ -297,6 +306,8 @@ $('.playbook-tags').dropdown({
 		display_cmdline()
 	},
 	clearable: true,
+	fullTextSearch: 'exact',
+	cache: true,
 	filterRemoteData: true,
 });
 
@@ -314,9 +325,9 @@ const $playbook_form = $('#playbook_form')
 $playbook_form.form({
 	fields: extra_vars.get_form_fields_check()
 }).api({
-	action: 'sw2',
-	method:'POST',
 	contentType: 'application/json',
+	action: 'playbook/launch',
+	method:'POST',
 	serializeForm: true,
 	beforeSend: function(settings) {
 		settings.data = get_sw2_query('launch', settings.data)
@@ -379,4 +390,4 @@ const urlParams = new URLSearchParams(window.location.search);
 const configuration = urlParams.get("configuration")
 if (configuration !== null) $configuration.dropdown('set exactly', configuration)
 
-console.log('OK - form.js')
+console.log('OK - form.js');
