@@ -1,4 +1,4 @@
-{% set version_semantic_ui = '2.7.6' %}
+{% set version_semantic_ui = '2.7.7' %}
 {% set version_highlightjs = '9.15.8' %}
 <!doctype html>
 <html>
@@ -92,6 +92,7 @@
 {% if tabs is defined %}
   {% for tab in tabs %}
     <div class="ui tab" data-tab="{{ tab.id }}">
+      {% include '/wapi/layout/tab_title.j2' %}
       {% include tab.template %}
     </div>
   {% endfor %}

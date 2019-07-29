@@ -269,6 +269,12 @@ $('#tasks').dropdown({
 		urlData: {
 			parameters: get_sw2_query('tasks', sw2_playbook_parameter),
 		},
+		onResponse: function(response) {
+			console.log(response)
+			const no_task_name = '<div class="ui label">no task selected</div>'
+			response['results'].unshift({name: no_task_name, value: ''})
+			return response;
+		},
 		// method:'POST',
 		// data: get_sw2_query('tasks', sw2_playbook_parameter),
 		// onFailure: sw2_on_failure,

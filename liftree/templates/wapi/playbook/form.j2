@@ -1,7 +1,5 @@
 {% set form_label_class = "ui grey top right attached label" %}
 {# FORM #}
-{% include '/wapi/common/tab_header.j2' %}
-
 {% if 'error' in wapi.keys() %}
 
 <div class="ui negative message">
@@ -30,10 +28,10 @@
 
     <div class="ui stackable two column grid">
         <div class="column">
-            {% include '/wapi/playbook/form_launch.j2' %}
+            {% include '/wapi/playbook/form_extra_vars.j2' %}
         </div>
         <div class="column">
-            {% include '/wapi/playbook/form_extra_vars.j2' %}
+            {% include '/wapi/playbook/form_launch.j2' %}
         </div>
     </div>
 
