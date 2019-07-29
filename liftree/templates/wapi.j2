@@ -92,6 +92,7 @@
 {% if tabs is defined %}
   {% for tab in tabs %}
     <div class="ui tab" data-tab="{{ tab.id }}">
+      {% include '/wapi/layout/tab_title.j2' %}
       {% include tab.template %}
     </div>
   {% endfor %}
