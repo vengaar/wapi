@@ -14,7 +14,6 @@
   become: true
   become_user: "{{ wapi_user }}"
   block:
-  
     - name: Clone git wapi repo on user home
       become: true
       become_user: "{{ wapi_user }}"
@@ -23,7 +22,7 @@
         version: "{{ git_version }}"
         dest: /home/{{ wapi_user }}/{{ git_name }}
         force: yes
-      when: git_clone
+      when: git_clone|bool
 
     - name: Deploy favicon
       copy:
@@ -56,7 +55,6 @@
   become: yes
   become_user: root
   block:
-
     - name: Deploy wapi liftree config include
       copy:
         dest: /etc/liftree/conf.d/50-wapi.conf
@@ -81,5 +79,6 @@
         - "facts.yml"
 
     - name: Display test url
-      debug: msg="Go on http://{{ ansible_default_ipv4.address }}/show to test"
+      debug:
+        msg: "Go on http://{{ ansible_default_ipv4.address }}/show to test"
 ...
