@@ -1,6 +1,8 @@
 ---
-- hosts: localhost
+- name: Fail test playbook 
+  hosts: localhost
   gather_facts: false
   tasks:
-    - fail: msg="Test playbook fail"
+    - fail:
+        msg: "Fail test playbook"
 ...
