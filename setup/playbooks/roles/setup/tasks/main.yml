@@ -51,6 +51,8 @@
           fact_caching: jsonfile
           fact_caching_connection: "{{ wapi_ansible_facts_folder }}"
 
+- include_tasks: "{{ ansible_distribution|lower }}.yml"
+
 - name: Config
   become: yes
   become_user: root
@@ -80,5 +82,5 @@
 
     - name: Display test url
       debug:
-        msg: "Go on http://{{ ansible_default_ipv4.address }}/show to test"
+        msg: "Go on http://{{ wapi_base_url }}/show to test"
 ...

@@ -44,7 +44,7 @@
             attributes: ['required', 'multiple']
             query: groupvars
             query_parameters:
-              group: preprod
+              group: database_preprod
               key: colors
               inventories: *inventories
 

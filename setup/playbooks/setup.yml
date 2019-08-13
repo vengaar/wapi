@@ -4,34 +4,32 @@
   become: yes
   become_user: root
   vars:
-    git_version: master
     git_clone: true
     git_repos:
-      - liftree
-      - ansible-ws
-      - wapi
+      - name: liftree
+        version: "{{ git_version|default('HEAD') }}"
+      - name: ansible-ws
+        version: "{{ git_version|default('HEAD') }}"
+      - name: wapi
+        version: "{{ git_version|default('HEAD') }}"
   tasks:
-    - name: Remove existing WAPI liftree config.
-      file:
-        path: /etc/liftree/conf.d/50-wapi.conf
-        state: absent
     - name: Clone repo
       git:
-        repo: https://github.com/vengaar/{{ repo_name }}.git
-        dest: /tmp/{{ repo_name }}
-        version: "{{ git_version }}"
+        repo: https://github.com/vengaar/{{ git_repo.name }}.git
+        dest: /tmp/{{ git_repo.name }}
+        version: "{{ git_repo.version }}"
         force: yes
       loop: "{{ git_repos }}"
       loop_control:
-        loop_var: repo_name
+        loop_var: git_repo
 
     - name: Setup
       include_role:
-        name: /tmp/{{ repo_name }}/setup/playbooks/roles/setup
+        name: /tmp/{{ git_repo.name }}/setup/playbooks/roles/setup
       vars:
         wsgi_user: "wapi"
-        version: "{{ git_version }}"
+        version: "{{ git_repo.version }}"
       loop: "{{ git_repos }}"
       loop_control:
-        loop_var: repo_name
+        loop_var: git_repo
 ...

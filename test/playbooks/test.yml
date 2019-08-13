@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ prod_servers|default('localhost') }}"
+- hosts: localhost
   gather_facts: false
   vars:
     wapi:
@@ -20,7 +20,7 @@
       launch:
         options: -v --diff
         inventories: &inventories
-          - ~/wapi/test/inventories/hosts
+          - ~/wapi/test/inventories
         extra_vars:
 
           - name: demo
@@ -34,12 +34,13 @@
             default: coucou
             attributes: ['required']
 
-          - name: prod_servers
-            description: One or several production servers
+          - name: database_servers
+            description: One or several preprod database servers
             query: groups
             query_parameters:
-              pattern: '.*prod'
+              pattern: '.*_prod'
               sources: *inventories
+              groups_selection: 'yes'
             attributes: ['required', 'multiple']
             default:
               - foo
@@ -74,7 +75,7 @@
       configurations:
         config_ok:
           demo: __default__
-          prod_servers:
+          database_servers:
             - database_app1_prod
           app1_server: server_prod_12
           agree: false
@@ -83,7 +84,7 @@
             - red
         config_ko:
           demo: __clear__
-          prod_servers:
+          database_servers:
             - database_app1_prod
             - database_app2_prod
           app1_server: server_dev_11
@@ -94,54 +95,61 @@
             - green
         clear:
           demo: __clear__
-          prod_servers: __clear__
+          database_servers: __clear__
           app1_server: __clear__
           agree: __clear__
           email: __clear__
           color: __clear__
         default:
           demo: __default__
-          prod_servers: __default__
+          database_servers: __default__
           app1_server: __default__
           agree: __default__
           email: __default__
           color: __default__
 
   tasks:
-
     - name: Display inventory_hostname
-      debug: var=inventory_hostname
+      debug:
+        var: inventory_hostname
 
     - name: Display param email
-      debug: var=email
+      debug:
+        var: email
       tags:
         - email
 
     - name: Display param app1_server
-      debug: var=app1_server
+      debug:
+        var: app1_server
       tags:
         - app1_server
 
-    - name: Display param prod_servers
-      debug: var=prod_servers
+    - name: Display param database_servers
+      debug:
+        var: database_servers
       tags:
-        - prod_servers
+        - database_servers
 
     - name: Display param color
-      debug: var=color
+      debug:
+        var: color
       tags:
         - color
 
     - name: Display param agree
-      debug: var=agree
+      debug:
+        var: agree
       tags:
         - agree
 
     - name: Task with tag
-      debug: msg="A tagged task"
+      debug:
+        msg: "A tagged task"
       tags:
         - tag1
 
     - name: Task without tag
-      debug: msg="A task without tags"
+      debug:
+        msg: "A task without tags"
 ...

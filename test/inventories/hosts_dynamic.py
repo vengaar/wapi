@@ -9,7 +9,7 @@ servers = [
 ]
 
 inventory = {
-    "database": {
+    "database_preprod": {
         "hosts": servers,
         "vars": {
             "colors": {
