@@ -6,7 +6,7 @@
     - name: Deploy apache configuration
       template:
         src: httpd.conf
-        dest: /etc/apache2/sites-available/wapi.conf
+        dest: /etc/apache2/sites-available/{{ git_name }}.conf
 
     - name: Use a2* command to enable {{ git_name }} site
       shell: "{{ item }}"
