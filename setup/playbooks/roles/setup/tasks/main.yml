@@ -82,5 +82,5 @@
 
     - name: Display test url
       debug:
-        msg: "Go on http://{{ wapi_base_url }}/show to test"
+        msg: "Go on {{ wapi_base_url }}/show to test"
 ...
