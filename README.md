@@ -1,3 +1,5 @@
+[defaults setup role]: https://github.com/vengaar/wapi/tree/master/setup/playbooks/roles/setup/defaults
+
 # wapi
 Web Ansible Playbook Interface
 
@@ -19,9 +21,13 @@ Based on
 * Python => 3.6
 * Ansible
 
-## Procedure
+## Defaults
 
-**CAUTION : currently require to have SELinux in Permissive mode**
+* The default settings are available in defaults of ansible setup role
+* See [defaults setup role]
+* By default wapi run on port 8042 but you can override it with an ansible extra_vars as `-e "wsgi_port=80"`
+
+## Procedure
 
 ### Ubuntu >= 18.04.1 LTS
 
@@ -34,6 +40,8 @@ ansible-playbook wapi/setup/playbooks/setup.yml
 ~~~~
 
 ### Fedora >= 28
+
+**CAUTION : currently require to have SELinux in Permissive mode**
 
 As root on your server
 
@@ -53,13 +61,11 @@ git pull
 ansible-playbook setup/playbooks/setup.yml -e "git_version=devel" --diff
 ~~~~
 
-Go on http://localhost/show
+Go on http://localhost:8042/show
 
 In the search navbar type `wapi/wapi` and select a test playbook
 
 # Ansible integration
-
-
 
 ## Make your playbook visible in WAPI
 
