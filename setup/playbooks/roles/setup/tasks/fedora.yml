@@ -1,4 +1,18 @@
 ---
+- name: Get selinux state
+  command: getenforce
+  register: getenforce
+
+- name: Manage selinux
+  when: getenforce.stdout == "Enforcing"
+  block:
+    - name: Allow Apache to listen on tcp port {{ wapi_port }}
+      seport:
+        ports: "{{ wapi_port }}"
+        proto: tcp
+        setype: http_port_t
+        state: present
+
 - name: Deploy httpd config
   become: true
   become_user: root
