@@ -1,4 +1,5 @@
 [defaults setup role]: https://github.com/vengaar/wapi/tree/master/setup/playbooks/roles/setup/defaults
+[demo]: http://52.47.108.127:8042/show
 
 # wapi
 Web Ansible Playbook Interface
@@ -10,7 +11,7 @@ Based on
 
 # Demo
 
-[demo](http://52.47.108.127/show)
+[demo]
 
 # Setup
 
