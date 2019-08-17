@@ -5,6 +5,8 @@
 
 - name: Manage selinux
   when: getenforce.stdout == "Enforcing"
+  become: true
+  become_user: root
   block:
     - name: Allow Apache to listen on tcp port {{ wapi_port }}
       seport:
