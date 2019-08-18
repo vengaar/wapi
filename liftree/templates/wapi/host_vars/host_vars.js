@@ -8,7 +8,7 @@ const parameters = {
 	'inventory': '{{ meta.path|dirname|dirname }}',	
 }
 const sw2_parameters = get_sw2_query('grapher', parameters);
-const host_img_src = `/ansible-ws/graph/${host}.png`
+const host_img_src = `/ansible-ws/graphs/${host}.png`
 const $button_update_graph = $('.button.update-graph')
 $button_update_graph.api({
 	contentType: 'application/json',
