@@ -3,7 +3,7 @@ import yaml
 def get_data(path, params):
     try:
         with open(path, 'r') as stream:
-            data = yaml.load(stream)
+            data = yaml.safe_load(stream)
         if 'vars' in data[0]:
             wapi = data[0]['vars'].get('wapi', dict())
         else:
