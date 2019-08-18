@@ -11,7 +11,7 @@ Based on
 
 # Demo
 
-[demo]
+[demo] (credential : wapi/wapi)
 
 # Setup
 
