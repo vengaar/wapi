@@ -1,5 +1,5 @@
 [defaults setup role]: https://github.com/vengaar/wapi/tree/master/setup/playbooks/roles/setup/defaults
-[demo]: http://52.47.108.127:8042/show
+[demo]: http://52.47.108.127/show/
 
 # wapi
 Web Ansible Playbook Interface
@@ -26,7 +26,7 @@ Based on
 
 * The default settings are available in defaults of ansible setup role
 * See [defaults setup role]
-* By default wapi run on port 8042 but you can override it with an ansible extra_vars as `-e "wsgi_port=80"`
+* By default wapi run on port 8042 but you can override it with an ansible extra_vars as `-e "wapi_port=80"`
 
 ## Procedure
 
