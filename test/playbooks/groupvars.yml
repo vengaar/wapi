@@ -1,5 +1,6 @@
 ---
-- hosts: "{{ prod_servers|default('localhost') }}"
+- name: Test groupvars playbook
+  hosts: database
   gather_facts: false
   vars:
     wapi:
@@ -7,11 +8,20 @@
         author: https://github.com/vengaar
         state: dev
         description: |
-          Playbook used to explain groupvars search
+          ### Playbook used to explain groupvars search.
+          
+          * Allow to choose value.s among a list aldready defined as groups vars
+          * It is done to avoid to duplicate list
+          * If behin the key provided you have:
+              * a list, the values proposed values are the values of the list
+              * a dict, the values proposed values are the keys of the dict 
+          * The variable are get through a `ansible-inventory --list --export`
+          * So it work in all case, groups_vars file, dynamic inventory, ... etc
+          * Below some examples.
       launch:
         options: -v
-        inventories:
-          - ~/wapi/test/inventories/hosts
+        inventories: &inventories
+          - ~/wapi/test/inventories
         extra_vars:
           - name: country_selected
             description: One country belong values of countries.all defined as group_vars database
@@ -20,8 +30,7 @@
             query_parameters:
               group: database
               key: countries.list
-              inventories:
-                - ~/wapi/test/inventories/hosts
+              inventories:  *inventories
           - name: countries_selected
             description: Several countries
             attributes: ['required', 'multiple']
@@ -29,22 +38,43 @@
             query_parameters:
               group: database
               key: countries.dict
-              inventories:
-                - ~/wapi/test/inventories/hosts
-
+              inventories: *inventories
+          - name: colors_selected
+            description: Several color coming from groups vars defined in dynamic inventory
+            attributes: ['required', 'multiple']
+            query: groupvars
+            query_parameters:
+              group: database_preprod
+              key: colors
+              inventories: *inventories
 
   tasks:
+    - name: Check and display extra vars
+      run_once: true
+      block:
+        - name: Display country_selected
+          debug:
+            var: country_selected
 
-    - name: Display country_selected
-      debug: var=country_selected
+        - name: Display countries_selected
+          debug:
+            var: countries_selected
 
-    - name: Display countries_selected
-      debug: var=countries_selected
-      
-    - name: Check extra vars type
-      assert:
-        that:
-          - country_selected is string
-          - countries_selected is not string
-          - countries_selected is iterable
+        - name: Display colors_selected
+          debug:
+            var: colors_selected
+
+        - name: Check extra vars type
+          assert:
+            that:
+              - country_selected is string
+              - countries_selected is not string
+              - countries_selected is iterable
+              - colors_selected is not string
+              - colors_selected is iterable
+
+        - name: Display color code
+          debug:
+            var: colors[item]
+          loop: "{{ colors_selected }}"
 ...
