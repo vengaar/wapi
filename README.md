@@ -59,7 +59,7 @@ git clone https://github.com/vengaar/wapi.git
 cd wapi
 git checkout devel
 git pull
-ansible-playbook setup/playbooks/setup.yml -e "git_version=devel" --diff
+ansible-playbook setup/playbooks/setup.yml -e "version=devel" --diff
 ~~~~
 
 Go on http://localhost:8042/show
