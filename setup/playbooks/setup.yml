@@ -4,14 +4,18 @@
   become: yes
   become_user: root
   vars:
+    wsgi_user: "wapi"
+    version_liftree: "{{ version|default('HEAD') }}"
+    version_ansible_ws: "{{ version|default('HEAD') }}"
+    version_wapi: "{{ version|default('HEAD') }}"
     git_clone: true
     git_repos:
       - name: liftree
-        version: "{{ git_version|default('HEAD') }}"
+        version: "{{ version_liftree }}"
       - name: ansible-ws
-        version: "{{ git_version|default('HEAD') }}"
+        version: "{{ version_ansible_ws }}"
       - name: wapi
-        version: "{{ git_version|default('HEAD') }}"
+        version: "{{ version_wapi }}"
   tasks:
     - name: Clone repo
       git:
@@ -23,13 +27,21 @@
       loop_control:
         loop_var: git_app
 
-    - name: Setup
+    - name: Setup liftree
       include_role:
-        name: /tmp/{{ git_app.name }}/setup/playbooks/roles/setup
+        name: /tmp/liftree/setup/playbooks/roles/setup
       vars:
-        wsgi_user: "wapi"
-        git_version: "{{ git_app.version }}"
-      loop: "{{ git_repos }}"
-      loop_control:
-        loop_var: git_app
+        git_version: "{{ version_liftree }}"
+
+    - name: Setup ansible-ws
+      include_role:
+        name: /tmp/ansible-ws/setup/playbooks/roles/setup
+      vars:
+        git_version: "{{ version_ansible_ws }}"
+
+    - name: Setup wapi
+      include_role:
+        name: /tmp/wapi/setup/playbooks/roles/setup
+      vars:
+        git_version: "{{ version_wapi }}"
 ...
