@@ -19,8 +19,6 @@
           * Below some examples.
       launch:
         options: -v
-        inventories: &inventories
-          - ~/wapi/test/inventories
         extra_vars:
           - name: country_selected
             description: One country belong values of countries.all defined as group_vars database
@@ -29,7 +27,6 @@
             query_parameters:
               group: database
               key: countries.list
-              inventories:  *inventories
           - name: countries_selected
             description: Several countries
             attributes: ['required', 'multiple']
@@ -37,7 +34,6 @@
             query_parameters:
               group: database
               key: countries.dict
-              inventories: *inventories
           - name: colors_selected
             description: Several color coming from groups vars defined in dynamic inventory
             attributes: ['required', 'multiple']
@@ -45,7 +41,6 @@
             query_parameters:
               group: prod
               key: colors
-              inventories: *inventories
 
   tasks:
     - name: Check and display extra vars
