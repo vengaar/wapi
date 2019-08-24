@@ -1,5 +1,0 @@
----
-database_user: write
-database_name: app2
-database_type: master
-...

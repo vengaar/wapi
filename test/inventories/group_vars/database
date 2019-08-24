@@ -1,7 +1,4 @@
 ---
-database_user: test
-database_name: test
-database_port: 3306
 countries:
   list:
     - fr

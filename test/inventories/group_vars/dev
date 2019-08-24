@@ -1,0 +1,5 @@
+---
+database_user: test
+database_name: test
+database_port: 3306
+...

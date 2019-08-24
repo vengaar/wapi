@@ -1,5 +1,5 @@
 ---
-- name: Test groupvars playbook
+- name: Example for wapi groupvars
   hosts: database
   gather_facts: false
   vars:
@@ -9,7 +9,6 @@
         state: dev
         description: |
           ### Playbook used to explain groupvars search.
-          
           * Allow to choose value.s among a list aldready defined as groups vars
           * It is done to avoid to duplicate list
           * If behin the key provided you have:
@@ -44,7 +43,7 @@
             attributes: ['required', 'multiple']
             query: groupvars
             query_parameters:
-              group: database_preprod
+              group: prod
               key: colors
               inventories: *inventories
 

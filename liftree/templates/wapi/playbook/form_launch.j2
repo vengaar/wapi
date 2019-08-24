@@ -42,14 +42,15 @@
 
   <div class="field">
     <label>Options</label>
-    {% set options_default = '' %}
-    {% set options = options_default %}
+    {% set options = extra.wapi_config.run_options %}
     {% set inventories = '' %}
     {% if wapi.launch is defined %}
       {% if wapi.launch.inventories is defined %}
         {% set inventories = ' -i ' + wapi.launch.inventories|join(' -i ') %}
       {% endif %}
-      {% set options = wapi.launch.options|default(options_default) %}
+      {% if wapi.launch.options is defined %}
+        {% set options = wapi.launch.options %}
+      {% endif %}
     {% endif %}
     <textarea id="options" name="options" rows="3">{{ options }}{{ inventories }}</textarea>
   </div>

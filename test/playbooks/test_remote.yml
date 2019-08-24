@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Playbook to test agent
+  hosts: localhost
   gather_facts: true
   vars:
     wapi:
