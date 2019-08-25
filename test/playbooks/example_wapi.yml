@@ -1,28 +1,22 @@
 ---
-- hosts: localhost
+- name: Example for wapi usage
+  hosts: localhost
   gather_facts: false
   vars:
     wapi:
-
       metadata:
         author: https://github.com/vengaar
         state: prod
         description: |
           #### Playbook using for test and demo
-          
-          * This playbook run on local connection
-          * Below several type of extra vars provided by wapi
+          * Below several types of extra vars provided by wapi
               * Dynamic host coming from inventories
               * Toggle true/false
               * Value.s to choose among static list 
-
-          See [https://github.com/vengaar/wapi]() for more information
+          * This playbook run on local connection
+          * See [https://github.com/vengaar/wapi]() for more information
       launch:
-        options: -v --diff
-        inventories: &inventories
-          - ~/wapi/test/inventories
         extra_vars:
-
           - name: demo
             description: Values coming from demo query
             query: demo
@@ -34,40 +28,41 @@
             default: coucou
             attributes: ['required']
 
-          - name: database_servers
-            description: One or several preprod database servers
+          - name: prod_server
+            description: One server from prod group without default.
             query: groups
             query_parameters:
-              pattern: '.*_prod'
-              sources: *inventories
+              pattern: 'prod'
+            attributes: ['required']
+#             default: database-prod-001
+
+          - name: database_servers
+            description: |
+              Required servers from database groups with default values.
+              With possibility to select the group itself.
+            query: groups
+            query_parameters:
+              pattern: 'database'
               groups_selection: 'yes'
             attributes: ['required', 'multiple']
             default:
-              - foo
-              - bar 
-
-          - name: app1_server
-            description: One server for app1 without group selection
-            query: groups
-            query_parameters:
-              pattern: '.*app1'
-              groups_selection: 'no'
-              sources: *inventories
-            attributes: ['required']
-            default: foo
+              - database-dev-001
+              - database-dev-002
 
           - name: agree
             boolean: true
             description: A toggle true/false
 
           - name: email
-            description: A email to notify
+            description:
+              A email to notify.
+              With specific validation.
             check: 'email'
 
           - name: color
-            description: A choice among a static list
+            description: A optional choice among a static list
             choices: ['blue', 'red', 'green']
-            attributes: ['required', 'multiple']
+            attributes: ['multiple']
             default:
               - blue
               - green
@@ -75,35 +70,32 @@
       configurations:
         config_ok:
           demo: __default__
+          prod_server: database_prod_001
           database_servers:
-            - database_app1_prod
-          app1_server: server_prod_12
+            - database_dev_003
+            - database_dev_004
           agree: false
           email: foo@bar.io
           color:
             - red
         config_ko:
           demo: __clear__
-          database_servers:
-            - database_app1_prod
-            - database_app2_prod
-          app1_server: server_dev_11
-          agree: true
+          prod_server: database_prod_001
+          database_servers: __default__
+          agree: __default__
           email: hello@world.com
-          color:
-            - red
-            - green
+          color: __default__
         clear:
           demo: __clear__
+          prod_server: __clear__
           database_servers: __clear__
-          app1_server: __clear__
           agree: __clear__
           email: __clear__
           color: __clear__
         default:
           demo: __default__
+          prod_server: __default__
           database_servers: __default__
-          app1_server: __default__
           agree: __default__
           email: __default__
           color: __default__
@@ -119,11 +111,11 @@
       tags:
         - email
 
-    - name: Display param app1_server
+    - name: Display param prod_server
       debug:
-        var: app1_server
+        var: prod_server
       tags:
-        - app1_server
+        - prod_server
 
     - name: Display param database_servers
       debug:

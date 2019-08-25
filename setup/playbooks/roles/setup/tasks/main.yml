@@ -39,17 +39,25 @@
         src: /etc/ansible/ansible.cfg
         dest: ~/.ansible.cfg
 
-    - name: Enable json facts caching
+    - name: Update ansible.cfg
       lineinfile:
         path: ~/.ansible.cfg
         regexp: '^{{ item.key }}\s*=.*$'
-        insertafter: '^\[defaults\]'
+        insertafter: '^\[{{ item.section }}\]'
         line: "{{ item.key }} = {{ item.value }}"
-      loop: "{{ dict|dict2items }}"
-      vars:
-        dict:
-          fact_caching: jsonfile
-          fact_caching_connection: "{{ wapi_ansible_facts_folder }}"
+      loop:
+        - section: defaults
+          key: fact_caching
+          value: "jsonfile"
+        - section: defaults
+          key: fact_caching_connection
+          value: "{{ wapi_ansible_facts_folder }}"
+        - section: defaults
+          key: inventory
+          value: "~/{{ git_name }}/test/inventories"
+        - section: inventory
+          key: ignore_patterns
+          value: "__pycache__"
 
 - include_tasks: "{{ ansible_distribution|lower }}.yml"
 

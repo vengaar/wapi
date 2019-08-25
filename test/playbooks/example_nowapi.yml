@@ -1,0 +1,9 @@
+---
+- name: Minimal playbook
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Display inventory_hostname
+      debug:
+        var: inventory_hostname
+...

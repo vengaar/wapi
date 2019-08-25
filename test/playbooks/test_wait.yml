@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Paybook with pauses
+  hosts: localhost
   gather_facts: false
   vars:
     wapi:
@@ -8,7 +9,7 @@
         state: prod
         description: |
           #### Playbook using for test and demo
-          * Do a puse of {pause_duration} seconds {pause_number} times
+          * Do a pause of {pause_duration} seconds {pause_number} times
           * See extra vars for more details
       launch:
         options: -v
@@ -33,8 +34,10 @@
     pause_number: "{{ wapi|json_query(queries.pause_number) }}"
     pause_duration: "{{ wapi|json_query(queries.pause_duration) }}"
   tasks:
-    - debug: var=pause_number
-    - debug: var=pause_duration
+    - debug:
+        var: pause_number
+    - debug:
+        var: pause_duration
     - pause:
         seconds: "{{ pause_duration|int }}"
       loop: "{{ range(0, pause_number|int)|list }}"

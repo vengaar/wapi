@@ -1,0 +1,20 @@
+---
+- name: Test meta refresh_inventory and dynamic inventories
+  hosts: database
+  gather_facts: false
+  tasks:
+    - debug:
+        var: database_ts
+      run_once: true
+
+    - shell: python3 {{ item }} --refresh-cache
+      with_fileglob: "{{ ansible_inventory_sources[0] }}/*py"
+      delegate_to: localhost
+      run_once: true
+
+    - meta: refresh_inventory
+
+    - debug:
+        var: database_ts
+      run_once: true
+...

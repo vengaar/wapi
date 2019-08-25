@@ -5,9 +5,9 @@
 const url_sw2 = '/sw2/query';
 $.fn.api.settings.api = {
 	'search': '/search?query={query}&format=sui',
-	'extravars/query': `${url_sw2}?{parameters}`,
-	'playbook/tags': `${url_sw2}?{parameters}`,
-	'playbook/tasks': `${url_sw2}?{parameters}`,
+	'extravars/query': url_sw2,
+	'playbook/tags': url_sw2,
+	'playbook/tasks': url_sw2,
 	'playbook/launch': url_sw2,
 	'grapher/update': url_sw2,
 	'facts/update': url_sw2,
@@ -20,13 +20,10 @@ $.fn.api.settings.api = {
 	'cache/flush': url_sw2,
 };
 
-const get_sw2_query = (query, parameters) => {
+const get_sw2_query = (query, parameters, sw2_options={}) => {
+	sw2_options['query'] = query
 	const data = {
-		'sw2': {
-			'query': query,
-//			'debug': true,
-//			'cache': 'bypass',
-		},
+		'sw2': sw2_options,
 		'parameters': parameters
 	}
 	return JSON.stringify(data)
@@ -120,18 +117,27 @@ const show_error = (error) => {
 	$error_modal.modal('show');
 }
 
-const sw2_on_failure = (response, element) => {
+const sw2_on_failure = (response, element, xhr) => {
+	// console.log(errorMessage, element, xhr)
+	if (element[0].classList.contains('dropdown')) {
+		element.dropdown('setting', 'showOnFocus', false)
+	}
 	const type = typeof response
 	//console.log(type)
 	if (type === 'object') {
 		console.error(response)
-		show_error(JSON.stringify(response.errors, null, 2))		
+		show_error(JSON.stringify(response.errors, null, 2))
 	} else {
 		show_error(response)
 	}
 }
 
 const sw2_on_error = (errorMessage, element, xhr) => {
+	//console.log(errorMessage, element, xhr)
+	//console.log(element[0].classList)
+	if (element[0].classList.contains('dropdown')) {
+		element.dropdown('setting', 'showOnFocus', false)
+	}
 	show_error(errorMessage)
 }
 

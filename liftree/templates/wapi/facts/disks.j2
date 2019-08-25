@@ -6,9 +6,10 @@
             Disks
         </div>
     </div>
-{% set disks_ids = data.ansible_device_links.ids.keys() %}
-{% for disk_name, disk in data.ansible_devices.items() %}
-  {% if disk_name in disks_ids %}
+{% if data.ansible_devices is defined %}
+  {% set disks_ids = data.ansible_device_links.ids.keys() %}
+  {% for disk_name, disk in data.ansible_devices.items() %}
+    {% if disk_name in disks_ids %}
     <div class="extra content">
         <div class="ui styled accordion">
             <div class="title">
@@ -16,13 +17,14 @@
                 <div class="header"><i class="dropdown icon"></i>{{ disk_name }}</div>
             </div>
             <div class="content">
-    {% for name, partition in disk.partitions.items() %}
+      {% for name, partition in disk.partitions.items() %}
                 <div class="right floated meta">{{ partition.size }}</div>
                 <div>{{ name }} / {{ partition.links.labels[0] }}</div>
-    {% endfor %}
+      {% endfor %}
             </div>
         </div>
     </div>
-  {% endif %}
-{% endfor %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
 </div>

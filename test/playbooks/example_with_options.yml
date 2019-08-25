@@ -1,0 +1,45 @@
+---
+- name: Example for options and inventories definition in wapi 
+  hosts: "{{ wapi_hosts|default('fake') }}"
+  gather_facts: false
+  vars:
+    wapi:
+      metadata:
+        author: https://github.com/vengaar
+        state: prod
+        description: |
+          #### Example playbook for options and inventories
+          * This example is to show how it is possible to have specific
+              * options
+              * inventories used
+          * This playbook run on local connection
+          * See [https://github.com/vengaar/wapi]() for more information
+      launch:
+        options: -v --diff
+        inventories: &dev_database_inventory
+          - ~/wapi/test/inventories/hosts_dynamic_dev_database.py
+        extra_vars:
+          - name: wapi_hosts
+            description: The hosts for the playbook
+            description: One or several dev database servers.
+            query: groups
+            query_parameters:
+              pattern: 'database'
+              sources: *dev_database_inventory
+              groups_selection: 'yes'
+            attributes: ['required', 'multiple']
+            default:
+              - database-dev-001 
+  tasks:
+    - name: Display inventory_hostname
+      debug:
+        var: inventory_hostname
+    - name: Display ansible_inventory_sources
+      debug:
+        var: ansible_inventory_sources
+      run_once: true
+    - name: Display groups
+      debug:
+        var: groups
+      run_once: true
+...

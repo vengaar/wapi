@@ -13,7 +13,7 @@ Pour tester un playbook
 * Commencez par chercher les playbooks disponibles
 en tapant `playbook` dans le search à droite dans la barre de navigation.
 
-* Selectionner le playbook à lancer (par exemple `test.yml`)
+* Selectionner le playbook à lancer (par exemple `example_wapi.yml`)
 
 * La page d'un playbook est découpé en trois
 

@@ -1,8 +1,0 @@
----
-countries:
-  list:
-    - es
-  dict:
-    fr: France
-    es: Spain
-...

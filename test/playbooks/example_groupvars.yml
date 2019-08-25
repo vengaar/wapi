@@ -1,5 +1,5 @@
 ---
-- name: Test groupvars playbook
+- name: Example for wapi groupvars
   hosts: database
   gather_facts: false
   vars:
@@ -9,7 +9,6 @@
         state: dev
         description: |
           ### Playbook used to explain groupvars search.
-          
           * Allow to choose value.s among a list aldready defined as groups vars
           * It is done to avoid to duplicate list
           * If behin the key provided you have:
@@ -20,33 +19,42 @@
           * Below some examples.
       launch:
         options: -v
-        inventories: &inventories
-          - ~/wapi/test/inventories
         extra_vars:
           - name: country_selected
-            description: One country belong values of countries.all defined as group_vars database
+            description: One country belong values of key countries.all defined in group_vars database.
             attributes: ['required']
             query: groupvars
             query_parameters:
               group: database
               key: countries.list
-              inventories:  *inventories
+
           - name: countries_selected
-            description: Several countries
+            description: |
+              Several countries defined in the group_vars database under keys countries.dict.
+              Using attributes 'multiple' to be able to select several values.
+              Use sw2_options reduce cache ttl to 20 seconds
             attributes: ['required', 'multiple']
             query: groupvars
             query_parameters:
               group: database
               key: countries.dict
-              inventories: *inventories
+            sw2_options:
+              cache_ttl: 20
+
           - name: colors_selected
-            description: Several color coming from groups vars defined in dynamic inventory
+            description: |
+              Several color coming from groups vars defined in dynamic inventory.
+              Use sw2_options to have no cache.
             attributes: ['required', 'multiple']
             query: groupvars
+            sw2_options:
+              cache: bypass
+              debug: true
             query_parameters:
-              group: database_preprod
+              group: database
               key: colors
-              inventories: *inventories
+              inventories:
+                - ~/wapi/test/inventories/hosts_dynamic_dev_database.py
 
   tasks:
     - name: Check and display extra vars

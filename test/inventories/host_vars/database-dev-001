@@ -1,0 +1,7 @@
+---
+countries:
+  list:
+    - fr
+  dict:
+    fr: france
+...
