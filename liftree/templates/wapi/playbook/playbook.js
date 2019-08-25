@@ -48,23 +48,23 @@ class ExtraVar {
 				this.default = null
 			}
 			let parameters = data.query_parameters || {}
+			let sw2_options = data.sw2_options || {}
 			// console.log(parameters)
 			this.$.dropdown({
 				apiSettings: {
 					contentType: 'application/json',
 					action: 'extravars/query',
-					urlData: {
-						parameters: get_sw2_query(data.query, parameters),
-					},
 					method: 'POST',
-					data: get_sw2_query(data.query, parameters),
-					// onFailure: sw2_on_failure,
-					// onError: sw2_on_error,
+					data: get_sw2_query(data.query, parameters, sw2_options),
+					cache: false,
+					onFailure: sw2_on_failure,
+					onError: sw2_on_error,
 				},
 				onChange: extra_var_dropdown_onchange,
 				clearable: true,
 				fullTextSearch: 'exact',
 				filterRemoteData: true,
+				showOnFocus: this.is_multiple(),
 			});
 			if (this.default !== null) {
 				let values = this.default.map(x => new Object({'name': x, 'value': x}))
@@ -266,19 +266,17 @@ $('#tasks').dropdown({
 	apiSettings: {
 		contentType: 'application/json',
 		action: 'playbook/tasks',
-		urlData: {
-			parameters: get_sw2_query('tasks', sw2_playbook_parameter),
-		},
+		method: 'POST',
+		data: get_sw2_query('tasks', sw2_playbook_parameter),
+		cache: false,
+		onFailure: sw2_on_failure,
+		onError: sw2_on_error,
 		onResponse: function(response) {
 			console.log(response)
 			const no_task_name = '<div class="ui label">no task selected</div>'
 			response['results'].unshift({name: no_task_name, value: ''})
 			return response;
 		},
-		// method:'POST',
-		// data: get_sw2_query('tasks', sw2_playbook_parameter),
-		// onFailure: sw2_on_failure,
-		// onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		cmdline_tasks = value
@@ -288,19 +286,18 @@ $('#tasks').dropdown({
 	fullTextSearch: 'exact',
 	cache: true,
 	filterRemoteData: true,
+	showOnFocus: false,
 });
 
 $('.playbook-tags').dropdown({
 	apiSettings: {
 		contentType: 'application/json',
 		action: 'playbook/tags',
-		urlData: {
-			parameters: get_sw2_query('tags', sw2_playbook_parameter),
-		},
-		// method:'POST',
-		// data: get_sw2_query('tags', sw2_playbook_parameter),
-		// onFailure: sw2_on_failure,
-		// onError: sw2_on_error,
+		method: 'POST',
+		data: get_sw2_query('tags', sw2_playbook_parameter),
+		cache: false,
+		onFailure: sw2_on_failure,
+		onError: sw2_on_error,
 	},
 	onChange: function(value, text, $selectedItem) {
 		if (this.id === 'tags_apply') {
