@@ -21,26 +21,40 @@
         options: -v
         extra_vars:
           - name: country_selected
-            description: One country belong values of countries.all defined as group_vars database
+            description: One country belong values of key countries.all defined in group_vars database.
             attributes: ['required']
             query: groupvars
             query_parameters:
               group: database
               key: countries.list
+
           - name: countries_selected
-            description: Several countries
+            description: |
+              Several countries defined in the group_vars database under keys countries.dict.
+              Using attributes 'multiple' to be able to select several values.
+              Use sw2_options reduce cache ttl to 20 seconds
             attributes: ['required', 'multiple']
             query: groupvars
             query_parameters:
               group: database
               key: countries.dict
+            sw2_options:
+              cache_ttl: 20
+
           - name: colors_selected
-            description: Several color coming from groups vars defined in dynamic inventory
+            description: |
+              Several color coming from groups vars defined in dynamic inventory.
+              Use sw2_options to have no cache.
             attributes: ['required', 'multiple']
             query: groupvars
+            sw2_options:
+              cache: bypass
+              debug: true
             query_parameters:
-              group: prod
+              group: database
               key: colors
+              inventories:
+                - ~/wapi/test/inventories/hosts_dynamic_dev_database.py
 
   tasks:
     - name: Check and display extra vars
