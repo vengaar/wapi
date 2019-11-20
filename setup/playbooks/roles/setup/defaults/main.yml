@@ -8,9 +8,7 @@ wapi_base_url: http://{{ ansible_default_ipv4.address }}:{{ wapi_port }}
 os_version: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}"
 required:
   os:
-    - "Fedora/28"
-    - "Fedora/29"
-    - "Fedora/30"
-    - "Ubuntu/18"
+    Fedora: 28
+    Ubuntu: 18
 wapi_ansible_facts_folder: ~/ansible-facts
 ...
