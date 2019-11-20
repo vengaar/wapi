@@ -12,7 +12,7 @@
           * Below several types of extra vars provided by wapi
               * Dynamic host coming from inventories
               * Toggle true/false
-              * Value.s to choose among static list 
+              * Value.s to choose among static list
           * This playbook run on local connection
           * See [https://github.com/vengaar/wapi]() for more information
       launch:
@@ -34,7 +34,7 @@
             query_parameters:
               pattern: 'prod'
             attributes: ['required']
-#             default: database-prod-001
+            # default: database-prod-001
 
           - name: database_servers
             description: |
