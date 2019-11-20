@@ -5,7 +5,6 @@ wapi:
     state: dev
     description: |
       #### Role using for demo
-      
       * elem1
       * elem2
 ...

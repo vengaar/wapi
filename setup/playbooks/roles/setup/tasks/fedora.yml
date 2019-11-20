@@ -1,23 +1,23 @@
 ---
-- name: Deploy httpd config
+- name: "Deploy httpd config"
   become: true
-  become_user: root
+  become_user: "root"
   block:
-    - name: Deploy apache configuration
+    - name: "Deploy apache configuration"
       template:
-        src: httpd.conf
-        dest: /etc/httpd/conf.d/wapi.conf
+        src: "httpd.conf"
+        dest: "/etc/httpd/conf.d/wapi.conf"
 
-    - name: Manage firewalld
+    - name: "Manage firewalld"
       firewalld:
         port: "{{ wapi_port }}/tcp"
-        permanent: yes
-        state: enabled
-        immediate: yes
+        permanent: "yes"
+        state: "enabled"
+        immediate: "yes"
 
-    - name: Reload apache config
+    - name: "Reload apache config"
       systemd:
-        name: httpd
-        state: reloaded
-        enabled: yes
+        name: "httpd"
+        state: "reloaded"
+        enabled: "yes"
 ...

@@ -21,7 +21,7 @@
         repo: "{{ git_repo }}"
         version: "{{ git_version }}"
         dest: /home/{{ wapi_user }}/{{ git_name }}
-        force: yes
+        force: "yes"
       when: git_clone|bool
 
     - name: Deploy favicon
@@ -62,7 +62,7 @@
 - include_tasks: "{{ ansible_distribution|lower }}.yml"
 
 - name: Config
-  become: yes
+  become: "yes"
   become_user: root
   block:
     - name: Deploy wapi liftree config include

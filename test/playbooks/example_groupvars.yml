@@ -13,7 +13,7 @@
           * It is done to avoid to duplicate list
           * If behin the key provided you have:
               * a list, the values proposed values are the values of the list
-              * a dict, the values proposed values are the keys of the dict 
+              * a dict, the values proposed values are the keys of the dict
           * The variable are get through a `ansible-inventory --list --export`
           * So it work in all case, groups_vars file, dynamic inventory, ... etc
           * Below some examples.

@@ -2,11 +2,11 @@
 # {{ ansible_managed }}
 #
 ---
-user: {{ wapi_user }}
+user: "{{ wapi_user }}"
 inventories:
-  - /home/{{ wapi_user }}/{{ git_name }}/test/inventories
-run_options: -v --diff
-runs_dir: /home/{{ wapi_user }}/ansible-ws@working/runs
+  - "/home/{{ wapi_user }}/{{ git_name }}/test/inventories"
+run_options: "-v --diff"
+runs_dir: "/home/{{ wapi_user }}/ansible-ws@working/runs"
 ansible_cmdline:
   playbook: ansible-playbook
 ansible_private_key:

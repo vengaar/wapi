@@ -3,7 +3,7 @@
 #
 ---
 search:
-  from: 7 
+  from: 7
   to: 1
   playbook: ''
   states:

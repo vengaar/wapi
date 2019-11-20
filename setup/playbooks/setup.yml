@@ -1,7 +1,7 @@
 ---
 - hosts: localhost
   gather_facts: true
-  become: yes
+  become: "yes"
   become_user: root
   vars:
     wsgi_user: "wapi"
@@ -22,7 +22,7 @@
         repo: https://github.com/vengaar/{{ git_app.name }}.git
         dest: /tmp/{{ git_app.name }}
         version: "{{ git_app.version }}"
-        force: yes
+        force: "yes"
       loop: "{{ git_repos }}"
       loop_control:
         loop_var: git_app

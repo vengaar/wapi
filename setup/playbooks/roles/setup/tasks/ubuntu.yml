@@ -1,23 +1,23 @@
 ---
-- name: Deploy apache configuration
-  become: true
-  become_user: root
+- name: "Deploy apache configuration"
+  become: "true"
+  become_user: "root"
   block:
-    - name: Deploy apache configuration
+    - name: "Deploy apache configuration"
       template:
-        src: httpd.conf
-        dest: /etc/apache2/sites-available/{{ git_name }}.conf
+        src: "httpd.conf"
+        dest: "/etc/apache2/sites-available/{{ git_name }}.conf"
 
-    - name: Use a2* command to enable {{ git_name }} site
+    - name: "Use a2* command to enable {{ git_name }} site"
       shell: "{{ item }}"
       loop:
         - "a2enmod http2"
         - "a2enmod headers"
         - "a2ensite {{ git_name }}.conf"
 
-    - name: Reload apache config
+    - name: "Reload apache config"
       systemd:
-        name: apache2
-        state: reloaded
-        enabled: yes
+        name: "apache2"
+        state: "reloaded"
+        enabled: "yes"
 ...
