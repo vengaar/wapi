@@ -1,0 +1,46 @@
+{% set sysadmin_icons = ["astronaut", "secret", "ninja", "graduate", "injured", "nurse", "shield"] %}
+{% set roles = {
+    "unknow": {
+      "icon": "user slash",
+      "status": "disabled",
+    },
+    "default": {
+      "icon": "blue user circle",
+      "status": "enable",
+    },
+    "sysadmin": {
+      "icon": "violet " + sysadmin_icons|random + " user",
+      "status": "enable",
+    },
+  }
+%}
+{% set role_name= roles.keys()|list|random %}
+{% set role_name= "sysadmin" %}
+{% set role= roles[role_name] %}
+{% set user = {
+    "login": "perrioto",
+    "name": "Olivier Perriot",
+    "mail": "olivier.perriot@free.fr",
+    "role": role_name,
+    "login": "perrioto",
+  }
+%}
+<a class="user {{ role.status }} item"><i class="large {{ role.icon }} icon"></i></a>
+<div class="ui _fluid flowing popup transition hidden card">
+  <div class="content">
+    <i class="right floated huge {{ role.icon }} icon"></i>
+    <div class="header">{{ user.name }}</div>
+    <div class="meta">{{ user.role }} user</div>
+  </div>
+  <div class="extra content">
+    <div class="ui fluid vertical secondary menu">
+      <a class="item" href="/show"><i class="portrait icon"></i>{{ user.login }}</a>
+      <a class="item" href="mailto: {{ user.mail }}"><i class="envelope icon"></i>{{ user.mail }}</a>
+    </div>
+  </div>
+  <div class="content">
+    <a class="ui fluid basic button" href="/show">
+      <i class="sign out alternate icon"></i> Logout
+    </a>
+  </div>
+</div>
