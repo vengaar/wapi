@@ -1,4 +1,4 @@
-{% set version_semantic_ui = '2.7.8' %}
+{% set version_semantic_ui = '2.8.2' %}
 {% set version_highlightjs = '9.15.10' %}
 <!doctype html>
 <html>
@@ -73,6 +73,9 @@
             </div>
           </div>
         </div>
+{#
+        {% include '/wapi/layout/user.j2' %}
+#}
       </div>
     </div> <!-- end navbar -->
 
@@ -94,7 +97,7 @@
     </div>
 
     <!-- scripts -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/fomantic-ui@{{ version_semantic_ui }}/dist/semantic.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/{{ version_highlightjs }}/highlight.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
