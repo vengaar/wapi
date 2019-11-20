@@ -1,5 +1,5 @@
 ---
-- name: Example for options and inventories definition in wapi 
+- name: Example for options and inventories definition in wapi
   hosts: "{{ wapi_hosts|default('fake') }}"
   gather_facts: false
   vars:
@@ -20,7 +20,6 @@
           - ~/wapi/test/inventories/hosts_dynamic_dev_database.py
         extra_vars:
           - name: wapi_hosts
-            description: The hosts for the playbook
             description: One or several dev database servers.
             query: groups
             query_parameters:
@@ -29,7 +28,7 @@
               groups_selection: 'yes'
             attributes: ['required', 'multiple']
             default:
-              - database-dev-001 
+              - database-dev-001
   tasks:
     - name: Display inventory_hostname
       debug:
