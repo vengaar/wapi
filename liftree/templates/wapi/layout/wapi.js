@@ -106,6 +106,20 @@ $('.menu .browse').popup({
 	}
 });
 
+/*
+$('.menu .user').popup({
+	// inline: true,
+	position: 'bottom right',
+	lastResort: 'bottom right',
+	offset: -10,
+	on: 'click',
+	delay: {
+		show: 300,
+		hide: 800
+	}
+});
+*/
+
 /**
  * error management
  */
