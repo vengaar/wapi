@@ -19,7 +19,7 @@ Based on
 
 * For installation
   * Git
-* Python => 3.6
+* Python => 3.8
 * Ansible
 
 ## Defaults
@@ -30,24 +30,12 @@ Based on
 
 ## Procedure
 
-### Ubuntu >= 18.04.1 LTS
+### Ubuntu >= Ubuntu 20.04.2 LTS
 
 As root on your server
 
 ~~~~
 apt-get install ansible
-git clone https://github.com/vengaar/wapi.git
-ansible-playbook wapi/setup/playbooks/setup.yml
-~~~~
-
-### Fedora >= 28
-
-**CAUTION : currently require to have SELinux in Permissive mode**
-
-As root on your server
-
-~~~~
-dnf install ansible
 git clone https://github.com/vengaar/wapi.git
 ansible-playbook wapi/setup/playbooks/setup.yml
 ~~~~
