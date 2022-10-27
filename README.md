@@ -11,7 +11,7 @@ Based on
 
 # Demo
 
-[demo] (credential : wapi/wapi)
+~~[demo] (credential : wapi/wapi)~~ ec2 instance no longer available :-(
 
 # Setup
 
